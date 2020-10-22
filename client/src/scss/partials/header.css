@@ -1,0 +1,18 @@
+nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+nav #logo {
+  margin-left: 43vw;
+}
+
+nav #logo img {
+  width: 190px;
+  height: auto;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+}
+/*# sourceMappingURL=header.css.map */

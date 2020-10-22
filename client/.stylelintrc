@@ -1,0 +1,10 @@
+{
+  plugins: [
+    "stylelint-scss"
+  ],
+  extends: [
+  ],
+  rules: {
+
+  },
+}
