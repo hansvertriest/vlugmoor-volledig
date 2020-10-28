@@ -6,7 +6,11 @@ import { default as morgan, TokenIndexer } from 'morgan';
 class MorganMiddleware {
   public static load(app: Application): void {
     const morganMiddleware = morgan(
-      (tokens: TokenIndexer<Request, Response >, req: Request, res: Response) => {
+      (
+        tokens: TokenIndexer<Request, Response>,
+        req: Request,
+        res: Response,
+      ) => {
         return [
           chalk
             .hex('#ffffff')
