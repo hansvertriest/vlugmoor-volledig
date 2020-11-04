@@ -6,13 +6,10 @@ import { IUser } from './user.model';
 interface IOnlineEvent extends Document {
   title: string;
   description: string;
-  tags: string;
+
   picture: string;
-  duration: number;
-  link: string;
   date: Date;
 
-  slug: string;
 
   _createdAt: number;
   _modifiedAt: number;
@@ -20,7 +17,6 @@ interface IOnlineEvent extends Document {
 
   _userId: IUser['_id'];
 
-  slugify(): void;
 }
 
 interface IOnlineEventModel extends PaginateModel<IOnlineEvent> {}
@@ -32,25 +28,9 @@ const onlineEventSchema: Schema = new Schema(
       required: true,
       max: 128,
     },
-    slug: {
-      type: String,
-      required: true,
-      lowercase: true,
-      unique: false,
-    },
     description: {
       type: String,
       required: true,
-      max: 2056,
-    },
-    link: {
-      type: String,
-      requiered: true,
-      max: 256,
-    },
-    tags: {
-      type: String,
-      required: false,
       max: 2056,
     },
     picture: {
@@ -96,12 +76,6 @@ onlineEventSchema.methods.slugify = function() {
   this.slug = slug(this.title);
 };
 
-onlineEventSchema.pre<IOnlineEvent>('validate', function(next) {
-  if (!this.slug) {
-    this.slugify();
-  }
-  return next();
-});
 
 onlineEventSchema.virtual('id').get(function(this: IOnlineEvent) {
   return this._id;

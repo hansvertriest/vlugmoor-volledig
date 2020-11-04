@@ -2,9 +2,11 @@ canvas {
     padding: 0;
     margin: auto;
     display: block;
-    width: 800px;
+    width: 80vw;
     box-shadow: 3px 5px 10px 0px rgba(0,0,0,0.75);
-    margin-top: 50px;
+    margin-top: 20px;
+    // DEZE WEG HALEN ALS ER NOG DINGEN ONDER KOMEN !!!!
+    margin-bottom: 100px;
 }
 *{
     margin: 0;
@@ -15,4 +17,21 @@ body {
     background-image: url('../assets/images/background_img.svg');
     background-repeat: no-repeat;
     
+}
+
+.controls-container{
+    margin-left: 20px;
+    p{
+        font-family: 'Roboto', sans-serif;
+        text-transform: uppercase;
+        color: #FF664F;
+        font-weight: 400;
+        font-size: 20px;
+    }
+    h3{
+        font-family: 'Roboto', sans-serif;
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: 50px;
+    }
 }

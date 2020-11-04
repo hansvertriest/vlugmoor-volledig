@@ -3,10 +3,7 @@ import { default as faker } from 'faker';
 
 import { ILogger } from '../logger';
 import { IConfig } from '../config';
-import {
-  IUser,
-  User,
-} from '../../models/mongoose';
+import { IUser, User } from '../../models/mongoose';
 
 class MongoDBDatabase {
   private config: IConfig;
@@ -17,7 +14,6 @@ class MongoDBDatabase {
 
   private users: Array<IUser>;
 
-
   constructor(logger: ILogger, config: IConfig) {
     this.logger = logger;
     this.config = config;
@@ -25,7 +21,6 @@ class MongoDBDatabase {
     // arrays aanmaken
 
     this.users = [];
-
   }
 
   public connect(): Promise<any> {
@@ -129,7 +124,6 @@ class MongoDBDatabase {
     return await Promise.all(promises);
   };
 
-
   private getRandomUser = () => {
     let user: IUser = null;
     if (this.users && this.users.length > 0) {
@@ -137,11 +131,6 @@ class MongoDBDatabase {
     }
     return user;
   };
-
-  
-
-
-  
 
   // Alle seeders aanspreken indien nodig.
 
