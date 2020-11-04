@@ -16,7 +16,7 @@ module.exports = (argv) => {
         port: 8000
     },
     node: {
-        global: false,
+        global: true,
         __filename: false,
         __dirname: false,
     },
@@ -60,6 +60,10 @@ module.exports = (argv) => {
             use: [
             'file-loader',
             ],
+        },
+
+        { 
+          test: /\.xlsx$/, loader: "webpack-xlsx-loader" 
         },
 
         {
