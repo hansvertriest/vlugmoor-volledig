@@ -1,9 +1,9 @@
 import kaaiImage from '../../assets/images/kaai.png'
 
 export default class Kaai {
-    constructor(originY, distanceFromOriginInM, widthInM) {
+    constructor(simCtx, distanceFromOriginInM, widthInM) {
+        this.simCtx = simCtx;
         this.distanceFromOriginInM = distanceFromOriginInM;
-
         this.widthInM = widthInM;
         
         this.image = new Image();
@@ -29,32 +29,32 @@ export default class Kaai {
         });
     }
 
-    draw(simCtx) {
-        const posYInPx = simCtx.originY - simCtx.meterToPx(this.distanceFromOriginInM);
-        const posXInPx = simCtx.originX - simCtx.meterToPx(this.widthInM/2)
+    draw() {
+        const posYInPx = this.simCtx.originY - this.simCtx.meterToPx(this.distanceFromOriginInM);
+        const posXInPx = this.simCtx.originX - this.simCtx.meterToPx(this.widthInM/2)
 
-        const width = simCtx.meterToPx(this.widthInM);
-        const height = simCtx.canvas.height - posYInPx;
+        const width = this.simCtx.meterToPx(this.widthInM);
+        const height = this.simCtx.canvas.height - posYInPx;
 
 
         // draw rectangle
-        simCtx.ctx.fillStyle = "#D0D0D0";
-        simCtx.ctx.fillRect(0, posYInPx, simCtx.canvas.width, height);
+        this.simCtx.ctx.fillStyle = "#D0D0D0";
+        this.simCtx.ctx.fillRect(0, posYInPx, this.simCtx.canvas.width, height);
 
         // draw image
         const scaleFactor = width/this.image.width;
         const heightImage = this.image.height * scaleFactor;
         const widthImage = width;
 
-        simCtx.ctx.drawImage(this.image, posXInPx, posYInPx, widthImage, heightImage);
+        this.simCtx.ctx.drawImage(this.image, posXInPx, posYInPx, widthImage, heightImage);
 
         // check if screen is moved horizontallyy
-        if (simCtx.originX !== 0) {
+        if (this.simCtx.originX !== 0) {
             // if moved to right
             const widthImageTwo =  (posXInPx > 0) ? widthImage*-1 : widthImage;
             
             // draw image 2
-            simCtx.ctx.drawImage(this.image, posXInPx + widthImageTwo, posYInPx, widthImage, heightImage);
+            this.simCtx.ctx.drawImage(this.image, posXInPx + widthImageTwo, posYInPx, widthImage, heightImage);
         }
     }
 }

@@ -1,5 +1,6 @@
 export default class Fender {
-    constructor(fenderPosX, fenderPosY, forceLimit, thickness, width, limits) {
+    constructor(simCtx, fenderPosX, fenderPosY, forceLimit, thickness, width, limits) {
+        this.simCtx = simCtx;
         this.posX = fenderPosX;
         this.posY = fenderPosY;
         this.forceLimit = forceLimit;
@@ -15,11 +16,11 @@ export default class Fender {
         this.colorSecondLimit = 'red';
     }
 
-    draw(simCtx) {
+    draw() {
         // Calculating pos with height=0 bc fenderOriginDefinition = x: widhth/2 y:0
-        const posOnCanvas = simCtx.originToCanvasCoords(this.posX, this.posY, this.thicknessInM, 0);
-        simCtx.ctx.fillStyle = this.getFenderColor();
-        simCtx.ctx.fillRect(posOnCanvas.x, posOnCanvas.y, simCtx.meterToPx(this.widthInM), simCtx.meterToPx(this.thicknessInM))
+        const posOnCanvas = this.simCtx.originToCanvasCoords(this.posX, this.posY, this.thicknessInM, 0);
+        this.simCtx.ctx.fillStyle = this.getFenderColor();
+        this.simCtx.ctx.fillRect(posOnCanvas.x, posOnCanvas.y, this.simCtx.meterToPx(this.widthInM), this.simCtx.meterToPx(this.thicknessInM))
     }
 
     setCurrentForce(force) {

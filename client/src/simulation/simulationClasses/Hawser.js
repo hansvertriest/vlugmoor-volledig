@@ -1,7 +1,8 @@
 import bolderImage from '../../assets/images/bolder.png'
 
 export default class Hawser {
-    constructor(bolderPosX, bolderPosY, forceMax, limits) {
+    constructor(simCtx, bolderPosX, bolderPosY, forceMax, limits) {
+        this.simCtx = simCtx;
         this.bolderPosX = bolderPosX;
         this.bolderPosY = bolderPosY;
         this.forceMax = forceMax;
@@ -36,41 +37,41 @@ export default class Hawser {
         });
     }
 
-    draw(simCtx) {
+    draw() {
         // get coordinates
-        const canvasCoordsBolderCenter = simCtx.originToCanvasCoords(
+        const canvasCoordsBolderCenter = this.simCtx.originToCanvasCoords(
             this.bolderPosX, 
             this.bolderPosY, 
         );
-        const canvasCoordsHawser = simCtx.originToCanvasCoords(
+        const canvasCoordsHawser = this.simCtx.originToCanvasCoords(
             this.posOnShipX, 
             this.posOnShipY, 
         );
 
-        simCtx.ctx.beginPath();
-        simCtx.ctx.lineWidth = 2;
-        simCtx.ctx.strokeStyle = this.getHawserColor();
-        if (this.hasBroken) simCtx.ctx.setLineDash([5]);
-        simCtx.ctx.moveTo(canvasCoordsBolderCenter.x, canvasCoordsBolderCenter.y);
-        simCtx.ctx.lineTo(canvasCoordsHawser.x, canvasCoordsHawser.y);
-        simCtx.ctx.stroke();
-        simCtx.ctx.closePath();
+        this.simCtx.ctx.beginPath();
+        this.simCtx.ctx.lineWidth = 2;
+        this.simCtx.ctx.strokeStyle = this.getHawserColor();
+        if (this.hasBroken) this.simCtx.ctx.setLineDash([5]);
+        this.simCtx.ctx.moveTo(canvasCoordsBolderCenter.x, canvasCoordsBolderCenter.y);
+        this.simCtx.ctx.lineTo(canvasCoordsHawser.x, canvasCoordsHawser.y);
+        this.simCtx.ctx.stroke();
+        this.simCtx.ctx.closePath();
 
         // reset lines to solid
-        if (this.hasBroken) simCtx.ctx.setLineDash([]);
+        if (this.hasBroken) this.simCtx.ctx.setLineDash([]);
 
         // draw bolderImage
-        const imageWidthInPx = simCtx.meterToPx(this.bolderWidthInM);
-        const imageHeightInPx = simCtx.meterToPx(this.bolderHeightInM);
+        const imageWidthInPx = this.simCtx.meterToPx(this.bolderWidthInM);
+        const imageHeightInPx = this.simCtx.meterToPx(this.bolderHeightInM);
 
-        const canvasCoordsBolderImage = simCtx.originToCanvasCoords(
+        const canvasCoordsBolderImage = this.simCtx.originToCanvasCoords(
             this.bolderPosX, 
             this.bolderPosY,
             this.bolderWidthInM, 
             this.bolderHeightInM,
         );
 
-        simCtx.ctx.drawImage(this.image, canvasCoordsBolderImage.x, canvasCoordsBolderImage.y, imageWidthInPx, imageHeightInPx);
+        this.simCtx.ctx.drawImage(this.image, canvasCoordsBolderImage.x, canvasCoordsBolderImage.y, imageWidthInPx, imageHeightInPx);
 
     }
 

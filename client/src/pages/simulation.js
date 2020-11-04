@@ -3,13 +3,9 @@ import { Simulation } from '../simulation/simulationClasses';
 
 const XLSX = require('xlsx');
 
-// Load in data
-// import metaData from '../assets/sim2/caseMetaData';
-// import metaDataXLSX from '../assets/sim2/caseMetaData.xlsx';
-// import dataCoordsCSV from '../assets/csv/dataCoords.csv' // collums => arrays
-// import dataForcesCSV from '../assets/csv/dataForces.csv'// collums => arrays
+// FUNCTIONS
 
-const appInit = async (files) => {
+const appInit = async (simulation, files) => {
     // get shipTranslation data
     const shipTranslations = files.forces.map((timePoint) => {
         return timePoint.filter((column, index) => {
@@ -25,7 +21,7 @@ const appInit = async (files) => {
     data.addTimePoints(files.coords, files.forces, shipTranslations);
     
     // SIMULATION
-    const simulation = new Simulation(1000,600, data);
+    simulation.addData(data);
     await simulation.init();
     simulation.registerController();
     await simulation.addShip(files.metaData.caseShip, true);
@@ -34,11 +30,10 @@ const appInit = async (files) => {
     simulation.drawCaseShip();
     simulation.play();
 }
-
-const filesHaveLoaded = (files) => {
+const filesHaveLoaded = (simulation, files) => {
     const keys = Object.keys(files);
     if (keys.includes('metaData') && keys.includes('forces') && keys.includes('coords')){
-        appInit(files);
+        appInit(simulation, files);
     }
 }
 
@@ -53,24 +48,20 @@ const getParsedCSVData = (data) => {
     return parsedData;
 }
 
-// create inputfields
-const xlsxInput = document.createElement('input');
-xlsxInput.setAttribute('type', 'file');
-document.body.appendChild(xlsxInput);
-const forcesInput = document.createElement('input');
-forcesInput.setAttribute('type', 'file');
-document.body.appendChild(forcesInput);
-const coordsInput = document.createElement('input');
-coordsInput.setAttribute('type', 'file');
-document.body.appendChild(coordsInput);
+// BEGIN SCRIPT
 
-const submit = document.createElement('button');
-submit.setAttribute('type', 'button');
-submit.innerHTML = 'SUBMIT';
-document.body.appendChild(submit);
+// create simulation
+const canvasId = 'simulation-canvas'
+const simulation = new Simulation(canvasId);
 
-// detect when a file is selected
-submit.onclick = (e) => {
+// get inputfields
+const xlsxInput = document.getElementById('metadata-input');
+const forcesInput = document.getElementById('forces-input');
+const coordsInput = document.getElementById('coords-input');
+const submit = document.getElementById('submit');
+
+// when files are submitted
+submit.addEventListener('click', (e) => {
     const files = {};
 
     // read files
@@ -87,9 +78,7 @@ submit.onclick = (e) => {
         files.metaData = metaData;
 
         // check if all filess have been loaded
-        filesHaveLoaded(files)
-
-        
+        filesHaveLoaded(simulation, files)
     }
     const readerForces = new FileReader();
     readerForces.onload = (e) => {
@@ -102,7 +91,7 @@ submit.onclick = (e) => {
         files.forces = forces;
 
         // check if all filess have been loaded
-        filesHaveLoaded(files)
+        filesHaveLoaded(simulation, files)
     }
     const readerCoords = new FileReader();
     readerCoords.onload = (e) => {
@@ -115,10 +104,10 @@ submit.onclick = (e) => {
         files.coords = coords;
 
         // check if all filess have been loaded
-        filesHaveLoaded(files)
+        filesHaveLoaded(simulation, files)
 
     }
     readerXSLX.readAsBinaryString(xlsxInput.files[0])
     readerForces.readAsBinaryString(forcesInput.files[0])
     readerCoords.readAsBinaryString(coordsInput.files[0])
-}
+});

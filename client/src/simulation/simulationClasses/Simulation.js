@@ -4,10 +4,11 @@ import Hawser from "./Hawser";
 import Fender from "./Fender";
 import SimulationContext from "./SimulationContext";
 import Kaai from "./Kaai";
+import LoadingScreen from './LoadingScreen';
 
 export default class Simulation {
-    constructor( width, height, data ) {
-        this.simCtx = new SimulationContext(width, height);
+    constructor( canvasId ) {
+        this.simCtx = new SimulationContext(canvasId);
         this.canvas = this.simCtx.canvas;
         this.ctx = this.simCtx.ctx;
 
@@ -17,7 +18,6 @@ export default class Simulation {
         this.originX = this.canvas.width/2;
         this.originY = this.canvas.height/2;
 
-        this.caseData = data;
         this.animationTime = 0;
         this.animationTimeInterval = 10;
         this.animationPlaying = false;
@@ -32,6 +32,28 @@ export default class Simulation {
 
         // controller for interaction
         this.controls;
+
+        // loading
+        this.loadingScreen = new LoadingScreen(this.simCtx);
+        window.requestAnimationFrame(this.doLoading.bind(this));
+    }
+
+    async init() {
+        this.setBackgroundColor();
+        await this.addKaai();
+    }
+
+    async addKaai() {
+        this.kaai = new Kaai(
+            this.simCtx, 
+            this.caseData.caseMetaData.caseShip.distanceFromKaai,
+            this.simCtx.pxToMeter(this.canvas.width)
+        );
+        await this.kaai.loadImage();
+    }
+
+    addData(data) {
+        this.caseData = data;
     }
 
     registerController() {
@@ -44,16 +66,6 @@ export default class Simulation {
         });
     }
 
-    async init() {
-        this.setBackgroundColor();
-        this.kaai = new Kaai(
-            this.simCtx.originY, 
-            this.caseData.caseMetaData.caseShip.distanceFromKaai,
-            this.simCtx.pxToMeter(this.canvas.width)
-        );
-        await this.kaai.loadImage();
-    }
-
     setNextAnimationTime() {
         this.animationTime += this.animationTimeInterval;
     }
@@ -64,7 +76,6 @@ export default class Simulation {
 
     play() {
         this.animationPlaying = true;
-        window.requestAnimationFrame(this.doAnimation.bind(this));
     }
 
     pause() {
@@ -79,6 +90,7 @@ export default class Simulation {
 
     async addShip(shipInfo, isCaseShip=false) {
         const newShip = new Ship(
+            this.simCtx,
             shipInfo.type, 
             shipInfo.width, 
             shipInfo.length, 
@@ -97,6 +109,7 @@ export default class Simulation {
         // loop over all fenders and add a Fender object to fenderArray
         fenderData.forEach((fender) => {
             const newFender = new Fender(
+                this.simCtx,
                 fender.posX,
                 fender.posY,
                 fender.forceMax,
@@ -114,7 +127,7 @@ export default class Simulation {
 
     drawFenders() {
         this.fenderArray.forEach((fender) => {
-            fender.draw(this.simCtx)
+            fender.draw()
         });
     }
 
@@ -123,6 +136,7 @@ export default class Simulation {
             // loop over all bolders and add a Hawser object to hawserArray
             bolderData.forEach((bolder) => {
                 const hawser = new Hawser(
+                    this.simCtx,
                     bolder.posX,
                     bolder.posY,
                     bolder.forceMax,
@@ -145,18 +159,32 @@ export default class Simulation {
 
     drawHawsers() {
         this.hawserArray.forEach((hawser) => {
-            hawser.draw(this.simCtx)
+            hawser.draw()
         });
     }
 
     drawKaai() {
-        this.kaai.draw(this.simCtx);
+        this.kaai.draw();
     }
 
     drawCaseShip() {
-        this.caseShip.draw(this.simCtx);
+        this.caseShip.draw();
     }
 
+
+    doLoading() {
+        if (!this.animationPlaying) {
+            // clear screen
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+            // draw on canvas
+            this.setBackgroundColor();
+            this.loadingScreen.draw();
+            window.requestAnimationFrame(this.doLoading.bind(this));
+        } else {
+            window.requestAnimationFrame(this.doAnimation.bind(this));
+        }
+    }
 
     doAnimation() {
         // check if animation is done
@@ -197,6 +225,7 @@ export default class Simulation {
 
         // set next animationTime
         this.setNextAnimationTime();
+        
 
         window.requestAnimationFrame(this.doAnimation.bind(this));
     }

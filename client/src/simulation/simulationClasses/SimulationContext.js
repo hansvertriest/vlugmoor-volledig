@@ -1,11 +1,7 @@
 export default class SimulationContext {
-    constructor(width, height) {
+    constructor(canvasId) {
         // create canvas
-        this.canvas = document.createElement('canvas');
-        this.canvas.setAttribute('height', height.toString());
-        this.canvas.setAttribute('width', width.toString());
-        this.canvas.setAttribute('id', "animation-canvas");
-        document.body.appendChild(this.canvas);
+        this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext("2d");
 
         this.meterToPxFactor = 2;
