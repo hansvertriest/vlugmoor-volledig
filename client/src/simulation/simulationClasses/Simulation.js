@@ -217,11 +217,12 @@ export default class Simulation {
 
         // drawElements
         this.setBackgroundColor();
+        // this.caseShip.drawShadow();
         this.drawKaai();
         this.drawCaseShip();
         this.drawHawsers();
         this.drawFenders();
-        this.caseShip.drawOutline(this.simCtx);
+        this.caseShip.drawOutline();
 
         // set next animationTime
         this.setNextAnimationTime();
@@ -229,5 +230,4 @@ export default class Simulation {
 
         window.requestAnimationFrame(this.doAnimation.bind(this));
     }
-
 }
