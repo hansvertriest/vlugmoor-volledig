@@ -3,11 +3,17 @@ import { Data, MetaData } from '../simulation/dataClasses';
 import { Simulation } from '../simulation/simulationClasses';
 
 const XLSX = require('xlsx');
+const simulationTemplate = require('../templates/simulation.hbs');
 
 // FUNCTIONS
 
 export default () => {
+
+
     const title = 'Simulation page';
+
+    App.render(simulationTemplate({title}));
+    
     const appInit = async (simulation, files) => {
         // get shipTranslation data
         const shipTranslations = files.forces.map((timePoint) => {
@@ -54,7 +60,7 @@ export default () => {
     // BEGIN SCRIPT
 
     // create simulation
-    const canvasId = 'simulation-canvas'
+    const canvasId = 'simulation-canvas';
     const simulation = new Simulation(canvasId);
 
     // get inputfields
@@ -115,5 +121,5 @@ export default () => {
         readerCoords.readAsBinaryString(coordsInput.files[0])
     });
 
-    ApplicationCache.render(simulationTemplate({title}));
+    
 };

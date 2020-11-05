@@ -10,13 +10,11 @@ interface IOnlineEvent extends Document {
   picture: string;
   date: Date;
 
-
   _createdAt: number;
   _modifiedAt: number;
   _deletedAt: number;
 
   _userId: IUser['_id'];
-
 }
 
 interface IOnlineEventModel extends PaginateModel<IOnlineEvent> {}
@@ -75,7 +73,6 @@ const onlineEventSchema: Schema = new Schema(
 onlineEventSchema.methods.slugify = function() {
   this.slug = slug(this.title);
 };
-
 
 onlineEventSchema.virtual('id').get(function(this: IOnlineEvent) {
   return this._id;
