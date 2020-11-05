@@ -1,5 +1,7 @@
 import SimulationPage from './pages/simulation';
+import HomePage from './pages/home';
 
 export default [
-    {path: '/home', view: SimulationPage},
+    {path: '/simulation', view: SimulationPage},
+    {path: '/home', view: HomePage},
 ];

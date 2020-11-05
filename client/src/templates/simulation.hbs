@@ -1,17 +1,43 @@
 {{> header }}
-<div class="controls-container" >
-    <a><p> < terug</p></a>
+<div class="top-container" >
+    <a><p>{{routerLink "home" "terug"}}</p></a>
     <h3>Kind of ship - Size</h3>
     <p>Date: 21-11-2019</p>
 </div>
-<div id='canvas-container'>
+
 <canvas id="simulation-canvas" width="800" height="600"></canvas> 
-<label>Case Data (*.xlsx)</label>
-<input type="file" id="metadata-input" />
-<label>Forces Data (*.csv)</label>
-<input type="file" id="forces-input" />
-<label>Ship coordinates (*.csv)</label>
-<input type="file" id="coords-input" />
-<button type="button" id="submit">Submit</button>
-<!-- Container om canvas in te steken -->
+<div class="input-control-container">
+    <div class="input-container">
+        <div>
+            <label>Case Data (*.xlsx)</label>
+            <label class="custom-upload">
+                Bestand kiezen
+                <input type="file" id="metadata-input" />
+            </label>
+        </div>
+        <div>
+            <label>Forces Data (*.csv)</label>
+            <label class="custom-upload">
+                Bestand kiezen
+                <input type="file" id="forces-input" />
+            </label>
+        </div>
+        <div>
+            <label>Ship coordinates (*.csv)</label>
+            <label class="custom-upload">
+                Bestand kiezen
+                <input type="file" id="coords-input" />
+            </label>
+        </div>
+        <div class="btn-submit">
+            <button type="button" id="submit">Submit</button>
+        </div>
+    </div>
+
+    <div class="controls-container">
+        <label>Outline</label>
+        <input type="checkbox">
+    </div>
 </div>
+
+{{> footer }}

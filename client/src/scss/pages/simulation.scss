@@ -1,3 +1,6 @@
+/*
+ * Body + Canvas styles
+ */
 canvas {
     padding: 0;
     margin: auto;
@@ -16,12 +19,12 @@ canvas {
 body {
     background-image: url('../assets/images/background_img.svg');
     background-repeat: no-repeat;
-    
 }
 
-.controls-container{
+.top-container{
     margin-left: 20px;
-    p{
+    a{
+        text-decoration: none;
         font-family: 'Roboto', sans-serif;
         text-transform: uppercase;
         color: #FF664F;
@@ -34,4 +37,62 @@ body {
         font-weight: 500;
         font-size: 50px;
     }
+}
+
+/*
+ * Input styles
+ */
+
+label{
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.input-container{
+    div{
+
+        margin-bottom: 10px;
+    }
+    button{
+        border: none;
+        background-color: black;
+        color: white;
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        border-radius: 10px;
+        padding: 10px 20px;
+    }
+    input[type="file"] {
+        display: none;
+    }
+
+    .custom-upload{
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    }
+    .btn-submit{
+        button{
+            width: 200px;
+        }  
+    }
+}
+
+/*
+ * Control styles
+ */
+
+.controls-container{
+
+    label{
+        margin-right: 10px;
+    }
+}
+
+.input-control-container{
+    display: flex;
+    justify-content: space-around;
 }
