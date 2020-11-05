@@ -3,6 +3,7 @@ import { Data, MetaData } from '../simulation/dataClasses';
 import { Simulation } from '../simulation/simulationClasses';
 
 const XLSX = require('xlsx');
+
 const simulationTemplate = require('../templates/simulation.hbs');
 
 // FUNCTIONS
