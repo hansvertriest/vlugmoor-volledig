@@ -1,0 +1,35 @@
+body{
+    background-image: url('../assets/images/background_home.svg');
+    background-repeat: no-repeat;
+}
+
+.list-content{
+    
+    margin-top: 10vh;
+    margin-bottom: 20vh;
+    .list-item{
+        margin: 0 auto;
+        margin-top: 5vh;
+        display: flex;
+        align-self: center;
+        justify-content: space-around;
+        padding: 20px;
+        background-color: #FCFCFC;
+        color: #888888;
+        width: 60vw;
+        box-shadow: 1.5px 2.5px 5px 0px rgba(0,0,0,0.75);
+        font-family: 'Roboto', sans-serif;
+    }
+    .list-date{
+        text-transform: uppercase;
+        color: #FF664F;
+        font-weight: 400;
+    }
+    h3{
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        text-transform: uppercase;
+        font-weight: 400;
+    }
+}

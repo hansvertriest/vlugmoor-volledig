@@ -1,0 +1,38 @@
+
+nav {
+    display: flex;
+    #logo{
+        margin-top: 20px;
+        margin-left: 44vw;
+        img{
+            width: 150px;
+            height: auto; 
+            align-self: center;
+        }
+    }
+}
+.header-nav{
+    
+    margin: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .upload a{
+        text-decoration: none;
+        background-color: black;
+        color: white;
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        border-radius: 10px;
+        padding: 10px 20px;
+    }
+    div{
+        a{
+            img{
+                margin: 10px;
+                width: 50px;
+                height: auto
+            }
+        }
+    }
+}
