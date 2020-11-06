@@ -6,10 +6,10 @@ body{
     margin: 20px;
     .row-card-container{
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
     }
     .card{
-        margin: 10vh 5vw;
+        margin: 10vh 2.5vw;
         img{
             width: 15vw;
             padding: 7.5vh 2.5vw;
