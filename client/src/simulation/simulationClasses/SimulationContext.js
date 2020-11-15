@@ -4,10 +4,11 @@ export default class SimulationContext {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext("2d");
 
-        this.meterToPxFactor = 2;
+        this.meterToPxFactor = 1;
+        this.animationTimeInterval = 10;
 
         this.originX = this.canvas.width*0.5;
-        this.originY = this.canvas.height*0.6;
+        this.originY = this.canvas.height*0.85;
     }
 
     addToMeterToPxFactor(delta) {
@@ -33,7 +34,7 @@ export default class SimulationContext {
     }
 
     originToCanvasCoords(originCoordXInM, originCoordYInM, widthInM=0, heightinM=0) {
-        const canvasCoordX =  this.originX - this.meterToPx(originCoordXInM) - (this.meterToPx(widthInM)/2);
+        const canvasCoordX =  this.originX + this.meterToPx(originCoordXInM) - (this.meterToPx(widthInM)/2);
         const canvasCoordY =  this.originY - this.meterToPx(originCoordYInM) - (this.meterToPx(heightinM)/2);
 
         return {

@@ -14,12 +14,10 @@ export default class Simulation {
 
         this.backgroundColor = "#c1e6fb";
 
-        this.kaaiHeight = 100;
         this.originX = this.canvas.width/2;
         this.originY = this.canvas.height/2;
 
         this.animationTime = 0;
-        this.animationTimeInterval = 10;
         this.animationPlaying = false;
 
         // variables for improving visual message
@@ -71,11 +69,11 @@ export default class Simulation {
     }
 
     setNextAnimationTime() {
-        this.animationTime += this.animationTimeInterval;
+        this.animationTime += this.simCtx.animationTimeInterval;
     }
 
     getNextAnimationTime() {
-        return this.animationTime + this.animationTimeInterval;
+        return this.animationTime + this.simCtx.animationTimeInterval;
     }
 
     play() {
@@ -245,7 +243,7 @@ export default class Simulation {
         this.drawShips();
         this.drawHawsers();
         this.drawFenders();
-        this.caseShip.drawOutline();
+        // this.caseShip.drawOutline();
 
         // set next animationTime
         this.setNextAnimationTime();

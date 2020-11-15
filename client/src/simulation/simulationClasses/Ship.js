@@ -15,7 +15,7 @@ export default class Ship {
         this.outlinePosX = this.posX;
         this.outlinePosY = this.posY;
         this.rotationInDegrees = 0;
-        this.direction = -1;
+        this.direction = 1;
         this.speedInMPerS = 0;
         
         this.displacementLimitToBeStaticInPx = 0.0001;
@@ -82,13 +82,15 @@ export default class Ship {
     }
 
     draw() {
+        // update posX speed displacement
+        this.setPosX(this.posX + this.speedInMPerS * 0.1 * this.simCtx.animationTimeInterval);
+
         const length = this.simCtx.meterToPx(this.length);
         const width = this.simCtx.meterToPx(this.width);
 
         // Converteer meter naar px
-        // 
         const posXInPx = this.simCtx.meterToPx(this.posX);
-        const posYInPx = this.simCtx.meterToPx(this.posY);
+        const posYInPx = this.simCtx.meterToPx(this.posY)*-1;
 
         this.simCtx.ctx.save();
 
@@ -100,14 +102,14 @@ export default class Ship {
         // this.simCtx.ctx.scale(this.direction, 1);
 
         // roteer de context naar de hoek van het schip
-        this.simCtx.ctx.rotate(this.rotationInDegrees);
+        this.simCtx.ctx.rotate(this.rotationInDegrees*-1);
 
         // draw orange placeholder
         // this.simCtx.ctx.fillStyle = 'orange';
         // this.simCtx.ctx.fillRect((posXInPx) - (length/2), (posYInPx) - (width/2), length, width)
 
         // draw image of ship
-        this.simCtx.ctx.drawImage(this.image, (posXInPx*-1) - (length/2), (posYInPx*-1) - (width/2), length, width);
+        this.simCtx.ctx.drawImage(this.image, (posXInPx) - (length/2), (posYInPx) - (width/2), length, width);
 
         // restore context
         this.simCtx.ctx.restore();
