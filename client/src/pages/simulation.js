@@ -28,6 +28,7 @@ export default () => {
         
         // create data object
         const data = new Data(files.metaData);
+        console.log(data.caseMetaData)
         data.addTimePoints(files.coords, files.forces, shipTranslations);
         
         // SIMULATION
@@ -35,9 +36,10 @@ export default () => {
         await simulation.init();
         simulation.registerController();
         await simulation.addShip(files.metaData.caseShip, true);
+        await simulation.addShip(files.metaData.passingShip);
         await simulation.addHawsers(files.metaData.bolderData, files.metaData.hawserMeta);
         simulation.addFenders(files.metaData.fenderData, files.metaData.fenderMeta);
-        simulation.drawCaseShip();
+        simulation.drawShips();
         simulation.play();
     }
     const filesHaveLoaded = (simulation, files) => {

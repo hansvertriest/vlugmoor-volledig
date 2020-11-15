@@ -42,4 +42,8 @@ export default class Controls {
             callback(this.zoomRate * e.deltaY * -0.01);
         }, false);
     }
+
+    registerOutlineSwitch() {
+        
+    }
 }

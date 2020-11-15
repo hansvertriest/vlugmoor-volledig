@@ -26,6 +26,10 @@ export default class Simulation {
         this.translationAmplifierFactor = 1;
         this.distanceToKaaiInMeter = 0;
 
+        // ships
+        this.caseShip;
+        this.passingShips = [];
+
         // hawser data 
         this.hawserArray = [];
         this.fenderArray = [];
@@ -89,19 +93,33 @@ export default class Simulation {
     }
 
     async addShip(shipInfo, isCaseShip=false) {
+        const paramsPassingShip = (isCaseShip) 
+            ? {} 
+            : {
+                posX: this.canvas.width/-2,
+                posY: this.caseShip.width/2 + shipInfo.deltaYShips + shipInfo.width/2,
+                direction: shipInfo.direction,
+                speedInMPerS: shipInfo.speedInMPerS,
+            }
+
         const newShip = new Ship(
             this.simCtx,
             shipInfo.type, 
             shipInfo.width, 
             shipInfo.length, 
-            shipInfo.distanceFromKaai
+            shipInfo.distanceFromKaai,
+            paramsPassingShip
         );
         if (isCaseShip) {
             this.caseShip = newShip;
             await this.caseShip.loadImage();
         } else {
-            this.passingShip = newShip;
-            await this.passingShip.loadImage();
+            if (this.caseShip) {
+                this.passingShips.unshift(newShip);
+                await this.passingShips[0].loadImage();
+            } else {
+                console.log("!!! ERROR: Make sure to firstly set the caseShip before any other ship as this ship defines the origin of the simulation!")
+            }
         }
     }
 
@@ -167,8 +185,13 @@ export default class Simulation {
         this.kaai.draw();
     }
 
-    drawCaseShip() {
+    drawShips() {
         this.caseShip.draw();
+        if (this.passingShips) {
+            this.passingShips.forEach((passingShip) => {
+                passingShip.draw();
+            });
+        }
     }
 
 
@@ -219,7 +242,7 @@ export default class Simulation {
         this.setBackgroundColor();
         // this.caseShip.drawShadow();
         this.drawKaai();
-        this.drawCaseShip();
+        this.drawShips();
         this.drawHawsers();
         this.drawFenders();
         this.caseShip.drawOutline();

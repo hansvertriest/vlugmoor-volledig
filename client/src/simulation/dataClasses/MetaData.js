@@ -101,10 +101,11 @@ export default class MetaData {
             present: (this.getCellData('b',17) === 'YES' ) ? true : false,
             type: this.getCellData('b',18),
             length: this.getCellData('b',19),
-            width: this.getCellData('b',63),
+            width: this.getCellData('b',20),
             deltaYShips: this.getCellData('b',21),
             speedInKnots: this.getCellData('b',22),
             speedInMPerS: this.getCellData('b',23),
+            direction: this.getCellData('b',23) / Math.abs(this.getCellData('b',23)),
         }
     }
 

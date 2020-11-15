@@ -1,10 +1,10 @@
-import container400x63Big from '../../assets/images/container_400x63.png'
-import container400x63BigMoving from '../../assets/images/container_400x63-moving.png'
-import container400x63Outline from '../../assets/images/container_400x63-outline.png'
-
+import container400x63BigLeft from '../../assets/images/container_400x63_dirLeft.png';
+import container400x63BigRight from '../../assets/images/container_400x63_dirRight.png';
+import container400x63BigLeftOutline from '../../assets/images/container_400x63_dirLeft_outline.png';
+import container400x63BigRightOutline from '../../assets/images/container_400x63_dirRight_outline.png';
 
 export default class Ship {
-    constructor(simCtx, type, width, length, distanceFromKaai) {
+    constructor(simCtx, type, width, length, distanceFromKaai, paramsPassingShip={}) {
         this.simCtx = simCtx;
         this.type = type;
         this.width = width;
@@ -12,56 +12,71 @@ export default class Ship {
         this.distanceFromKaai = distanceFromKaai;
         this.posX = 0;
         this.posY = 0;
-        this.initialPosX = this.posX;
-        this.initialPosY = this.posY;
+        this.outlinePosX = this.posX;
+        this.outlinePosY = this.posY;
         this.rotationInDegrees = 0;
+        this.direction = -1;
+        this.speedInMPerS = 0;
         
         this.displacementLimitToBeStaticInPx = 0.0001;
 
+        // if passingship
+        if (Object.keys(paramsPassingShip).length > 0) {
+            this.posX = paramsPassingShip.posX;
+            this.posY = paramsPassingShip.posY;
+            this.direction = paramsPassingShip.direction;
+            this.speedInMPerS = paramsPassingShip.speedInMPerS;
+        }
 
         this.image;
+        this.imageOutline;
 
-        this.imageStatic = new Image();
-        this.imageStatic.src = container400x63Big;
-        this.imageStaticIsLoaded = false;
+        this.imageStaticLeft = new Image();
+        this.imageStaticLeft.src = container400x63BigLeft;
+        this.imageStaticLeftIsLoaded = false;
 
-        this.imageMoving = new Image();
-        this.imageMoving.src = container400x63BigMoving;
-        this.imageMovingIsLoaded = false;
+        this.imageStaticRight = new Image();
+        this.imageStaticRight.src = container400x63BigRight;
+        this.imageStaticRightIsLoaded = false;
 
-        this.imageOutline = new Image();
-        this.imageOutline.src = container400x63Outline;
-        this.imageOutlineIsLoaded = false;
+        this.imageStaticOutlineLeft = new Image();
+        this.imageStaticOutlineLeft.src = container400x63BigLeftOutline;
+        this.imageStaticOutlineLeftIsLoaded = false;
+
+        this.imageStaticOutlineRight = new Image();
+        this.imageStaticOutlineRight.src = container400x63BigRightOutline;
+        this.imageStaticOutlineRightIsLoaded = false;
     }
 
     async loadImage() {
         return new Promise((resolve, reject) => {
-            this.imageStatic.onload = function(){
-                this.imageStaticIsLoaded = true;
-                console.log('Ship imageStatic loaded');
-                if (this.imageStaticIsLoaded && this.imageMovingIsLoaded && this.imageOutlineIsLoaded) {
-                    // if both are loaded set image to static image
-                    this.setImageToStatic();
+            const allImagesLoaded = () => {
+                if (this.imageStaticLeftIsLoaded && this.imageStaticRightIsLoaded && this.imageStaticOutlineRightIsLoaded && this.imageStaticOutlineLeftIsLoaded) {
+                    // if both are loaded set correct direction
+                    this.setImageDirection(this.direction);
+                    console.log('Ship images loaded');
                     resolve();
                 }
+            }
+
+            this.imageStaticLeft.onload = function(){
+                this.imageStaticLeftIsLoaded = true;
+                allImagesLoaded();
             }.bind(this);
 
-            this.imageMoving.onload = function(){
-                this.imageMovingIsLoaded = true;
-                console.log('Ship imageMoving loaded');
-                if (this.imageStaticIsLoaded && this.imageMovingIsLoaded && this.imageOutlineIsLoaded) {
-                    this.setImageToStatic();
-                    resolve();
-                }
+            this.imageStaticRight.onload = function(){
+                this.imageStaticRightIsLoaded = true;
+                allImagesLoaded();
             }.bind(this);
 
-            this.imageOutline.onload = function(){
-                this.imageOutlineIsLoaded = true;
-                console.log('Ship imageMoving loaded');
-                if (this.imageStaticIsLoaded && this.imageMovingIsLoaded && this.imageOutlineIsLoaded) {
-                    this.setImageToStatic();
-                    resolve();
-                }
+            this.imageStaticOutlineLeft.onload = function(){
+                this.imageStaticOutlineLeftIsLoaded = true;
+                allImagesLoaded();
+            }.bind(this);
+
+            this.imageStaticOutlineRight.onload = function(){
+                this.imageStaticOutlineRightIsLoaded = true;
+                allImagesLoaded();
             }.bind(this);
         });
     }
@@ -79,6 +94,10 @@ export default class Ship {
 
         // translate van context naar origin van de simulatie
         this.simCtx.ctx.translate(this.simCtx.originX, this.simCtx.originY);
+
+        // mirror image according to direction 
+        // (direction is now enforced trough differen images to limit CPU use)
+        // this.simCtx.ctx.scale(this.direction, 1);
 
         // roteer de context naar de hoek van het schip
         this.simCtx.ctx.rotate(this.rotationInDegrees);
@@ -123,7 +142,7 @@ export default class Ship {
         const length = this.simCtx.meterToPx(this.length);
         const width = this.simCtx.meterToPx(this.width);
 
-        const coords = this.simCtx.originToCanvasCoords(this.initialPosX, this.initialPosY, this.length, this.width );
+        const coords = this.simCtx.originToCanvasCoords(this.outlinePosX, this.outlinePosY, this.length, this.width );
         // draw image of ship
         this.simCtx.ctx.drawImage(this.imageOutline, coords.x, coords.y, length, width);
     }
@@ -131,8 +150,15 @@ export default class Ship {
     setImageToMoving(){
         this.image = this.imageMoving;
     }
-    setImageToStatic(){
-        this.image = this.imageStatic;
+    setImageDirection(direction){
+        this.direction = direction;
+        if ( this.direction > 0) {
+            this.image = this.imageStaticRight;
+            this.imageOutline = this.imageStaticOutlineRight;
+        } else {
+            this.image = this.imageStaticLeft;
+            this.imageOutline = this.imageStaticOutlineLeft;
+        }
     }
 
     setPosX(posX) {
