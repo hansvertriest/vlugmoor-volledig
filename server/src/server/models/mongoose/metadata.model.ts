@@ -3,7 +3,7 @@ import { default as mongoosePaginate } from 'mongoose-paginate';
 import { default as slug } from 'slug';
 import { IUser } from './user.model';
 
-interface IOnlineEvent extends Document {
+interface IMetaData extends Document {
   title: string;
   description: string;
 
@@ -17,9 +17,9 @@ interface IOnlineEvent extends Document {
   _userId: IUser['_id'];
 }
 
-interface IOnlineEventModel extends PaginateModel<IOnlineEvent> {}
+interface IMetaDataModel extends PaginateModel<IMetaData> {}
 
-const onlineEventSchema: Schema = new Schema(
+const metaDataSchema: Schema = new Schema(
   {
     title: {
       type: String,
@@ -70,25 +70,25 @@ const onlineEventSchema: Schema = new Schema(
   },
 );
 
-onlineEventSchema.methods.slugify = function() {
+metaDataSchema.methods.slugify = function() {
   this.slug = slug(this.title);
 };
 
-onlineEventSchema.virtual('id').get(function(this: IOnlineEvent) {
+metaDataSchema.virtual('id').get(function(this: IMetaData) {
   return this._id;
 });
 
-onlineEventSchema.virtual('user', {
+metaDataSchema.virtual('user', {
   ref: 'User',
   localField: '_userId',
   foreignField: '_id',
   justOne: false,
 });
 
-onlineEventSchema.plugin(mongoosePaginate);
-const OnlineEvent = mongoose.model<IOnlineEvent, IOnlineEventModel>(
-  'onlineEvent',
-  onlineEventSchema,
+metaDataSchema.plugin(mongoosePaginate);
+const MetaData = mongoose.model<IMetaData, IMetaDataModel>(
+  'metaData',
+  metaDataSchema,
 );
 
-export { IOnlineEvent, onlineEventSchema, OnlineEvent };
+export { IMetaData, IMetaDataModel, MetaData };

@@ -41,7 +41,7 @@ export default class Router {
             rootPath,
             '..',
             '..',
-            'react-client',
+            'client',
             'build',
             'index.html',
           ),

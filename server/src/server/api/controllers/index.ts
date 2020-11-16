@@ -1,4 +1,5 @@
 import HelloController from './HelloController';
 import UserController from './UserController';
+import MetaDataController from './MetaDataController';
 
-export { HelloController, UserController };
+export { HelloController, UserController, MetaDataController };
