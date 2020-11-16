@@ -4,8 +4,14 @@ export default class SimulationContext {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext("2d");
 
-        this.meterToPxFactor = 1;
+        // animation veriables
+        this.meterToPxFactor = 1.5;
         this.animationTimeInterval = 10;
+        this.timePointCount = 10000;
+        this.timePointInterval = 0.1
+
+        // options
+        this.drawCaseShipOutline = true;
 
         this.originX = this.canvas.width*0.5;
         this.originY = this.canvas.height*0.85;

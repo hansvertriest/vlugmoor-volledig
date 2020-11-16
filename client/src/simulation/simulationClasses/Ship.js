@@ -82,8 +82,6 @@ export default class Ship {
     }
 
     draw() {
-        // update posX speed displacement
-        this.setPosX(this.posX + this.speedInMPerS * 0.1 * this.simCtx.animationTimeInterval);
 
         const length = this.simCtx.meterToPx(this.length);
         const width = this.simCtx.meterToPx(this.width);
@@ -161,6 +159,10 @@ export default class Ship {
             this.image = this.imageStaticLeft;
             this.imageOutline = this.imageStaticOutlineLeft;
         }
+    }
+
+    applySpeedDisplacement(time) {
+        this.setPosX(this.speedInMPerS * time);
     }
 
     setPosX(posX) {

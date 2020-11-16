@@ -1,6 +1,7 @@
 import App from '../lib/App';
 import { Data, MetaData } from '../simulation/dataClasses';
 import { Simulation } from '../simulation/simulationClasses';
+import Controls from '../simulation/simulationClasses/Controls';
 
 const XLSX = require('xlsx');
 
@@ -9,13 +10,18 @@ const simulationTemplate = require('../templates/simulation.hbs');
 // FUNCTIONS
 
 export default () => {
-
-
+    // render page
     const title = 'Simulation page';
-
     App.render(simulationTemplate({title}));
     
     const appInit = async (simulation, files) => {
+        // create Controls object
+        const controls = new Controls(simulation);
+        controls.registerBasicNav();
+        controls.registerOutlineSwitch('switch-outline');
+        controls.registerPlayPauseSwitch('switch-play-pause');
+        controls.registerTimeLine('...');
+
         // get shipTranslation data
         const shipTranslations = files.forces.map((timePoint) => {
             return timePoint.filter((column, index) => {
@@ -34,7 +40,7 @@ export default () => {
         // SIMULATION
         simulation.addData(data);
         await simulation.init();
-        simulation.registerController();
+        // simulation.registerController();
         await simulation.addShip(files.metaData.caseShip, true);
         await simulation.addShip(files.metaData.passingShip);
         await simulation.addHawsers(files.metaData.bolderData, files.metaData.hawserMeta);
@@ -123,6 +129,4 @@ export default () => {
         readerForces.readAsBinaryString(forcesInput.files[0])
         readerCoords.readAsBinaryString(coordsInput.files[0])
     });
-
-    
 };

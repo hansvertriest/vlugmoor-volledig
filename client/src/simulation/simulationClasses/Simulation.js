@@ -32,9 +32,6 @@ export default class Simulation {
         this.hawserArray = [];
         this.fenderArray = [];
 
-        // controller for interaction
-        this.controls;
-
         // loading
         this.loadingScreen = new LoadingScreen(this.simCtx);
         window.requestAnimationFrame(this.doLoading.bind(this));
@@ -58,18 +55,10 @@ export default class Simulation {
         this.caseData = data;
     }
 
-    registerController() {
-        this.controls = new Controls(this.simCtx);
-        this.controls.registerDrag((deltaInM) => {
-            this.kaai.heightInM -= this.simCtx.pxToMeter(deltaInM);
-        });
-        this.controls.registerZoom((delta) => {
-            this.simCtx.addToMeterToPxFactor(delta);
-        });
-    }
-
     setNextAnimationTime() {
         this.animationTime += this.simCtx.animationTimeInterval;
+
+        if (this.onNextAnimationTimeSubscription) this.onNextAnimationTimeSubscription(this.animationTime / this.simCtx.timePointCount);
     }
 
     getNextAnimationTime() {
@@ -82,6 +71,10 @@ export default class Simulation {
 
     pause() {
         this.animationPlaying = false;
+    }
+
+    switchPlayPause() {
+        this,this.animationPlaying = !this.animationPlaying;
     }
 
     setBackgroundColor(color=this.backgroundColor) {
@@ -220,6 +213,11 @@ export default class Simulation {
             this.caseShip.setPosY(timePoint.shipData.posY*this.translationAmplifierFactor);
             this.caseShip.rotationInDegrees = timePoint.shipData.rotation*this.translationAmplifierFactor;
 
+            // update passingShip parameters
+            this.passingShips.forEach((passingShip) => {
+                passingShip.applySpeedDisplacement(this.animationTime*this.simCtx.timePointInterval);
+            });
+
             // update hawsers parameters
             this.hawserArray.forEach((hawser,index) => {
                 hawser.setPosOnShipX(timePoint.hawserData[index].posXShip, this.translationAmplifierFactor);
@@ -231,6 +229,10 @@ export default class Simulation {
             this.fenderArray.forEach((fender, index) => {
                 fender.setCurrentForce(timePoint.fenderData[index].force);
             });
+
+
+            // set next animationTime
+            this.setNextAnimationTime();
         }
 
         // clear screen
@@ -243,12 +245,8 @@ export default class Simulation {
         this.drawShips();
         this.drawHawsers();
         this.drawFenders();
-        // this.caseShip.drawOutline();
-
-        // set next animationTime
-        this.setNextAnimationTime();
-        
-
+        if (this.simCtx.drawCaseShipOutline) this.caseShip.drawOutline();
+       
         window.requestAnimationFrame(this.doAnimation.bind(this));
     }
 }
