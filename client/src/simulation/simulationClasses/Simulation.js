@@ -61,6 +61,12 @@ export default class Simulation {
         if (this.onNextAnimationTimeSubscription) this.onNextAnimationTimeSubscription(this.animationTime / this.simCtx.timePointCount);
     }
 
+    setNextAnimationTimeToSpecificTimepoint(timepoint) {
+        this.animationTime = timepoint;
+
+        if (this.onNextAnimationTimeSubscription) this.onNextAnimationTimeSubscription(this.animationTime / this.simCtx.timePointCount);
+    }
+
     getNextAnimationTime() {
         return this.animationTime + this.simCtx.animationTimeInterval;
     }

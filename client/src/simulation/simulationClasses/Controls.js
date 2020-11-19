@@ -58,18 +58,20 @@ export default class Controls {
         };
     }
 
-    registerPlayPauseSwitch(buttonId) {
+    registerRestartButton(buttonId) {
         const bttn = document.getElementById(buttonId);
         bttn.onclick = () => {
-            this.switchPlayPause();
+            this.setAnimationProgressInPercentage(0.001);
+            // this.switchPlayPause();
         };
     }
 
     registerTimeLine(timeLineId) {
         const timeline = document.getElementById(timeLineId);
         
-        this.subscribeToNextAnimationTime((time) => {
-            console.log(time);
+        this.subscribeAnimationProgressInPercentage((time) => {
+            // timeline.style.width = time*100+"%";
+            // console.log(time);
         })
     }
 
@@ -84,7 +86,9 @@ export default class Controls {
 
     setAnimationProgressInPercentage(percentage) {
         const simulationTimePointCount = this.simCtx.timePointCount / this.simCtx.animationTimeInterval;
-        this.simulation.setNextAnimationTime(Math.round(simulationTimePointCount*percentage) * this.simCtx.animationTimeInterval);
+        console.log(Math.round(simulationTimePointCount*percentage) * this.simCtx.animationTimeInterval);
+        this.simulation.setNextAnimationTimeToSpecificTimepoint(Math.round(simulationTimePointCount*percentage) * this.simCtx.animationTimeInterval);
+
     }
 
     // retrieving simulation parameters
@@ -92,7 +96,7 @@ export default class Controls {
         return this.simulation.animationTime / this.simCtx.timePointCount;
     }
 
-    subscribeToNextAnimationTime(callback) {
+    subscribeAnimationProgressInPercentage(callback) {
         this.simulation.onNextAnimationTimeSubscription = callback;
     }
 

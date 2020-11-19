@@ -19,7 +19,7 @@ export default () => {
         const controls = new Controls(simulation);
         controls.registerBasicNav();
         controls.registerOutlineSwitch('switch-outline');
-        controls.registerPlayPauseSwitch('switch-play-pause');
+        controls.registerRestartButton('restart-bttn');
         controls.registerTimeLine('...');
 
         // get shipTranslation data
@@ -36,6 +36,8 @@ export default () => {
         const data = new Data(files.metaData);
         console.log(data.caseMetaData)
         data.addTimePoints(files.coords, files.forces, shipTranslations);
+
+        console.log(data.caseMetaData);
         
         // SIMULATION
         simulation.addData(data);
