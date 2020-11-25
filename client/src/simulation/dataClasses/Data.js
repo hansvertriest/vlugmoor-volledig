@@ -1,6 +1,7 @@
 import HawserData from './HawserData';
 import FenderData from './FenderData';
 import TimePoint from './TimePoint';
+import HawserBreak from './HawserBreak';
 
 export default class Data {
     constructor( caseMetaData ) {
@@ -9,6 +10,7 @@ export default class Data {
         this.bolderData = this.caseMetaData.bolderData;
         this.fenderData = this.caseMetaData.fenderData;
         this.timePoints = []; // will contain all data at specific timepoint
+        this.hawserBreaks = [];
     }
 
     async addTimePoints( dataCoords, dataForces, shipTranslation ) {
@@ -21,10 +23,23 @@ export default class Data {
                     const columnNrInCoordsTable = hawser*2;
                     // make hawserData object
                     const hawserData = new HawserData(
+                        hawser,
                         Number(dataCoords[time][(columnNrInCoordsTable)].replace(',','.')),
                         Number(dataCoords[time][(columnNrInCoordsTable) + 1].replace(',','.')),
-                        Number(dataForces[time][hawser].replace(',','.'))
+                        Number(dataForces[time][hawser].replace(',','.')),
+                        this.bolderData[hawser].forceMax
                     );
+                    
+                    // if hawser is broken in this timePoint fro the first time in the sim => register it
+                    if (this.checkIfHawserHasBroken(hawserData.loadRatio, this.caseMetaData.hawserMeta.first) && !this.checkIfHawserAlreadyHasBroken(hawserData.id)) {
+                        const hawserBreak = new HawserBreak(
+                            hawserData.id,
+                            time,
+                            hawserData.loadRatio
+                        )
+                        this.hawserBreaks.push(hawserBreak);
+                    }
+
                     // Add hawserData data to timePointHawserData
                     timePointHawserData.push(hawserData);
                 }
@@ -60,6 +75,17 @@ export default class Data {
                 }
             }
         });
+    }
+
+    checkIfHawserHasBroken(ratio, limit) {
+        if (ratio > limit) {
+            return true;
+        }
+        return false;
+    }
+
+    checkIfHawserAlreadyHasBroken(id) {
+        return this.hawserBreaks.filter((hawserBreak) => hawserBreak.hawserId === id).length > 0
     }
 
     getTimePoint(index) {

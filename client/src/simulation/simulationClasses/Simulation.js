@@ -35,6 +35,9 @@ export default class Simulation {
         // loading
         this.loadingScreen = new LoadingScreen(this.simCtx);
         window.requestAnimationFrame(this.doLoading.bind(this));
+
+        // subscriptions
+        this.onAnimationTimeCallback = [];
     }
 
     async init() {
@@ -55,16 +58,35 @@ export default class Simulation {
         this.caseData = data;
     }
 
-    setNextAnimationTime() {
-        this.animationTime += this.simCtx.animationTimeInterval;
+    setPreviousAnimationTime() {
+        this.setNextAnimationTimeToSpecificTimepoint(this.animationTime - this.simCtx.animationTimeInterval);
 
-        if (this.onNextAnimationTimeSubscription) this.onNextAnimationTimeSubscription(this.animationTime / this.simCtx.timePointCount);
+        if (this.onAnimationTimeCallback.length) {
+            this.onAnimationTimeCallback.forEach((callback) => callback(this.animationTime, this.animationTime / this.simCtx.timePointCount))
+        }
+    }
+
+    setNextAnimationTime() {
+        this.setNextAnimationTimeToSpecificTimepoint(this.animationTime + this.simCtx.animationTimeInterval);
+
+        if (this.onAnimationTimeCallback.length) {
+            this.onAnimationTimeCallback.forEach((callback) => callback(this.animationTime, this.animationTime / this.simCtx.timePointCount))
+        }
     }
 
     setNextAnimationTimeToSpecificTimepoint(timepoint) {
+        // round up until next timeInterval 
+        if (timepoint%this.simCtx.animationTimeInterval > 0){
+            timepoint += this.simCtx.animationTimeInterval - (timepoint%this.simCtx.animationTimeInterval);
+        }
+
         this.animationTime = timepoint;
 
-        if (this.onNextAnimationTimeSubscription) this.onNextAnimationTimeSubscription(this.animationTime / this.simCtx.timePointCount);
+        this.updateSimulation();
+
+        if (this.onAnimationTimeCallback.length) {
+            this.onAnimationTimeCallback.forEach((callback) => callback(this.animationTime, this.animationTime / this.simCtx.timePointCount))
+        }
     }
 
     getNextAnimationTime() {
@@ -146,19 +168,26 @@ export default class Simulation {
         });
     }
 
-    async addHawsers(bolderData, hawserMeta) {
+    async addHawsers(bolderData, hawserMeta, hawserBreakingTimePoints=[]) {
         return new Promise((resolve, reject) => {
             // loop over all bolders and add a Hawser object to hawserArray
-            bolderData.forEach((bolder) => {
+            bolderData.forEach((bolder, index) => {
                 const hawser = new Hawser(
+                    index,
                     this.simCtx,
                     bolder.posX,
                     bolder.posY,
-                    bolder.forceMax,
                     hawserMeta
                 );
                 this.hawserArray.push(hawser);
             });
+
+            // assign a breakingTimePoint to hawsers
+            hawserBreakingTimePoints.forEach((hawserBreakingTimePoint) => {
+                this.hawserArray[hawserBreakingTimePoint.hawserId].setBreakingTimePoint(hawserBreakingTimePoint.timePoint);
+            });
+
+            console.log(this.hawserArray);
 
             // load images of hawsers
             this.hawserArray.forEach(async(hawser) => {
@@ -206,36 +235,43 @@ export default class Simulation {
         }
     }
 
+    updateSimulation() {
+        // get timePoint
+        const timePoint = this.caseData.timePoints[this.animationTime];
+
+        // update caseShip parameters
+        this.caseShip.setPosX(timePoint.shipData.posX*this.translationAmplifierFactor);
+        this.caseShip.setPosY(timePoint.shipData.posY*this.translationAmplifierFactor);
+        this.caseShip.rotationInDegrees = timePoint.shipData.rotation*this.translationAmplifierFactor;
+
+        // update passingShip parameters
+        this.passingShips.forEach((passingShip) => {
+            passingShip.applySpeedDisplacement(this.animationTime*this.simCtx.timePointInterval);
+        });
+
+        // update hawsers parameters
+        this.hawserArray.forEach((hawser,index) => {
+            hawser.setPosOnShipX(timePoint.hawserData[index].posXShip, this.translationAmplifierFactor);
+            hawser.setPosOnShipY(timePoint.hawserData[index].posYShip, this.translationAmplifierFactor);
+            hawser.setLoadRatio(timePoint.hawserData[index].loadRatio);
+            hawser.setHasBroken(hawser.breakingTimePoint < this.animationTime);
+        });
+
+        // update fender currentforce
+        this.fenderArray.forEach((fender, index) => {
+            fender.setCurrentForce(timePoint.fenderData[index].force);
+        });
+
+
+    }
+
     doAnimation() {
         // check if animation is done
         if (this.getNextAnimationTime() >= this.caseData.timePoints.length) {
             this.pause();
         } else if (this.animationPlaying) {
-            // get timePoint
-            const timePoint = this.caseData.timePoints[this.animationTime];
-
-            // update caseShip parameters
-            this.caseShip.setPosX(timePoint.shipData.posX*this.translationAmplifierFactor);
-            this.caseShip.setPosY(timePoint.shipData.posY*this.translationAmplifierFactor);
-            this.caseShip.rotationInDegrees = timePoint.shipData.rotation*this.translationAmplifierFactor;
-
-            // update passingShip parameters
-            this.passingShips.forEach((passingShip) => {
-                passingShip.applySpeedDisplacement(this.animationTime*this.simCtx.timePointInterval);
-            });
-
-            // update hawsers parameters
-            this.hawserArray.forEach((hawser,index) => {
-                hawser.setPosOnShipX(timePoint.hawserData[index].posXShip, this.translationAmplifierFactor);
-                hawser.setPosOnShipY(timePoint.hawserData[index].posYShip, this.translationAmplifierFactor);
-                hawser.setCurrentLoad(timePoint.hawserData[index].force);
-            });
-
-            // update fender currentforce
-            this.fenderArray.forEach((fender, index) => {
-                fender.setCurrentForce(timePoint.fenderData[index].force);
-            });
-
+            // update alle elements of the simulation
+            this.updateSimulation();
 
             // set next animationTime
             this.setNextAnimationTime();

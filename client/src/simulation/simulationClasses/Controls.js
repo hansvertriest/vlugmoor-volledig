@@ -62,16 +62,47 @@ export default class Controls {
         const bttn = document.getElementById(buttonId);
         bttn.onclick = () => {
             this.setAnimationProgressInPercentage(0.001);
-            // this.switchPlayPause();
+        };
+    }
+
+    registerPlayPause(buttonId) {
+        const bttn = document.getElementById(buttonId);
+        bttn.onclick = () => {
+            this.switchPlayPause();
+        };
+    }
+
+    registerNext(buttonId) {
+        const bttn = document.getElementById(buttonId);
+        bttn.onclick = () => {
+            this.setNextFrame();
+        };
+    }
+
+    registerPrevious(buttonId) {
+        const bttn = document.getElementById(buttonId);
+        bttn.onclick = () => {
+            this.setPreviousFrame();
+        };
+    }
+
+    registerTimepointInput(buttonId) {
+        const el = document.getElementById(buttonId);
+        el.onblur = (e) => {
+            this.setAnimationProgress(Number(e.target.value));
         };
     }
 
     registerTimeLine(timeLineId) {
-        const timeline = document.getElementById(timeLineId);
+        // const timeline = document.getElementById(timeLineId);
+        this.registerPlayPause('play-pause');
+        this.registerNext('next');
+        this.registerPrevious('previous');
+        this.registerTimepointInput('timepoint-input');
         
-        this.subscribeAnimationProgressInPercentage((time) => {
-            // timeline.style.width = time*100+"%";
-            // console.log(time);
+        this.subscribeAnimationProgress((time, timeInPercentage) => {
+            const el = document.getElementById('current-timepoint');
+            el.innerHTML = time;
         })
     }
 
@@ -84,11 +115,22 @@ export default class Controls {
         this.simCtx.drawCaseShipOutline = !this.simCtx.drawCaseShipOutline;
     }
 
+    setNextFrame() {
+        this.simulation.setNextAnimationTime();
+    }
+
+    setPreviousFrame() {
+        this.simulation.setPreviousAnimationTime();
+    }
+
     setAnimationProgressInPercentage(percentage) {
         const simulationTimePointCount = this.simCtx.timePointCount / this.simCtx.animationTimeInterval;
         console.log(Math.round(simulationTimePointCount*percentage) * this.simCtx.animationTimeInterval);
         this.simulation.setNextAnimationTimeToSpecificTimepoint(Math.round(simulationTimePointCount*percentage) * this.simCtx.animationTimeInterval);
+    }
 
+    setAnimationProgress(timePoint) {
+        this.simulation.setNextAnimationTimeToSpecificTimepoint(timePoint);
     }
 
     // retrieving simulation parameters
@@ -96,8 +138,8 @@ export default class Controls {
         return this.simulation.animationTime / this.simCtx.timePointCount;
     }
 
-    subscribeAnimationProgressInPercentage(callback) {
-        this.simulation.onNextAnimationTimeSubscription = callback;
+    subscribeAnimationProgress(callback) {
+        this.simulation.onAnimationTimeCallback.push(callback);
     }
 
 }

@@ -1,17 +1,18 @@
 import bolderImage from '../../assets/images/bolder.png'
 
 export default class Hawser {
-    constructor(simCtx, bolderPosX, bolderPosY, forceMax, limits) {
+    constructor(id, simCtx, bolderPosX, bolderPosY, limits) {
+        this.id = id;
         this.simCtx = simCtx;
         this.bolderPosX = bolderPosX;
         this.bolderPosY = bolderPosY;
-        this.forceMax = forceMax;
         this.limit = limits;
 
         this.posOnShipX = 0;
         this.posOnShipY = 0;
-        this.currentLoad;
+        this.loadRatio;
 
+        this.breakingTimePoint;
         this.hasBroken = false;
 
         this.bolderWidthInM = 5;
@@ -83,12 +84,21 @@ export default class Hawser {
         this.posOnShipY = posY;
     }
 
-    setCurrentLoad(load) {
-        this.currentLoad = load;
+    setLoadRatio(loadRatio) {
+        this.loadRatio = loadRatio;
+    }
+
+    setBreakingTimePoint(timePoint) {
+        this.breakingTimePoint = timePoint;
+    }
+
+    setHasBroken(hasBroken) {
+        this.hasBroken = hasBroken;
     }
 
     getHawserColor() {
-        const ratio = this.currentLoad / this.forceMax;
+        // const ratio = this.currentLoad / this.forceMax;
+        const ratio = this.loadRatio;
         if (ratio > this.limit.second && ratio <= this.limit.first) {
             return this.colorFirstLimit;
         } else if ( ratio > this.limit.first) {

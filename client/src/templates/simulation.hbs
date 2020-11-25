@@ -35,11 +35,22 @@
     </div>
 
     <div class="controls-container">
-        <label>Outline</label>
-        <input type="checkbox" id="switch-outline">
+        <div>
+            <input type="button" id="previous" value="< previous">
+            <input type="button" id="play-pause" value="play/pause">
+            <input type="button" id="next" value="next >">
+        </div>
+        <div>
+            <label>Timepoint: <span id="current-timepoint"></span></label>
+            <input type="number" id="timepoint-input" value="0">
+        </div>
+        <div>
+            <label>Outline</label>
+            <input type="checkbox" id="switch-outline">
 
-        <label>Restart</label>
-        <input type="button" id="restart-bttn" value="button">
+            <label>Restart</label>
+            <input type="button" id="restart-bttn" value="button">
+        </div>
     </div>
 </div>
 
