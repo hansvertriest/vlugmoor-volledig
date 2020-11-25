@@ -7,8 +7,8 @@ export default class SimulationContext {
         // animation veriables
         this.meterToPxFactor = 1.5;
         this.animationTimeInterval = 10;
-        this.timePointCount = 10000;
-        this.timePointInterval = 0.1
+        this.initFPS = 30;
+        this.fps = this.initFPS;
 
         // options
         this.drawCaseShipOutline = true;
@@ -24,6 +24,10 @@ export default class SimulationContext {
     setOrigin(posX, posY) {
         this.originX = posX;
         this.originY = posY;
+    }
+
+    setAnimationTimeInterval(animationTimeInterval) {
+        this.animationTimeInterval = Math.round(animationTimeInterval);
     }
 
     moveOrigin(offsetX, offsetY) {

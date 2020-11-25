@@ -20,6 +20,10 @@ export default class Simulation {
         this.animationTime = 0;
         this.animationPlaying = false;
 
+        this.caseData;
+        this.timePointCount;
+        this.timePointInterval = 0.1; 
+
         // variables for improving visual message
         this.translationAmplifierFactor = 1;
         this.distanceToKaaiInMeter = 0;
@@ -38,31 +42,62 @@ export default class Simulation {
 
         // subscriptions
         this.onAnimationTimeCallback = [];
+
+        // fps controlling
+        this.fpsIntervalInMilS = 1000 / this.simCtx.fps;
+        this.frameCount = 0;
+        this.calculatedFPS;
+        this.lastFrameTimeStamp;
+        this.currentFrameTimeStamp;
     }
+
+
+    /*
+        General
+    */
 
     async init() {
         this.setBackgroundColor();
         await this.addKaai();
     }
 
-    async addKaai() {
-        this.kaai = new Kaai(
-            this.simCtx, 
-            this.caseData.caseMetaData.caseShip.distanceFromKaai,
-            this.simCtx.pxToMeter(this.canvas.width)
-        );
-        await this.kaai.loadImage();
-    }
-
     addData(data) {
         this.caseData = data;
+        this.timePointCount = data.timePoints.length;
     }
+
+    getSimInfo() {
+        return {
+            timePoint: this.animationTime,
+            timePointInPercentage: this.animationTime / this.timePointCount,
+            calculatedFPS: this.calculatedFPS,
+            speed: this.getAnimationSpeed(),
+        }
+    }
+
+    play() {
+        this.animationPlaying = true;
+
+        this.startTimeStamp = performance.now();
+    }
+
+    pause() {
+        this.animationPlaying = false;
+    }
+
+    switchPlayPause() {
+        this,this.animationPlaying = !this.animationPlaying;
+    }
+
+    /*
+        Setting and getting animationTime
+    */
 
     setPreviousAnimationTime() {
         this.setNextAnimationTimeToSpecificTimepoint(this.animationTime - this.simCtx.animationTimeInterval);
 
         if (this.onAnimationTimeCallback.length) {
-            this.onAnimationTimeCallback.forEach((callback) => callback(this.animationTime, this.animationTime / this.simCtx.timePointCount))
+            this.onAnimationTimeCallback.forEach((callback) => callback(this.getSimInfo()))
         }
     }
 
@@ -70,7 +105,7 @@ export default class Simulation {
         this.setNextAnimationTimeToSpecificTimepoint(this.animationTime + this.simCtx.animationTimeInterval);
 
         if (this.onAnimationTimeCallback.length) {
-            this.onAnimationTimeCallback.forEach((callback) => callback(this.animationTime, this.animationTime / this.simCtx.timePointCount))
+            this.onAnimationTimeCallback.forEach((callback) => callback(this.getSimInfo()))
         }
     }
 
@@ -85,7 +120,7 @@ export default class Simulation {
         this.updateSimulation();
 
         if (this.onAnimationTimeCallback.length) {
-            this.onAnimationTimeCallback.forEach((callback) => callback(this.animationTime, this.animationTime / this.simCtx.timePointCount))
+            this.onAnimationTimeCallback.forEach((callback) => callback(this.getSimInfo()))
         }
     }
 
@@ -93,22 +128,19 @@ export default class Simulation {
         return this.animationTime + this.simCtx.animationTimeInterval;
     }
 
-    play() {
-        this.animationPlaying = true;
-    }
 
-    pause() {
-        this.animationPlaying = false;
-    }
 
-    switchPlayPause() {
-        this,this.animationPlaying = !this.animationPlaying;
-    }
+    /*
+        Adding elements to simulation
+    */
 
-    setBackgroundColor(color=this.backgroundColor) {
-        this.backgroundColor = color;
-        this.ctx.fillStyle = this.backgroundColor;
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    async addKaai() {
+        this.kaai = new Kaai(
+            this.simCtx, 
+            this.caseData.caseMetaData.caseShip.distanceFromKaai,
+            this.simCtx.pxToMeter(this.canvas.width)
+        );
+        await this.kaai.loadImage();
     }
 
     async addShip(shipInfo, isCaseShip=false) {
@@ -159,13 +191,6 @@ export default class Simulation {
             );
             this.fenderArray.push(newFender);
         });
-
-    }
-
-    drawFenders() {
-        this.fenderArray.forEach((fender) => {
-            fender.draw()
-        });
     }
 
     async addHawsers(bolderData, hawserLimits, hawserBreakingTimePoints=[]) {
@@ -199,6 +224,22 @@ export default class Simulation {
         });
     }
 
+    /*
+        Painting the canvas
+    */
+
+    setBackgroundColor(color=this.backgroundColor) {
+        this.backgroundColor = color;
+        this.ctx.fillStyle = this.backgroundColor;
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    drawFenders() {
+        this.fenderArray.forEach((fender) => {
+            fender.draw()
+        });
+    }
+
     drawHawsers() {
         this.hawserArray.forEach((hawser) => {
             hawser.draw()
@@ -218,6 +259,41 @@ export default class Simulation {
         }
     }
 
+    /*
+        Controlling animation speed
+    */
+
+    fpsIntervalIsElapsed() {
+        this.currentFrameTimeStamp = performance.now();
+        if (!this.lastFrameTimeStamp) return true;
+
+        // calculate fps
+        if (this.currentFrameTimeStamp - this.startTimeStamp > 1000) {
+            this.calculatedFPS = this.frameCount;
+            this.frameCount = 0;
+            this.startTimeStamp = this.currentFrameTimeStamp;
+        }
+        
+        if (this.fpsIntervalInMilS < this.currentFrameTimeStamp - this.lastFrameTimeStamp) {
+            this.frameCount +=1;
+        }
+
+        // return if fpsIntervalHasElapsed
+        return this.fpsIntervalInMilS < this.currentFrameTimeStamp - this.lastFrameTimeStamp;
+    }
+
+    getAnimationSpeed() {
+        return this.simCtx.fps * this.timePointInterval * this.simCtx.animationTimeInterval;
+    }
+
+    setFPS(fps) {
+        this.simCtx.fps = fps;
+        this.fpsIntervalInMilS = 1000 / this.simCtx.fps;
+    }
+
+    /*
+        Animation loops
+    */
 
     doLoading() {
         if (!this.animationPlaying) {
@@ -244,7 +320,7 @@ export default class Simulation {
 
         // update passingShip parameters
         this.passingShips.forEach((passingShip) => {
-            passingShip.applySpeedDisplacement(this.animationTime*this.simCtx.timePointInterval);
+            passingShip.applySpeedDisplacement(this.animationTime*this.timePointInterval);
         });
 
         // update hawsers parameters
@@ -263,16 +339,19 @@ export default class Simulation {
 
     }
 
-    doAnimation() {
+    doAnimation(time) {
         // check if animation is done
         if (this.getNextAnimationTime() >= this.caseData.timePoints.length) {
             this.pause();
-        } else if (this.animationPlaying) {
+        } else if (this.animationPlaying && this.fpsIntervalIsElapsed()) {
             // update alle elements of the simulation
             this.updateSimulation();
 
             // set next animationTime
             this.setNextAnimationTime();
+
+            // set lastFrameTimeStamp to now
+            this.lastFrameTimeStamp = time;
         }
 
         // clear screen

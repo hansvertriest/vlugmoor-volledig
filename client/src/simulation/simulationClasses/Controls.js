@@ -17,6 +17,10 @@ export default class Controls {
         this.mouseIsDown = false;
     }
 
+    /*
+        Register basic nav
+    */
+
     registerBasicNav() {
         this.registerDrag();
         this.registerZoom();
@@ -50,6 +54,10 @@ export default class Controls {
         }, false);
     }
 
+    /*
+        Register controls
+    */
+
     registerOutlineSwitch(buttonId) {
         const bttn = document.getElementById(buttonId);
         bttn.checked = this.simCtx.drawCaseShipOutline;
@@ -63,6 +71,30 @@ export default class Controls {
         bttn.onclick = () => {
             this.setAnimationProgressInPercentage(0.001);
         };
+    }
+
+    /*
+        Register Timeline
+    */
+
+    registerTimeLine(timeLineId) {
+        // const timeline = document.getElementById(timeLineId);
+        this.registerPlayPause('play-pause');
+        this.registerNext('next');
+        this.registerPrevious('previous');
+        this.registerTimepointInput('timepoint-input');
+        this.registerSpeedInput('speed-input');
+        
+        this.subscribeAnimationProgress((simInfo) => {
+            const timepoint = document.getElementById('current-timepoint');
+            timepoint.innerHTML = simInfo.timePoint;
+
+            const fps = document.getElementById('current-fps');
+            fps.innerHTML = simInfo.calculatedFPS;
+
+            const speed = document.getElementById('current-speed');
+            speed.innerHTML = Math.round(simInfo.speed);
+        })
     }
 
     registerPlayPause(buttonId) {
@@ -93,20 +125,17 @@ export default class Controls {
         };
     }
 
-    registerTimeLine(timeLineId) {
-        // const timeline = document.getElementById(timeLineId);
-        this.registerPlayPause('play-pause');
-        this.registerNext('next');
-        this.registerPrevious('previous');
-        this.registerTimepointInput('timepoint-input');
-        
-        this.subscribeAnimationProgress((time, timeInPercentage) => {
-            const el = document.getElementById('current-timepoint');
-            el.innerHTML = time;
-        })
+    registerSpeedInput(buttonId) {
+        const el = document.getElementById(buttonId);
+        el.onblur = (e) => {
+            this.setSpeed(Number(e.target.value));
+        };
     }
 
-    // setting simulation parameters
+    /* ==============================
+        Setting simulation parameters
+    */
+
     switchPlayPause() {
         this.simulation.switchPlayPause();
     }
@@ -124,7 +153,7 @@ export default class Controls {
     }
 
     setAnimationProgressInPercentage(percentage) {
-        const simulationTimePointCount = this.simCtx.timePointCount / this.simCtx.animationTimeInterval;
+        const simulationTimePointCount = this.simulation.timePointCount / this.simCtx.animationTimeInterval;
         console.log(Math.round(simulationTimePointCount*percentage) * this.simCtx.animationTimeInterval);
         this.simulation.setNextAnimationTimeToSpecificTimepoint(Math.round(simulationTimePointCount*percentage) * this.simCtx.animationTimeInterval);
     }
@@ -133,7 +162,23 @@ export default class Controls {
         this.simulation.setNextAnimationTimeToSpecificTimepoint(timePoint);
     }
 
-    // retrieving simulation parameters
+    setSpeed(speed) {
+        const animationTimeInterval = speed/(this.simCtx.fps*this.simulation.timePointInterval);
+
+        // if animationInterval < 1 => less than one timePoint per frame
+        if (animationTimeInterval < 1 ) {
+            this.simulation.setFPS(10)
+            this.simCtx.setAnimationTimeInterval(1);
+        } else {
+            this.simulation.setFPS(this.simCtx.initFPS)
+            this.simCtx.setAnimationTimeInterval(speed/(this.simCtx.fps*this.simulation.timePointInterval));
+        }
+    }
+
+    /* ==============================
+        Getting simulation parameters
+    */
+
     getAnimationProgressInPercentage() {
         return this.simulation.animationTime / this.simCtx.timePointCount;
     }
