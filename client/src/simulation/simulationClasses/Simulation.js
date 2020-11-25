@@ -142,7 +142,7 @@ export default class Simulation {
         }
     }
 
-    addFenders(fenderData, fenderMeta) {
+    addFenders(fenderData, fenderLimits) {
         // loop over all fenders and add a Fender object to fenderArray
         fenderData.forEach((fender) => {
             const newFender = new Fender(
@@ -150,11 +150,11 @@ export default class Simulation {
                 fender.posX,
                 fender.posY,
                 fender.forceMax,
-                fenderMeta.thicknessInM,
-                fenderMeta.widthInM,
+                fenderLimits.thicknessInM,
+                fenderLimits.widthInM,
                 {
-                    first: fenderMeta.first,
-                    second: fenderMeta.second,
+                    first: fenderLimits.first,
+                    second: fenderLimits.second,
                 }
             );
             this.fenderArray.push(newFender);
@@ -168,7 +168,7 @@ export default class Simulation {
         });
     }
 
-    async addHawsers(bolderData, hawserMeta, hawserBreakingTimePoints=[]) {
+    async addHawsers(bolderData, hawserLimits, hawserBreakingTimePoints=[]) {
         return new Promise((resolve, reject) => {
             // loop over all bolders and add a Hawser object to hawserArray
             bolderData.forEach((bolder, index) => {
@@ -177,7 +177,7 @@ export default class Simulation {
                     this.simCtx,
                     bolder.posX,
                     bolder.posY,
-                    hawserMeta
+                    hawserLimits
                 );
                 this.hawserArray.push(hawser);
             });
@@ -186,8 +186,6 @@ export default class Simulation {
             hawserBreakingTimePoints.forEach((hawserBreakingTimePoint) => {
                 this.hawserArray[hawserBreakingTimePoint.hawserId].setBreakingTimePoint(hawserBreakingTimePoint.timePoint);
             });
-
-            console.log(this.hawserArray);
 
             // load images of hawsers
             this.hawserArray.forEach(async(hawser) => {

@@ -8,8 +8,8 @@ export default class MetaData {
         this.caseShip = {};
         this.passingShip = {};
         this.wind = {};
-        this.hawserMeta = {};
-        this.fenderMeta = {};
+        this.hawserLimits = {};
+        this.fenderLimits = {};
         this.bolderData = [];
         this.fenderData = [];
 
@@ -43,8 +43,8 @@ export default class MetaData {
             caseShip: this.caseShip,
             passingShip: this.passingShip,
             wind: this.wind,
-            hawserMeta: this.hawserMeta,
-            fenderMeta: this.fenderMeta,
+            hawserLimits: this.hawserLimits,
+            fenderLimits: this.fenderLimits,
             bolderData: this.bolderData,
             fenderData: this.fenderData,
         }
@@ -56,8 +56,8 @@ export default class MetaData {
         this.passingShip = this.createPassingShip();
         this.wind = this.createWindParams();
 
-        this.hawserMeta = this.createHawserMeta();
-        this.fenderMeta = this.createFenderMeta();
+        this.hawserLimits = this.createhawserLimits();
+        this.fenderLimits = this.createfenderLimits();
 
         this.bolderData = this.createBolderData();
         this.fenderData = this.createFenderData();
@@ -123,7 +123,7 @@ export default class MetaData {
         }
     }
 
-    createHawserMeta() {
+    createhawserLimits() {
         const record = this.fileTitleLocations.paramsHawser + 1;
         return {
             first: this.getCellData('d',record)/100,
@@ -153,7 +153,7 @@ export default class MetaData {
         return hawserArray;
     }
 
-    createFenderMeta() {
+    createfenderLimits() {
         const record = this.fileTitleLocations.paramsFender + 1;
         return {
             first: this.getCellData('d',record)/100,

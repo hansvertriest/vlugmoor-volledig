@@ -10,7 +10,7 @@ export default class Data {
         this.bolderData = this.caseMetaData.bolderData;
         this.fenderData = this.caseMetaData.fenderData;
         this.timePoints = []; // will contain all data at specific timepoint
-        this.hawserBreaks = [];
+        this.hawserBreakingTimePoints = [];
     }
 
     async addTimePoints( dataCoords, dataForces, shipTranslation ) {
@@ -30,15 +30,8 @@ export default class Data {
                         this.bolderData[hawser].forceMax
                     );
                     
-                    // if hawser is broken in this timePoint fro the first time in the sim => register it
-                    if (this.checkIfHawserHasBroken(hawserData.loadRatio, this.caseMetaData.hawserMeta.first) && !this.checkIfHawserAlreadyHasBroken(hawserData.id)) {
-                        const hawserBreak = new HawserBreak(
-                            hawserData.id,
-                            time,
-                            hawserData.loadRatio
-                        )
-                        this.hawserBreaks.push(hawserBreak);
-                    }
+                    // if hawser is broken in this timePoint for the first time in the sim => register this timePoint
+                    this.registerBreakingTimePoint(hawserData, time);
 
                     // Add hawserData data to timePointHawserData
                     timePointHawserData.push(hawserData);
@@ -77,6 +70,17 @@ export default class Data {
         });
     }
 
+    registerBreakingTimePoint(hawserData, time) {
+        if (this.checkIfHawserHasBroken(hawserData.loadRatio, this.caseMetaData.hawserLimits.first) && !this.checkIfHawserAlreadyHasBroken(hawserData.id)) {
+            const hawserBreak = new HawserBreak(
+                hawserData.id,
+                time,
+                hawserData.loadRatio
+            )
+            this.hawserBreakingTimePoints.push(hawserBreak);
+        }
+    }
+
     checkIfHawserHasBroken(ratio, limit) {
         if (ratio > limit) {
             return true;
@@ -85,7 +89,7 @@ export default class Data {
     }
 
     checkIfHawserAlreadyHasBroken(id) {
-        return this.hawserBreaks.filter((hawserBreak) => hawserBreak.hawserId === id).length > 0
+        return this.hawserBreakingTimePoints.filter((hawserBreak) => hawserBreak.hawserId === id).length > 0;
     }
 
     getTimePoint(index) {
