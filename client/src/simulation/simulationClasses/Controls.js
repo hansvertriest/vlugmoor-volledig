@@ -87,7 +87,7 @@ export default class Controls {
         
         this.subscribeAnimationProgress((simInfo) => {
             const timepoint = document.getElementById('current-timepoint');
-            timepoint.innerHTML = simInfo.timePoint;
+            timepoint.innerHTML = Math.round(simInfo.timePoint * this.simulation.timePointInterval);
 
             const fps = document.getElementById('current-fps');
             fps.innerHTML = simInfo.calculatedFPS;

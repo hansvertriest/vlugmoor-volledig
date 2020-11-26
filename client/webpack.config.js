@@ -20,6 +20,10 @@ module.exports = (argv) => {
         __filename: false,
         __dirname: false,
     },
+    output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'docs'),
+    },
     module: {
         rules: [
             {
