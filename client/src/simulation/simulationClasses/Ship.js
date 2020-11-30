@@ -3,6 +3,16 @@ import container400x63BigRight from '../../assets/images/container_400x63_dirRig
 import container400x63BigLeftOutline from '../../assets/images/container_400x63_dirLeft_outline.png';
 import container400x63BigRightOutline from '../../assets/images/container_400x63_dirRight_outline.png';
 
+import tanker280x48BigLeft from '../../assets/images/tanker_280x48_dirLeft.png';
+import tanker280x48BigRight from '../../assets/images/tanker_280x48_dirRight.png';
+import tanker280x48BigLeftOutline from '../../assets/images/tanker_280x48_dirLeft_outline.png';
+import tanker280x48BigRightOutline from '../../assets/images/tanker_280x48_dirRight_outline.png';
+
+import roroBigLeft from '../../assets/images/roro_dirLeft.png';
+import roroBigRight from '../../assets/images/roro_dirRight.png';
+import roroBigLeftOutline from '../../assets/images/roro_dirLeft_outline.png';
+import roroBigRightOutline from '../../assets/images/roro_dirRight_outline.png';
+
 export default class Ship {
     constructor(simCtx, type, width, length, distanceFromKaai, paramsPassingShip={}) {
         this.simCtx = simCtx;
@@ -30,27 +40,42 @@ export default class Ship {
             this.startPosY = paramsPassingShip.posY;
             this.direction = paramsPassingShip.direction;
             this.speedInMPerS = paramsPassingShip.speedInMPerS;
-            console.log(this.posX)
         }
 
         this.image;
         this.imageOutline;
 
         this.imageStaticLeft = new Image();
-        this.imageStaticLeft.src = container400x63BigLeft;
         this.imageStaticLeftIsLoaded = false;
 
         this.imageStaticRight = new Image();
-        this.imageStaticRight.src = container400x63BigRight;
         this.imageStaticRightIsLoaded = false;
 
         this.imageStaticOutlineLeft = new Image();
-        this.imageStaticOutlineLeft.src = container400x63BigLeftOutline;
         this.imageStaticOutlineLeftIsLoaded = false;
 
         this.imageStaticOutlineRight = new Image();
-        this.imageStaticOutlineRight.src = container400x63BigRightOutline;
         this.imageStaticOutlineRightIsLoaded = false;
+
+        this.setImageSrcs();
+    }
+
+    setImageSrcs() {
+        if (this.type.trim() === 'container') {
+            this.imageStaticLeft.src = container400x63BigLeft;
+            this.imageStaticRight.src = container400x63BigRight;
+            this.imageStaticOutlineLeft.src = container400x63BigLeftOutline;
+            this.imageStaticOutlineRight.src = container400x63BigRightOutline;
+        } else if (this.type.trim() === 'tanker') {
+        //     this.imageStaticLeft.src = tanker280x48BigLeft;
+        //     this.imageStaticRight.src = tanker280x48BigRight;
+        //     this.imageStaticOutlineLeft.src = tanker280x48BigLeftOutline;
+        //     this.imageStaticOutlineRight.src = tanker280x48BigRightOutline;
+            this.imageStaticLeft.src = roroBigLeft;
+            this.imageStaticRight.src = roroBigRight;
+            this.imageStaticOutlineLeft.src = roroBigLeftOutline;
+            this.imageStaticOutlineRight.src = roroBigRightOutline;
+        }
     }
 
     async loadImage() {
