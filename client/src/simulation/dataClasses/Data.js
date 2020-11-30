@@ -7,8 +7,8 @@ export default class Data {
     constructor( caseMetaData ) {
         this.caseMetaData = caseMetaData;
 
-        this.bolderData = this.caseMetaData.bolderData;
-        this.fenderData = this.caseMetaData.fenderData;
+        // this.bolderData = this.caseMetaData.bolderData;
+        // this.fenderData = this.caseMetaData.fenderData;
         this.timePoints = []; // will contain all data at specific timepoint
         this.hawserBreakingTimePoints = [];
     }
@@ -19,7 +19,7 @@ export default class Data {
             for (let time = 0; time < dataCoords.length -1; time ++) {
                 // loop over hawsers and add every hawserData to the timePointHawserData
                 const timePointHawserData = [];
-                for (let hawser = 0; hawser < this.bolderData.length; hawser ++) {
+                for (let hawser = 0; hawser < this.caseMetaData.bolderData.length; hawser ++) {
                     const columnNrInCoordsTable = hawser*2;
                     // make hawserData object
                     const hawserData = new HawserData(
@@ -27,7 +27,7 @@ export default class Data {
                         Number(dataCoords[time][(columnNrInCoordsTable)].replace(',','.')),
                         Number(dataCoords[time][(columnNrInCoordsTable) + 1].replace(',','.')),
                         Number(dataForces[time][hawser].replace(',','.')),
-                        this.bolderData[hawser].forceMax
+                        this.caseMetaData.bolderData[hawser].forceMax
                     );
                     
                     // if hawser is broken in this timePoint for the first time in the sim => register this timePoint
@@ -39,9 +39,9 @@ export default class Data {
 
                 // loop over fenders and add every fenderData to the timePointFenderData
                 const timePointFenderData = [];
-                for(let fenderNr = 0; fenderNr < this.fenderData.length; fenderNr++) {
+                for(let fenderNr = 0; fenderNr < this.caseMetaData.fenderData.length; fenderNr++) {
                     // In de table zijn er eerst de forces op de trossen  en dan 3 translatie kolommen
-                    const columnNrInForcesTable = this.bolderData.length + 3 + fenderNr;
+                    const columnNrInForcesTable = this.caseMetaData.bolderData.length + 3 + fenderNr;
                     // make fenderData object
                     const fenderData = new FenderData(
                         Number(dataForces[time][columnNrInForcesTable].replace(',','.'))

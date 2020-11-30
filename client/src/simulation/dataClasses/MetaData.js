@@ -11,7 +11,7 @@ export default class MetaData {
         this.hawserLimits = {};
         this.fenderLimits = {};
         this.bolderData = [];
-        this.fenderData = [];
+        this.fenderMeta = [];
 
         // this.fileTitles: titles in sheet
         this.fileTitles = {
@@ -40,18 +40,20 @@ export default class MetaData {
 
     get() {
         return {
+            timePointInterval: this.timePointInterval,
             caseShip: this.caseShip,
             passingShip: this.passingShip,
             wind: this.wind,
             hawserLimits: this.hawserLimits,
             fenderLimits: this.fenderLimits,
             bolderData: this.bolderData,
-            fenderData: this.fenderData,
+            fenderData: this.fenderMeta,
         }
     }
 
     load() {
         this.interpretFile();
+        this.createGeneral();
         this.caseShip = this.createCaseShip();
         this.passingShip = this.createPassingShip();
         this.wind = this.createWindParams();
@@ -60,7 +62,7 @@ export default class MetaData {
         this.fenderLimits = this.createfenderLimits();
 
         this.bolderData = this.createBolderData();
-        this.fenderData = this.createFenderData();
+        this.fenderMeta = this.createFenderMeta();
     }
 
     interpretFile() {
@@ -87,6 +89,10 @@ export default class MetaData {
         } while(value !== '');
     }
 
+    createGeneral() {
+        this.timePointInterval = this.getCellData('e',3);
+    }
+
     createCaseShip() {
         return {
             type: this.getCellData('b',2),
@@ -106,6 +112,8 @@ export default class MetaData {
             speedInKnots: this.getCellData('b',22),
             speedInMPerS: this.getCellData('b',23),
             direction: this.getCellData('b',23) / Math.abs(this.getCellData('b',23)),
+            startXCoord: this.getCellData('e',17),
+            startYCoord: this.getCellData('e',18)
         }
     }
 
@@ -163,7 +171,7 @@ export default class MetaData {
         }
     }
 
-    createFenderData() {
+    createFenderMeta() {
         if (!this.fileTitleLocations.paramsFender) {
             console.log('Fender data not available.');
             return([]);

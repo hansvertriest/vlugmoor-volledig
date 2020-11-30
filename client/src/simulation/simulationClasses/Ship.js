@@ -12,6 +12,8 @@ export default class Ship {
         this.distanceFromKaai = distanceFromKaai;
         this.posX = 0;
         this.posY = 0;
+        this.startPosX = 0;
+        this.startPosY = 0;
         this.outlinePosX = this.posX;
         this.outlinePosY = this.posY;
         this.rotationInDegrees = 0;
@@ -24,8 +26,11 @@ export default class Ship {
         if (Object.keys(paramsPassingShip).length > 0) {
             this.posX = paramsPassingShip.posX;
             this.posY = paramsPassingShip.posY;
+            this.startPosX = paramsPassingShip.posX;
+            this.startPosY = paramsPassingShip.posY;
             this.direction = paramsPassingShip.direction;
             this.speedInMPerS = paramsPassingShip.speedInMPerS;
+            console.log(this.posX)
         }
 
         this.image;
@@ -102,10 +107,6 @@ export default class Ship {
         // roteer de context naar de hoek van het schip
         this.simCtx.ctx.rotate(this.rotationInDegrees*-1);
 
-        // draw orange placeholder
-        // this.simCtx.ctx.fillStyle = 'orange';
-        // this.simCtx.ctx.fillRect((posXInPx) - (length/2), (posYInPx) - (width/2), length, width)
-
         // draw image of ship
         this.simCtx.ctx.drawImage(this.image, (posXInPx) - (length/2), (posYInPx) - (width/2), length, width);
 
@@ -162,15 +163,11 @@ export default class Ship {
     }
 
     applySpeedDisplacement(time) {
-        this.setPosX(this.speedInMPerS * time);
+        this.setPosX(this.startPosX + this.speedInMPerS * time);
     }
 
     setPosX(posX) {
         this.posX = posX;
-        if(Math.abs(this.posX - posX) > this.displacementLimitToBeStaticInPx ) {
-            console.log('is moving!')
-            this.setImageToMoving();
-        }
     }
 
     setPosY(posY) {

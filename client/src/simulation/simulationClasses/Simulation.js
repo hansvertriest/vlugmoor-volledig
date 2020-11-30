@@ -22,7 +22,7 @@ export default class Simulation {
 
         this.caseData;
         this.timePointCount;
-        this.timePointInterval = 0.1; 
+        // this.timePointInterval = 0.1; 
 
         // variables for improving visual message
         this.translationAmplifierFactor = 1;
@@ -64,6 +64,7 @@ export default class Simulation {
     addData(data) {
         this.caseData = data;
         this.timePointCount = data.timePoints.length;
+        this.timePointInterval = data.caseMetaData.timePointInterval
     }
 
     getSimInfo() {
@@ -147,7 +148,7 @@ export default class Simulation {
         const paramsPassingShip = (isCaseShip) 
             ? {} 
             : {
-                posX: this.canvas.width/-2,
+                posX:  shipInfo.startXCoord,
                 posY: this.caseShip.width/2 + shipInfo.deltaYShips + shipInfo.width/2,
                 direction: shipInfo.direction,
                 speedInMPerS: shipInfo.speedInMPerS,
