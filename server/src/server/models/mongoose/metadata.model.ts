@@ -10,11 +10,14 @@ interface IMetaData extends Document {
   picture: string;
   date: Date;
 
+  slug: string;
+
   _createdAt: number;
   _modifiedAt: number;
   _deletedAt: number;
 
   _userId: IUser['_id'];
+  slugify(): void;
 }
 
 interface IMetaDataModel extends PaginateModel<IMetaData> {}
@@ -35,13 +38,15 @@ const metaDataSchema: Schema = new Schema(
       type: String,
       required: false,
     },
-    duration: {
-      type: Number,
-      required: true,
-    },
     date: {
       type: Date,
       required: true,
+    },
+    slug: {
+        type: String,
+        required: false,
+        lowercase: true,
+        unique: false,
     },
     _createdAt: {
       type: Number,
@@ -74,6 +79,13 @@ metaDataSchema.methods.slugify = function() {
   this.slug = slug(this.title);
 };
 
+metaDataSchema.pre<IMetaData>('validate', function(next) {
+    if (!this.slug) {
+      this.slugify();
+    }
+    return next();
+});
+
 metaDataSchema.virtual('id').get(function(this: IMetaData) {
   return this._id;
 });
@@ -91,4 +103,4 @@ const MetaData = mongoose.model<IMetaData, IMetaDataModel>(
   metaDataSchema,
 );
 
-export { IMetaData, IMetaDataModel, MetaData };
+export { IMetaData, IMetaDataModel, MetaData, metaDataSchema };

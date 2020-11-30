@@ -6,7 +6,11 @@ import {
   Router,
 } from 'express';
 import { IConfig, AuthService, Role } from '../../services';
-import { HelloController, UserController, MetaDataController } from '../controllers';
+import {
+  HelloController,
+  UserController,
+  MetaDataController,
+} from '../controllers';
 
 class ApiRouter {
   public router: Router;

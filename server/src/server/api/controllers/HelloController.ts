@@ -8,7 +8,7 @@ class HelloController {
   ): Response<any> | void {
     res
       .status(200)
-      .json({ message: 'Hello welcome tho the MERN-stack Application' });
+      .json({ message: 'Hello welcome to the Vlugmoor API.' });
   }
 }
 

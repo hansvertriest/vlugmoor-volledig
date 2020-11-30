@@ -1,5 +1,5 @@
 import HelloController from './HelloController';
 import UserController from './UserController';
-import MetaDataController from './MetaDataController';
+import  {default as MetaDataController} from './MetaDataController';
 
 export { HelloController, UserController, MetaDataController };
