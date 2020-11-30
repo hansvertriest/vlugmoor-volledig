@@ -4,10 +4,7 @@ import { MetaData, IMetaData, User } from '../../models/mongoose';
 import { NotFoundError } from '../../utilities';
 
 class MetaDataController {
-
-  constructor() {
-
-  }
+  constructor() {}
 
   public index = async (
     req: Request,
@@ -114,9 +111,13 @@ class MetaDataController {
         password: req.body.localProvider.password,
         avatar: req.body.profile.avatar,
       };
-      const metaData = await MetaData.findOneAndUpdate({ _id: id }, metaDataUpdate, {
-        new: true,
-      }).exec();
+      const metaData = await MetaData.findOneAndUpdate(
+        { _id: id },
+        metaDataUpdate,
+        {
+          new: true,
+        },
+      ).exec();
 
       if (!metaData) {
         throw new NotFoundError();

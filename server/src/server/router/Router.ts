@@ -37,14 +37,7 @@ export default class Router {
         res.sendFile(path.resolve(rootPath, 'client', 'index.html'));
       } else {
         res.sendFile(
-          path.resolve(
-            rootPath,
-            '..',
-            '..',
-            'client',
-            'build',
-            'index.html',
-          ),
+          path.resolve(rootPath, '..', '..', 'client', 'build', 'index.html'),
         );
       }
     });

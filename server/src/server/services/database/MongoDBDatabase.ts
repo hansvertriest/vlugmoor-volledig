@@ -3,7 +3,7 @@ import { default as faker } from 'faker';
 
 import { ILogger } from '../logger';
 import { IConfig } from '../config';
-import { IUser, User } from '../../models/mongoose';
+import { IUser, User, IMetaData, MetaData } from '../../models/mongoose';
 
 class MongoDBDatabase {
   private config: IConfig;
