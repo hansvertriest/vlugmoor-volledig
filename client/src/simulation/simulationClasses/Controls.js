@@ -90,6 +90,7 @@ export default class Controls {
             timepoint.innerHTML = Math.round(simInfo.timePoint * this.simulation.timePointInterval);
 
             const fps = document.getElementById('current-fps');
+            fps.style.color =(this.simCtx.fps - 3 > this.simulation.calculatedFPS || this.simCtx.fps + 3 < this.simulation.calculatedFPS) ? "red" : "black";
             fps.innerHTML = simInfo.calculatedFPS;
 
             const speed = document.getElementById('current-speed');
