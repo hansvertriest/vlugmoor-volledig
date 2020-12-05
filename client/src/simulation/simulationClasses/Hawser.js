@@ -38,7 +38,7 @@ export default class Hawser {
         });
     }
 
-    draw() {
+    draw(ctx=this.simCtx.ctx) {
         // get coordinates
         const canvasCoordsBolderCenter = this.simCtx.originToCanvasCoords(
             this.bolderPosX, 
@@ -49,17 +49,17 @@ export default class Hawser {
             this.posOnShipY, 
         );
 
-        this.simCtx.ctx.beginPath();
-        this.simCtx.ctx.lineWidth = 2;
-        this.simCtx.ctx.strokeStyle = this.getHawserColor();
-        if (this.hasBroken) this.simCtx.ctx.setLineDash([5]);
-        this.simCtx.ctx.moveTo(canvasCoordsBolderCenter.x, canvasCoordsBolderCenter.y);
-        this.simCtx.ctx.lineTo(canvasCoordsHawser.x, canvasCoordsHawser.y);
-        this.simCtx.ctx.stroke();
-        this.simCtx.ctx.closePath();
+        ctx.beginPath();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = this.getHawserColor();
+        if (this.hasBroken) ctx.setLineDash([5]);
+        ctx.moveTo(canvasCoordsBolderCenter.x, canvasCoordsBolderCenter.y);
+        ctx.lineTo(canvasCoordsHawser.x, canvasCoordsHawser.y);
+        ctx.stroke();
+        ctx.closePath();
 
         // reset lines to solid
-        if (this.hasBroken) this.simCtx.ctx.setLineDash([]);
+        if (this.hasBroken) ctx.setLineDash([]);
 
         // draw bolderImage
         const imageWidthInPx = this.simCtx.meterToPx(this.bolderWidthInM);
@@ -72,7 +72,7 @@ export default class Hawser {
             this.bolderHeightInM,
         );
 
-        this.simCtx.ctx.drawImage(this.image, canvasCoordsBolderImage.x, canvasCoordsBolderImage.y, imageWidthInPx, imageHeightInPx);
+        ctx.drawImage(this.image, canvasCoordsBolderImage.x, canvasCoordsBolderImage.y, imageWidthInPx, imageHeightInPx);
 
     }
 

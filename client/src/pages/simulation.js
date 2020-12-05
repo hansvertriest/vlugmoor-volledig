@@ -21,6 +21,7 @@ export default () => {
         controls.registerOutlineSwitch('switch-outline');
         controls.registerRestartButton('restart-bttn');
         controls.registerTimeLine('...');
+        controls.registerScreenshotBttn('screenshot');
 
         // get shipTranslation data
         const shipTranslations = files.forces.map((timePoint) => {
@@ -34,8 +35,8 @@ export default () => {
         
         // create data object
         const data = new Data(files.metaData);
-        console.log(data)
         data.addTimePoints(files.coords, files.forces, shipTranslations);
+        console.log(data.get())
         
         // SIMULATION
         simulation.addData(data);

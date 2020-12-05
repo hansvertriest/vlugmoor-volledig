@@ -1,3 +1,5 @@
+import * as C2S from 'canvas2svg';
+
 import Controls from './Controls';
 import Ship from "./Ship";
 import Hawser from "./Hawser";
@@ -11,6 +13,7 @@ export default class Simulation {
         this.simCtx = new SimulationContext(canvasId);
         this.canvas = this.simCtx.canvas;
         this.ctx = this.simCtx.ctx;
+        this.SVGctx = new C2S(this.canvas.width, this.canvas.height)
 
         this.backgroundColor = "#c1e6fb";
 
@@ -235,27 +238,27 @@ export default class Simulation {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    drawFenders() {
+    drawFenders(ctx) {
         this.fenderArray.forEach((fender) => {
-            fender.draw()
+            fender.draw(ctx)
         });
     }
 
-    drawHawsers() {
+    drawHawsers(ctx) {
         this.hawserArray.forEach((hawser) => {
-            hawser.draw()
+            hawser.draw(ctx)
         });
     }
 
-    drawKaai() {
-        this.kaai.draw();
+    drawKaai(ctx) {
+        this.kaai.draw(ctx);
     }
 
-    drawShips() {
-        this.caseShip.draw();
+    drawShips(ctx) {
+        this.caseShip.draw(ctx);
         if (this.passingShips) {
             this.passingShips.forEach((passingShip) => {
-                passingShip.draw();
+                passingShip.draw(ctx);
             });
         }
     }
@@ -368,5 +371,40 @@ export default class Simulation {
         if (this.simCtx.drawCaseShipOutline) this.caseShip.drawOutline();
        
         window.requestAnimationFrame(this.doAnimation.bind(this));
+    }
+
+    getScreenshot() {
+        // // clear screen
+        // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // // drawElements
+        // this.setBackgroundColor();
+        // // this.caseShip.drawShadow();
+        // this.drawKaai(this.SVGctx);
+        // this.drawShips(this.SVGctx);
+        // this.drawHawsers(this.SVGctx);
+        // this.drawFenders(this.SVGctx);
+        // if (this.simCtx.drawCaseShipOutline) this.caseShip.drawOutline(this.SVGctx);
+
+        // // create svg
+        // const svgData = this.SVGctx.getSerializedSvg(true); //returns the serialized SVG document
+        // const img = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svgData);
+
+        // // embed png's
+
+        // create png
+        const img = this.canvas.toDataURL("image/png");
+
+        // download png
+        const element = document.createElement('a');
+        element.setAttribute('href', img);
+        element.setAttribute('download', 'file.png');
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
     }
 }

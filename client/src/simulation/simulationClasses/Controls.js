@@ -133,6 +133,13 @@ export default class Controls {
         };
     }
 
+    registerScreenshotBttn(buttonId) {
+        const el = document.getElementById(buttonId);
+        el.onclick = (e) => {
+            this.simulation.getScreenshot();
+        };
+    }
+
     /* ==============================
         Setting simulation parameters
     */
@@ -160,7 +167,7 @@ export default class Controls {
     }
 
     setAnimationProgress(timePoint) {
-        this.simulation.setNextAnimationTimeToSpecificTimepoint(timePoint);
+        if (timePoint >= 0 && timePoint < this.simulation.timePointCount -1) this.simulation.setNextAnimationTimeToSpecificTimepoint(timePoint);
     }
 
     setSpeed(speed) {

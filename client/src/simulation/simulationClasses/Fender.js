@@ -16,11 +16,11 @@ export default class Fender {
         this.colorSecondLimit = 'red';
     }
 
-    draw() {
+    draw(ctx=this.simCtx.ctx) {
         // Calculating pos with height=0 bc fenderOriginDefinition = x: widhth/2 y:0
         const posOnCanvas = this.simCtx.originToCanvasCoords(this.posX, this.posY, this.thicknessInM, 0);
-        this.simCtx.ctx.fillStyle = this.getFenderColor();
-        this.simCtx.ctx.fillRect(posOnCanvas.x, posOnCanvas.y, this.simCtx.meterToPx(this.widthInM), this.simCtx.meterToPx(this.thicknessInM))
+        ctx.fillStyle = this.getFenderColor();
+        ctx.fillRect(posOnCanvas.x, posOnCanvas.y, this.simCtx.meterToPx(this.widthInM), this.simCtx.meterToPx(this.thicknessInM))
     }
 
     setCurrentForce(force) {

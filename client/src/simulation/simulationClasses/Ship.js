@@ -111,7 +111,7 @@ export default class Ship {
         });
     }
 
-    draw() {
+    draw(ctx=this.simCtx.ctx) {
 
         const length = this.simCtx.meterToPx(this.length);
         const width = this.simCtx.meterToPx(this.width);
@@ -120,26 +120,22 @@ export default class Ship {
         const posXInPx = this.simCtx.meterToPx(this.posX);
         const posYInPx = this.simCtx.meterToPx(this.posY)*-1;
 
-        this.simCtx.ctx.save();
+        ctx.save();
 
         // translate van context naar origin van de simulatie
-        this.simCtx.ctx.translate(this.simCtx.originX, this.simCtx.originY);
-
-        // mirror image according to direction 
-        // (direction is now enforced trough differen images to limit CPU use)
-        // this.simCtx.ctx.scale(this.direction, 1);
+        ctx.translate(this.simCtx.originX, this.simCtx.originY);
 
         // roteer de context naar de hoek van het schip
-        this.simCtx.ctx.rotate(this.rotationInDegrees*-1);
+        ctx.rotate(this.rotationInDegrees*-1);
 
         // draw image of ship
-        this.simCtx.ctx.drawImage(this.image, (posXInPx) - (length/2), (posYInPx) - (width/2), length, width);
+        ctx.drawImage(this.image, (posXInPx) - (length/2), (posYInPx) - (width/2), length, width);
 
         // restore context
-        this.simCtx.ctx.restore();
+        ctx.restore();
     }
 
-    drawShadow() {
+    drawShadow(ctx=this.simCtx.ctx) {
         const length = this.simCtx.meterToPx(this.length);
         const width = this.simCtx.meterToPx(this.width);
 
@@ -148,29 +144,29 @@ export default class Ship {
         const posXInPx = this.simCtx.meterToPx(this.posX);
         const posYInPx = this.simCtx.meterToPx(this.posY);
 
-        this.simCtx.ctx.save();
+        ctx.save();
 
         // translate van context naar origin van de simulatie
-        this.simCtx.ctx.translate(this.simCtx.originX, this.simCtx.originY);
+        ctx.translate(this.simCtx.originX, this.simCtx.originY);
 
         // roteer de context naar de hoek van het schip
-        this.simCtx.ctx.rotate(this.rotationInDegrees * -1);
+        ctx.rotate(this.rotationInDegrees * -1);
 
         // draw orange placeholder
-        this.simCtx.ctx.fillStyle = 'rgba(7, 60, 145, 0.4)';
-        this.simCtx.ctx.fillRect((posXInPx) - (length/2), (posYInPx) - (width/2), length, width)
+        ctx.fillStyle = 'rgba(7, 60, 145, 0.4)';
+        ctx.fillRect((posXInPx) - (length/2), (posYInPx) - (width/2), length, width)
 
         // restore context
-        this.simCtx.ctx.restore();
+        ctx.restore();
     }
 
-    drawOutline() {
+    drawOutline(ctx=this.simCtx.ctx) {
         const length = this.simCtx.meterToPx(this.length);
         const width = this.simCtx.meterToPx(this.width);
 
         const coords = this.simCtx.originToCanvasCoords(this.outlinePosX, this.outlinePosY, this.length, this.width );
         // draw image of ship
-        this.simCtx.ctx.drawImage(this.imageOutline, coords.x, coords.y, length, width);
+        ctx.drawImage(this.imageOutline, coords.x, coords.y, length, width);
     }
 
     setImageToMoving(){

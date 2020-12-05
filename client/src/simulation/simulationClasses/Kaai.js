@@ -29,7 +29,7 @@ export default class Kaai {
         });
     }
 
-    draw() {
+    draw(ctx=this.simCtx.ctx) {
         const posYInPx = this.simCtx.originY - this.simCtx.meterToPx(this.distanceFromOriginInM);
         const posXInPx = this.simCtx.originX - this.simCtx.meterToPx(this.widthInM/2)
 
@@ -38,15 +38,15 @@ export default class Kaai {
 
 
         // draw rectangle
-        this.simCtx.ctx.fillStyle = "#D0D0D0";
-        this.simCtx.ctx.fillRect(0, posYInPx, this.simCtx.canvas.width, height);
+        ctx.fillStyle = "#D0D0D0";
+        ctx.fillRect(0, posYInPx, this.simCtx.canvas.width, height);
 
         // draw image
         const scaleFactor = width/this.image.width;
         const heightImage = this.image.height * scaleFactor;
         const widthImage = width;
 
-        this.simCtx.ctx.drawImage(this.image, posXInPx, posYInPx, widthImage, heightImage);
+        ctx.drawImage(this.image, posXInPx, posYInPx, widthImage, heightImage);
 
         // check if screen is moved horizontallyy
         if (this.simCtx.originX !== 0) {
@@ -54,7 +54,7 @@ export default class Kaai {
             const widthImageTwo =  (posXInPx > 0) ? widthImage*-1 : widthImage;
             
             // draw image 2
-            this.simCtx.ctx.drawImage(this.image, posXInPx + widthImageTwo, posYInPx, widthImage, heightImage);
+            ctx.drawImage(this.image, posXInPx + widthImageTwo, posYInPx, widthImage, heightImage);
         }
     }
 }
