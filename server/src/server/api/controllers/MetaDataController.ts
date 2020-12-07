@@ -131,12 +131,11 @@ class MetaDataController {
   store = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const metaDataCreate = new MetaData({
-        email: req.body.email,
-        firstName: req.body.profile.firstName,
-        lastName: req.body.profile.lastName,
-        role: req.body.role,
-        password: req.body.localProvider.password,
-        avatar: req.body.profile.avatar,
+        title: req.body.title,
+        description: req.body.profile.description,
+        picture: req.body.profile.picture,
+        date: req.body.date,
+
       });
       const metaData = await metaDataCreate.save();
       return res.status(201).json(metaData);
@@ -148,7 +147,7 @@ class MetaDataController {
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const vm = {
-        users: await User.find(),
+        metadatas: await MetaData.find(),
       };
       return res.status(200).json(vm);
     } catch (err) {

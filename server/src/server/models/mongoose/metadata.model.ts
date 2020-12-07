@@ -43,10 +43,10 @@ const metaDataSchema: Schema = new Schema(
       required: true,
     },
     slug: {
-        type: String,
-        required: false,
-        lowercase: true,
-        unique: false,
+      type: String,
+      required: false,
+      lowercase: true,
+      unique: false,
     },
     _createdAt: {
       type: Number,
@@ -80,10 +80,10 @@ metaDataSchema.methods.slugify = function() {
 };
 
 metaDataSchema.pre<IMetaData>('validate', function(next) {
-    if (!this.slug) {
-      this.slugify();
-    }
-    return next();
+  if (!this.slug) {
+    this.slugify();
+  }
+  return next();
 });
 
 metaDataSchema.virtual('id').get(function(this: IMetaData) {
