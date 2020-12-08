@@ -6,9 +6,7 @@ class HelloController {
     res: Response,
     next: NextFunction,
   ): Response<any> | void {
-    res
-      .status(200)
-      .json({ message: 'Hello welcome to the Vlugmoor API.' });
+    res.status(200).json({ message: 'Hello welcome to the Vlugmoor API.' });
   }
 }
 
