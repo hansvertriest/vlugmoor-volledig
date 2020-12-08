@@ -44,8 +44,8 @@ export default () => {
         // simulation.registerController();
         await simulation.addShip(files.metaData.caseShip, true);
         await simulation.addShip(files.metaData.passingShip);
-        await simulation.addHawsers(files.metaData.bolderData, files.metaData.hawserLimits, data.hawserBreakingTimePoints);
-        simulation.addFenders(files.metaData.fenderData, files.metaData.fenderLimits);
+        await simulation.addHawsers(files.metaData.bolderData, files.metaData.hawserLimits, data.events.getHawserBreaks());
+        simulation.addFenders(files.metaData.fenderData, files.metaData.fenderLimits, data.events.getFenderBreaks());
         simulation.drawShips();
         simulation.play();
     }

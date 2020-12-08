@@ -178,10 +178,11 @@ export default class Simulation {
         }
     }
 
-    addFenders(fenderData, fenderLimits) {
+    addFenders(fenderData, fenderLimits, fenderBreakingPoints=[]) {
         // loop over all fenders and add a Fender object to fenderArray
         fenderData.forEach((fender) => {
             const newFender = new Fender(
+                fender.id,
                 this.simCtx,
                 fender.posX,
                 fender.posY,
@@ -195,6 +196,11 @@ export default class Simulation {
             );
             this.fenderArray.push(newFender);
         });
+
+        // assign a breakingTimePoint to hawsers
+        fenderBreakingPoints.forEach((fenderBreakingPoint) => {
+            this.fenderArray[fenderBreakingPoint.id].setBreakingTimePoint(fenderBreakingPoint.timePointIndex);
+        })
     }
 
     async addHawsers(bolderData, hawserLimits, hawserBreakingTimePoints=[]) {
@@ -213,8 +219,10 @@ export default class Simulation {
 
             // assign a breakingTimePoint to hawsers
             hawserBreakingTimePoints.forEach((hawserBreakingTimePoint) => {
-                this.hawserArray[hawserBreakingTimePoint.hawserId].setBreakingTimePoint(hawserBreakingTimePoint.timePoint);
+                this.hawserArray[hawserBreakingTimePoint.id].setBreakingTimePoint(hawserBreakingTimePoint.timePointIndex);
+                
             });
+
 
             // load images of hawsers
             this.hawserArray.forEach(async(hawser) => {
@@ -338,6 +346,7 @@ export default class Simulation {
         // update fender currentforce
         this.fenderArray.forEach((fender, index) => {
             fender.setCurrentForce(timePoint.fenderData[index].force);
+            fender.setHasBroken(fender.breakingTimePoint < this.animationTime);
         });
 
 

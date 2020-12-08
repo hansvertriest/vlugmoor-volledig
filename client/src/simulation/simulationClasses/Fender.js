@@ -1,8 +1,11 @@
 export default class Fender {
-    constructor(simCtx, fenderPosX, fenderPosY, forceLimit, thickness, width, limits) {
+    constructor(id, simCtx, fenderPosX, fenderPosY, forceLimit, thickness, width, limits) {
+        this.id = id;
         this.simCtx = simCtx;
+
         this.posX = fenderPosX;
         this.posY = fenderPosY;
+
         this.forceLimit = forceLimit;
         this.thicknessInM = thickness;
         this.widthInM = width;
@@ -27,11 +30,22 @@ export default class Fender {
         this.currentForce = force;
     }
 
+    setBreakingTimePoint(timePoint) {
+        this.breakingTimePoint = timePoint;
+    }
+
+    setHasBroken(hasBroken) {
+        this.hasBroken = hasBroken;
+    }
+
     getFenderColor() {
-        const ratio = this.currentForce / this.forceLimit;
+        if (this.hasBroken) return "blue";
+        // const ratio = this.currentLoad / this.forceMax;
+        const ratio = this.loadRatio;
         if (ratio > this.limit.second && ratio <= this.limit.first) {
             return this.colorFirstLimit;
         } else if ( ratio > this.limit.first) {
+            this.hasBroken = true;
             return this.colorSecondLimit;
         }
         return this.colorNoLimit;

@@ -11,9 +11,8 @@ export default class Data {
         // this.bolderData = this.caseMetaData.bolderData;
         // this.fenderData = this.caseMetaData.fenderData;
         this.timePoints = []; // will contain all data at specific timepoint
-        this.hawserBreakingTimePoints = [];
 
-        const fenderLimits = {limit1: this.caseMetaData.fenderData.limit1, limit2: this.caseMetaData.fenderData.limit2}
+        const fenderLimits = {first: this.caseMetaData.fenderLimits.first, second: this.caseMetaData.fenderLimits.second}
         this.events = new EventCollection(this.caseMetaData.hawserLimits, fenderLimits);
     }
 
@@ -21,7 +20,6 @@ export default class Data {
         return {
             caseMetaData: this.caseMetaData,
             timePoints: this.timePoints,
-            hawserBreakingTimePoints: this.hawserBreakingTimePoints,
             events: this.events.get()
         }
     }
@@ -43,9 +41,9 @@ export default class Data {
                         this.caseMetaData.bolderData[hawser].forceMax
                     );
                     
-                    // if hawser is broken in this timePoint for the first time in the sim => register this timePoint
-                    this.events.checkHawserForEvent(hawserData, time);
-                    this.registerBreakingTimePoint(hawserData, time)
+                    // if hawser is broken in this timePoint it will be registered
+                    this.events.checkHawserForEvent(hawserData, time, time/dataCoords.length);
+                    // this.registerBreakingTimePoint(hawserData, time)
 
                     // Add hawserData data to timePointHawserData
                     timePointHawserData.push(hawserData);
@@ -53,13 +51,19 @@ export default class Data {
 
                 // loop over fenders and add every fenderData to the timePointFenderData
                 const timePointFenderData = [];
-                for(let fenderNr = 0; fenderNr < this.caseMetaData.fenderData.length; fenderNr++) {
+                for(let fender = 0; fender < this.caseMetaData.fenderData.length; fender++) {
                     // In de table zijn er eerst de forces op de trossen  en dan 3 translatie kolommen
-                    const columnNrInForcesTable = this.caseMetaData.bolderData.length + 3 + fenderNr;
+                    const columnNrInForcesTable = this.caseMetaData.bolderData.length + 3 + fender;
                     // make fenderData object
                     const fenderData = new FenderData(
-                        Number(dataForces[time][columnNrInForcesTable].replace(',','.'))
+                        fender,
+                        Number(dataForces[time][columnNrInForcesTable].replace(',','.')),
+                        this.caseMetaData.fenderData[fender].forceMax
                     );
+
+                    // if fender is broken in this timePoint it will be registered
+                    this.events.checkFenderForEvent(fenderData, time, time/dataCoords.length);
+
                     // Add fenderData to timePointFenderData
                     timePointFenderData.push(fenderData);
                 }
@@ -81,6 +85,8 @@ export default class Data {
                     resolve(this);
                 }
             }
+
+
         });
     }
 
