@@ -106,9 +106,9 @@ export default class Controls {
 
         document.getElementById('timeline-container').onclick = (e) => {
             const xCoord = e.offsetX;
-            const fullWidth = e.target.offsetWidth;
+            const fullWidth = document.getElementById('timeline-container').offsetWidth;
+            console.log(xCoord, fullWidth)
             this.setAnimationProgressInPercentage(xCoord/fullWidth);
-            console.log(e);
         }
         
     }
@@ -178,7 +178,6 @@ export default class Controls {
 
     setAnimationProgressInPercentage(percentage) {
         const simulationTimePointCount = this.simulation.timePointCount / this.simCtx.animationTimeInterval;
-        console.log(Math.round(simulationTimePointCount*percentage) * this.simCtx.animationTimeInterval);
         this.simulation.setNextAnimationTimeToSpecificTimepoint(Math.round(simulationTimePointCount*percentage) * this.simCtx.animationTimeInterval);
     }
 
