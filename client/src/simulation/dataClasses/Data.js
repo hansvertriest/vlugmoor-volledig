@@ -43,7 +43,6 @@ export default class Data {
                     
                     // if hawser is broken in this timePoint it will be registered
                     this.events.checkHawserForEvent(hawserData, time, time/dataCoords.length);
-                    // this.registerBreakingTimePoint(hawserData, time)
 
                     // Add hawserData data to timePointHawserData
                     timePointHawserData.push(hawserData);
@@ -88,43 +87,5 @@ export default class Data {
 
 
         });
-    }
-
-    registerBreakingTimePoint(hawserData, time) {
-        if (this.checkIfHawserHasBroken(hawserData.loadRatio, this.caseMetaData.hawserLimits.first) && !this.checkIfHawserAlreadyHasBroken(hawserData.id)) {
-            const hawserBreak = new HawserBreak(
-                hawserData.id,
-                time,
-                hawserData.loadRatio
-            )
-            this.hawserBreakingTimePoints.push(hawserBreak);
-        }
-    }
-
-    registerFenderBreaks(hawserData, time) {
-        if (this.checkIfHawserHasBroken(hawserData.loadRatio, this.caseMetaData.hawserLimits.first) && !this.checkIfHawserAlreadyHasBroken(hawserData.id)) {
-            const hawserBreak = new HawserBreak(
-                hawserData.id,
-                time,
-                hawserData.loadRatio
-            )
-            this.hawserBreakingTimePoints.push(hawserBreak);
-        }
-    }
-
-
-    checkIfHawserHasBroken(ratio, limit) {
-        if (ratio > limit) {
-            return true;
-        }
-        return false;
-    }
-
-    checkIfHawserAlreadyHasBroken(id) {
-        return this.hawserBreakingTimePoints.filter((hawserBreak) => hawserBreak.hawserId === id).length > 0;
-    }
-
-    getTimePoint(index) {
-        return this.timePoints[index];
     }
 }
