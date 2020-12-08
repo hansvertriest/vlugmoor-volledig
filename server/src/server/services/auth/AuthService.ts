@@ -35,12 +35,12 @@ class AuthService {
     passport.use(
       new this.LocalStrategy(
         {
-          usernameField: 'email',
+          usernameField: 'email'
         },
         async (email: string, password: string, done) => {
           try {
             const user = await User.findOne({
-              email: email,
+              email: email
             });
 
             if (!user) {
@@ -56,8 +56,8 @@ class AuthService {
           } catch (error) {
             return done(error, false);
           }
-        },
-      ),
+        }
+      )
     );
   }
 
@@ -66,7 +66,7 @@ class AuthService {
       new this.JwtStrategy(
         {
           secretOrKey: this.config.auth.jwt.secret,
-          jwtFromRequest: this.ExtractJwt.fromAuthHeaderAsBearerToken(),
+          jwtFromRequest: this.ExtractJwt.fromAuthHeaderAsBearerToken()
         },
         async (jwtPayload, done) => {
           try {
@@ -81,24 +81,24 @@ class AuthService {
           } catch (error) {
             return done(error, false);
           }
-        },
-      ),
+        }
+      )
     );
   };
 
   public createToken(user: IUser): string {
     const payload = {
-      id: user._id,
+      id: user._id
     };
     return jwt.sign(payload, this.config.auth.jwt.secret, {
-      expiresIn: 60 * 120,
+      expiresIn: 60 * 120
     });
   }
 
   public checkIsInRole = (...roles: Array<string>) => (
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => {
     if (!req.user) {
       next(new ForbiddenError());

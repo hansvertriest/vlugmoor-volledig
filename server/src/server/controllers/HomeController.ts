@@ -4,7 +4,7 @@ class HomeController {
   public index(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Response<any> | void {
     const sections = [
       {
@@ -15,16 +15,16 @@ class HomeController {
           background: {
             url:
               'https://www.shopthedot.eu/static/media/jongeninweinkelmand.5287b070.jpg',
-            position: 'center right',
+            position: 'center right'
           },
-          content: '',
+          content: ''
         },
         right: {
           content: {
             text: '',
-            type: '',
-          },
-        },
+            type: ''
+          }
+        }
       },
       {
         title: 'Hoi',
@@ -34,10 +34,10 @@ class HomeController {
         right: {
           background: {
             url: 'https://www.shopthedot.eu/static/media/kleren.3e5685b5.jpg',
-            position: 'center left',
+            position: 'center left'
           },
-          content: '',
-        },
+          content: ''
+        }
       },
       {
         title: 'Hoi',
@@ -46,11 +46,11 @@ class HomeController {
         left: {
           background: {
             url: 'https://www.shopthedot.eu/static/media/planet.c2f0805e.jpg',
-            position: 'center center',
+            position: 'center center'
           },
-          content: '',
+          content: ''
         },
-        right: {},
+        right: {}
       },
       {
         title: 'Hoi',
@@ -61,11 +61,11 @@ class HomeController {
           background: {
             url:
               'https://www.shopthedot.eu/static/media/tweemensenwinkelmand.3c334d6e.jpg',
-            position: 'center left',
+            position: 'center left'
           },
-          content: '',
-        },
-      },
+          content: ''
+        }
+      }
     ];
     res.render('pages/home', { sections });
   }

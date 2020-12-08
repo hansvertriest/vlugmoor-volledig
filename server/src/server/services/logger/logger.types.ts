@@ -1,7 +1,7 @@
 export enum LoggLevel {
   error = 'error',
   info = 'info',
-  warning = 'warning',
+  warning = 'warning'
 }
 
 export interface ILogger {

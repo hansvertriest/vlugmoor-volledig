@@ -23,8 +23,8 @@ class GlobalMiddleware {
     } else {
       app.use(
         express.static(
-          path.resolve(rootPath, '..', '..', 'react-client', 'build'),
-        ),
+          path.resolve(rootPath, '..', '..', 'react-client', 'build')
+        )
       );
     }
 
@@ -39,7 +39,7 @@ class GlobalMiddleware {
       origin: true,
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
-      exposedHeaders: ['x-auth-token'],
+      exposedHeaders: ['x-auth-token']
     };
     app.use(cors(corsOptions));
   }

@@ -4,7 +4,7 @@ class HelloController {
   public index(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Response<any> | void {
     res.status(200).json({ message: 'Hello welcome to the Vlugmoor API.' });
   }

@@ -17,7 +17,7 @@ export default class Router {
     rootPath: string,
     app: Application,
     config: IConfig,
-    authService: AuthService,
+    authService: AuthService
   ) {
     this.app = app;
     this.config = config;
@@ -37,7 +37,7 @@ export default class Router {
         res.sendFile(path.resolve(rootPath, 'client', 'index.html'));
       } else {
         res.sendFile(
-          path.resolve(rootPath, '..', '..', 'client', 'build', 'index.html'),
+          path.resolve(rootPath, '..', '..', 'client', 'build', 'index.html')
         );
       }
     });

@@ -36,7 +36,7 @@ const userSchema: Schema = new Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
+      unique: true
     },
     _createdAt: { type: Number, required: true, default: Date.now() },
     _modifiedAt: { type: Number, required: false, default: null },
@@ -44,35 +44,35 @@ const userSchema: Schema = new Schema(
     localProvider: {
       password: {
         type: String,
-        required: false,
-      },
+        required: false
+      }
     },
     facebookProvider: {
       id: {
         type: String,
-        required: false,
+        required: false
       },
       token: {
         type: String,
-        required: false,
-      },
+        required: false
+      }
     },
     role: {
       type: String,
       enum: ['user', 'administrator'],
       default: 'user',
-      required: true,
+      required: true
     },
     profile: {
       firstName: String,
       lastName: String,
-      avatar: String,
-    },
+      avatar: String
+    }
   },
   {
     toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  },
+    toObject: { virtuals: true }
+  }
 );
 
 userSchema.pre<IUser>('save', function(next) {
@@ -102,7 +102,7 @@ userSchema.virtual('id').get(function(this: IUser) {
 
 userSchema.methods.comparePassword = function(
   candidatePassword: String,
-  cb: Function,
+  cb: Function
 ) {
   const user = this;
   bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {

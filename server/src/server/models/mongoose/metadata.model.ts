@@ -27,52 +27,52 @@ const metaDataSchema: Schema = new Schema(
     title: {
       type: String,
       required: true,
-      max: 128,
+      max: 128
     },
     description: {
       type: String,
       required: true,
-      max: 2056,
+      max: 2056
     },
     picture: {
       type: String,
-      required: false,
+      required: false
     },
     date: {
       type: Date,
-      required: true,
+      required: true
     },
     slug: {
       type: String,
       required: false,
       lowercase: true,
-      unique: false,
+      unique: false
     },
     _createdAt: {
       type: Number,
       required: false,
-      default: Date.now(),
+      default: Date.now()
     },
     _modifiedAt: {
       type: Number,
       required: false,
-      default: null,
+      default: null
     },
     _deletedAt: {
       type: Number,
       required: false,
-      default: null,
+      default: null
     },
     _userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: false,
-    },
+      required: false
+    }
   },
   {
     toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  },
+    toObject: { virtuals: true }
+  }
 );
 
 metaDataSchema.methods.slugify = function() {
@@ -94,13 +94,13 @@ metaDataSchema.virtual('user', {
   ref: 'User',
   localField: '_userId',
   foreignField: '_id',
-  justOne: false,
+  justOne: false
 });
 
 metaDataSchema.plugin(mongoosePaginate);
 const MetaData = mongoose.model<IMetaData, IMetaDataModel>(
   'metaData',
-  metaDataSchema,
+  metaDataSchema
 );
 
 export { IMetaData, IMetaDataModel, MetaData, metaDataSchema };

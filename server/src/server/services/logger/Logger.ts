@@ -20,21 +20,21 @@ class Logger implements ILogger {
           return `${ts} [${level}]: ${message} ${
             Object.keys(args).length ? JSON.stringify(args, null, 2) : ''
           }`;
-        }),
+        })
       ),
       transports: [
         new transports.Console(),
         new transports.File({ filename: './error.log', level: 'error' }),
-        new transports.File({ filename: './combined.log' }),
+        new transports.File({ filename: './combined.log' })
       ],
-      exitOnError: false,
+      exitOnError: false
     });
   }
 
   private log(level: string, msg: string, obj: object) {
     this.logger.log(level, msg, {
       object: obj,
-      timestamp: new Date().toISOString(),
+      timestamp: new Date().toISOString()
     });
   }
 
