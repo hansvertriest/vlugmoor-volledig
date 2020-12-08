@@ -38,5 +38,5 @@ export {
   ForbiddenError,
   InternalServerError,
   NotFoundError,
-  UnauthorizedError,
+  UnauthorizedError
 };

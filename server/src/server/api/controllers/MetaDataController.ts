@@ -9,7 +9,7 @@ class MetaDataController {
   public index = async (
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<Response<any>> => {
     try {
       const { limit, skip } = req.query;
@@ -55,13 +55,13 @@ class MetaDataController {
         case 'softdelete':
           metaData = await MetaData.findByIdAndUpdate(
             { _id: id },
-            { _deletedAt: Date.now() },
+            { _deletedAt: Date.now() }
           );
           break;
         case 'softundelete':
           metaData = await MetaData.findByIdAndUpdate(
             { _id: id },
-            { _deletedAt: null },
+            { _deletedAt: null }
           );
           break;
       }
@@ -72,7 +72,7 @@ class MetaDataController {
         return res.status(200).json({
           message: `Successful ${mode} the MetaData with id: ${id}!`,
           metaData,
-          mode,
+          mode
         });
       }
     } catch (err) {
@@ -90,7 +90,7 @@ class MetaDataController {
         throw new NotFoundError();
       } else {
         const vm = {
-          metaData,
+          metaData
         };
         return res.status(200).json(vm);
       }
@@ -109,14 +109,14 @@ class MetaDataController {
         lastName: req.body.profile.lastName,
         role: req.body.role,
         password: req.body.localProvider.password,
-        avatar: req.body.profile.avatar,
+        avatar: req.body.profile.avatar
       };
       const metaData = await MetaData.findOneAndUpdate(
         { _id: id },
         metaDataUpdate,
         {
-          new: true,
-        },
+          new: true
+        }
       ).exec();
 
       if (!metaData) {
@@ -132,10 +132,9 @@ class MetaDataController {
     try {
       const metaDataCreate = new MetaData({
         title: req.body.title,
-        description: req.body.profile.description,
-        picture: req.body.profile.picture,
-        date: req.body.date,
-
+        description: req.body.description,
+        picture: req.body.picture,
+        date: req.body.date
       });
       const metaData = await metaDataCreate.save();
       return res.status(201).json(metaData);
@@ -147,7 +146,7 @@ class MetaDataController {
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const vm = {
-        metadatas: await MetaData.find(),
+        metadatas: await MetaData.find()
       };
       return res.status(200).json(vm);
     } catch (err) {

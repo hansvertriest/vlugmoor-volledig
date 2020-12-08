@@ -3,12 +3,12 @@ export enum Environment {
   local = 'local',
   production = 'production',
   staging = 'staging',
-  test = 'test',
+  test = 'test'
 }
 
 export enum ServerProtocol {
   http = 'http',
-  https = 'https',
+  https = 'https'
 }
 
 export interface IServerConfig {

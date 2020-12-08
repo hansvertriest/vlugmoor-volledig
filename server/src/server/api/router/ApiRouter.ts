@@ -3,13 +3,13 @@ import {
   Application,
   Request,
   Response,
-  Router,
+  Router
 } from 'express';
 import { IConfig, AuthService, Role } from '../../services';
 import {
   HelloController,
   UserController,
-  MetaDataController,
+  MetaDataController
 } from '../controllers';
 
 class ApiRouter {

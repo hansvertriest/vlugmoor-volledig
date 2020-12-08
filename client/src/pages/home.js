@@ -8,7 +8,7 @@ export default () => {
     const data = apiService.findAllMetaData();
 
     console.log(data);
-
+    
     
 
     const title = 'Home page';

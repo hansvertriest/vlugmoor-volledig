@@ -7,7 +7,7 @@ import {
   ServerProtocol,
   IAuthConfig,
   IFacebookConfig,
-  IJwtConfig,
+  IJwtConfig
 } from './config.types';
 
 class Config implements IConfig {
@@ -36,19 +36,19 @@ class Config implements IConfig {
         ServerProtocol[
           (process.env.NODE_SERVER_PROTOCOL ||
             ServerProtocol.http) as keyof typeof ServerProtocol
-        ],
+        ]
     } as IServerConfig;
     this.mongoDBConnection = process.env.MONGODB_CONNECTION;
     this.auth = {
       bcryptSalt: Number(process.env.AUTH_BCRYPT_SALT || 10),
       jwt: {
         secret: process.env.AUTH_JWT_SECRET || 'gdm-nmd',
-        session: Boolean(process.env.AUTH_JWT_SESSION || true),
+        session: Boolean(process.env.AUTH_JWT_SESSION || true)
       },
       facebook: {
         clientId: process.env.AUTH_FACEBOOK_CLIENT_ID,
-        clientSecret: process.env.AUTH_FACEBOOK_CLIENT_SECRET,
-      },
+        clientSecret: process.env.AUTH_FACEBOOK_CLIENT_SECRET
+      }
     };
   }
 }

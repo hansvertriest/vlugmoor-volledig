@@ -9,13 +9,13 @@ class MorganMiddleware {
       (
         tokens: TokenIndexer<Request, Response>,
         req: Request,
-        res: Response,
+        res: Response
       ) => {
         return [
           chalk
             .hex('#ffffff')
             .bold(
-              `${moment(tokens.date(req, res)).format('YYYY-MM-DD hh:mm:ss')}`,
+              `${moment(tokens.date(req, res)).format('YYYY-MM-DD hh:mm:ss')}`
             ),
           chalk.hex('#34ace0').bold(`[${tokens.method(req, res)}]`),
           ':\t',
@@ -23,9 +23,9 @@ class MorganMiddleware {
           chalk.hex('#f78fb3').bold(`[${tokens.status(req, res)}]`),
           chalk.hex('#fffff').bold(`${tokens['response-time'](req, res)}ms`),
           chalk.hex('#fffff').bold(tokens['remote-addr'](req, res)),
-          '',
+          ''
         ].join(' ');
-      },
+      }
     );
     app.use(morganMiddleware);
   }

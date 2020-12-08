@@ -4,14 +4,14 @@ import {
   Application,
   NextFunction,
   Request,
-  Response,
+  Response
 } from 'express';
 
 import { default as Router } from './router';
 import {
   GlobalMiddleware,
   MorganMiddleware,
-  SwaggerMiddleware,
+  SwaggerMiddleware
 } from './middleware';
 import { IAppError } from './utilities';
 import { Environment, ILogger, IConfig, AuthService } from './services';
@@ -50,7 +50,7 @@ class App {
     error: IAppError,
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): void {
     res.status(error.status ? error.status : 500);
 
@@ -78,7 +78,7 @@ class App {
     this.server.on('listening', () => {
       this.logger.info(
         `Server is listening on ${this.config.server.host}:${this.config.server.port}`,
-        {},
+        {}
       );
     });
   }
@@ -92,7 +92,7 @@ class App {
       this.rootPath,
       this.app,
       this.config,
-      this.authService,
+      this.authService
     );
   }
 

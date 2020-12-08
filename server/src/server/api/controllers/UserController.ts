@@ -16,7 +16,7 @@ class UserController {
   public index = async (
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<Response<any>> => {
     try {
       const { limit, skip } = req.query;
@@ -62,13 +62,13 @@ class UserController {
         case 'softdelete':
           user = await User.findByIdAndUpdate(
             { _id: id },
-            { _deletedAt: Date.now() },
+            { _deletedAt: Date.now() }
           );
           break;
         case 'softundelete':
           user = await User.findByIdAndUpdate(
             { _id: id },
-            { _deletedAt: null },
+            { _deletedAt: null }
           );
           break;
       }
@@ -79,7 +79,7 @@ class UserController {
         return res.status(200).json({
           message: `Successful ${mode} the User with id: ${id}!`,
           user,
-          mode,
+          mode
         });
       }
     } catch (err) {
@@ -90,7 +90,7 @@ class UserController {
   signupLocal = async (
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<Response | void> => {
     const { email, password } = req.body;
 
@@ -100,7 +100,7 @@ class UserController {
     }
 
     const newUser: IUser = new User({
-      email: email,
+      email: email
     });
 
     const user: IUser = await newUser.save();
@@ -113,14 +113,14 @@ class UserController {
       role: 'user',
       avatar: user.profile.avatar,
       firstName: user.profile.firstName,
-      lastName: user.profile.lastName,
+      lastName: user.profile.lastName
     });
   };
 
   signInLocal = async (
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> => {
     this.authService.passport.authenticate(
       'local',
@@ -138,9 +138,9 @@ class UserController {
           token: `${token}`,
           strategy: 'local',
           role: user.role,
-          avatar: user.profile.avatar,
+          avatar: user.profile.avatar
         });
-      },
+      }
     )(req, res, next);
   };
 
@@ -154,7 +154,7 @@ class UserController {
         throw new NotFoundError();
       } else {
         const vm = {
-          user,
+          user
         };
         return res.status(200).json(vm);
       }
@@ -173,10 +173,10 @@ class UserController {
         lastName: req.body.profile.lastName,
         role: req.body.role,
         password: req.body.localProvider.password,
-        avatar: req.body.profile.avatar,
+        avatar: req.body.profile.avatar
       };
       const user = await User.findOneAndUpdate({ _id: id }, userUpdate, {
-        new: true,
+        new: true
       }).exec();
 
       if (!user) {
@@ -196,7 +196,7 @@ class UserController {
         lastName: req.body.profile.lastName,
         role: req.body.role,
         password: req.body.localProvider.password,
-        avatar: req.body.profile.avatar,
+        avatar: req.body.profile.avatar
       });
       const user = await userCreate.save();
       return res.status(201).json(user);

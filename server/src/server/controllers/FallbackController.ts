@@ -6,7 +6,7 @@ class FallbackController {
   public index(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Response<any> | void {
     next(new NotFoundError());
   }
