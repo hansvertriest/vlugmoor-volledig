@@ -9,8 +9,9 @@ canvas {
     box-shadow: 3px 5px 10px 0px rgba(0,0,0,0.75);
     margin-top: 20px;
     // DEZE WEG HALEN ALS ER NOG DINGEN ONDER KOMEN !!!!
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 }
+
 *{
     margin: 0;
     padding: 0;
@@ -77,15 +78,86 @@ label{
     }
 
     .custom-upload{
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
     }
     .btn-submit{
         button{
             width: 200px;
         }  
+    }
+}
+
+.video-control-container {
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: auto;
+    margin-bottom: 50px;
+
+    .video-control {
+
+        flex-grow: 0;
+        display: flex;
+        align-items: center;
+        div {
+            border-radius: 50%;
+            padding: 10px;
+            height: 40px;
+            width: 40px;
+            
+            cursor: pointer;
+        }
+        #play-pause {
+            height: 40px;
+            width: 40px;
+        }
+        #previous, #next {
+            height: 20px;
+            width: 20px;
+        }
+    }
+
+    .timeline-container {
+        padding: 5px;
+        height: 5px;
+        width: 500px;
+        cursor: pointer;
+        .timeline {
+            flex-grow: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #d1d1d1;
+            #timeline-progress {
+                background-color: #FF664F;
+                height: 100%;
+            }
+            #timeline-progress::after {
+                content: "";
+                border-radius: 50%;
+                height: 20px;
+                width: 20px;
+                background-color: #FF664F;
+            }
+        }
+    }
+
+    #screenshot {
+        padding: 15px;
+        height: 40px;
+        width: 40px;
+        
+        cursor: pointer;
+    }
+
+    .info {
+        text-align: center;
+        flex-grow: 1;
+        width: 100%;
     }
 }
 

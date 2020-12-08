@@ -82,20 +82,35 @@ export default class Controls {
         this.registerPlayPause('play-pause');
         this.registerNext('next');
         this.registerPrevious('previous');
-        this.registerTimepointInput('timepoint-input');
+        this.registerTimepointInput('timepoint-input')
         this.registerSpeedInput('speed-input');
         
         this.subscribeAnimationProgress((simInfo) => {
+            // old time line
             const timepoint = document.getElementById('current-timepoint');
-            timepoint.innerHTML = Math.round(simInfo.timePoint * this.simulation.timePointInterval);
+            timepoint.innerHTML = (simInfo.timePoint * this.simulation.timePointInterval).toFixed(1);
 
             const fps = document.getElementById('current-fps');
             fps.style.color =(this.simCtx.fps - 3 > this.simulation.calculatedFPS || this.simCtx.fps + 3 < this.simulation.calculatedFPS) ? "red" : "black";
             fps.innerHTML = simInfo.calculatedFPS;
 
+            // const timepointInput = document.getElementById('timepoint-input');
+            // timepointInput.placeholder = `${simInfo.timePoint}`;
+
             const speed = document.getElementById('current-speed');
             speed.innerHTML = Math.round(simInfo.speed);
+
+            const progress = document.getElementById('timeline-progress');
+            progress.style.width = `${simInfo.timePointInPercentage*100}%`;
         })
+
+        document.getElementById('timeline-container').onclick = (e) => {
+            const xCoord = e.offsetX;
+            const fullWidth = e.target.offsetWidth;
+            this.setAnimationProgressInPercentage(xCoord/fullWidth);
+            console.log(e);
+        }
+        
     }
 
     registerPlayPause(buttonId) {
@@ -108,6 +123,7 @@ export default class Controls {
     registerNext(buttonId) {
         const bttn = document.getElementById(buttonId);
         bttn.onclick = () => {
+            console.log('dd');
             this.setNextFrame();
         };
     }
