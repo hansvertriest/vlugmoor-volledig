@@ -19,7 +19,6 @@ export default () => {
         const controls = new Controls(simulation);
         controls.registerBasicNav();
         controls.registerOutlineSwitch('switch-outline');
-        controls.registerRestartButton('restart-bttn');
         controls.registerTimeLine('...');
         controls.registerScreenshotBttn('screenshot');
 
@@ -35,7 +34,10 @@ export default () => {
         
         // create data object
         const data = new Data(files.metaData);
-        data.addTimePoints(files.coords, files.forces, shipTranslations);
+        data.addTimePoints(files.coords, files.forces, shipTranslations)
+            .catch(() => {
+                alert("De opgegeven data kon niet correct worden verwerkt. Probeer het opnieuw")
+            });
         console.log(data.get())
         
         // SIMULATION
@@ -80,6 +82,47 @@ export default () => {
     const coordsInput = document.getElementById('coords-input');
     const submit = document.getElementById('submit');
 
+    // on upload change label
+    xlsxInput.addEventListener('change', (e) => {
+        const el = document.getElementById('metadata-input-label');
+        const bg = document.getElementById('metadata-input-bg');
+        if (e.target.files[0]) {
+            el.innerHTML = e.target.files[0].name;
+            el.parentElement.classList.add('custom-button--uploaded');
+            bg.style.width = "100%";
+        } else {
+            el.parentElement.classList.remove('custom-button--uploaded');
+            el.innerHTML = "Bestand kiezen";
+            bg.style.width = "0";
+        }
+    }); 
+    forcesInput.addEventListener('change', (e) => {
+        const el = document.getElementById('forces-input-label');
+        const bg = document.getElementById('forces-input-bg');
+        if (e.target.files[0]) {
+            el.innerHTML = e.target.files[0].name;
+            el.parentElement.classList.add('custom-button--uploaded');
+            bg.style.width = "100%";
+        } else {
+            el.parentElement.classList.remove('custom-button--uploaded');
+            el.innerHTML = "Bestand kiezen";
+            bg.style.width = "0";
+        }
+    }); 
+    coordsInput.addEventListener('change', (e) => {
+        const el = document.getElementById('coords-input-label');
+        const bg = document.getElementById('coords-input-bg');
+        if (e.target.files[0]) {
+            el.innerHTML = e.target.files[0].name;
+            el.parentElement.classList.add('custom-button--uploaded');
+            bg.style.width = "100%";
+        } else {
+            el.parentElement.classList.remove('custom-button--uploaded');
+            el.innerHTML = "Bestand kiezen";
+            bg.style.width = "0";
+        }
+    }); 
+
     // when files are submitted
     submit.addEventListener('click', (e) => {
         const files = {};
@@ -87,18 +130,22 @@ export default () => {
         // read files
         const readerXSLX = new FileReader();
         readerXSLX.onload = (e) => {
-            const data = e.target.result;
+            try {
+                const data = e.target.result;
 
-            const file = XLSX.read(data, {type: 'binary'});
+                const file = XLSX.read(data, {type: 'binary'});
 
-            // parse xlsx to formatted MetaData object
-            const metaData = new MetaData(file).get();
+                // parse xlsx to formatted MetaData object
+                const metaData = new MetaData(file).get();
 
-            // add to files object
-            files.metaData = metaData;
-
-            // check if all filess have been loaded
-            filesHaveLoaded(simulation, files)
+                // add to files object
+                files.metaData = metaData;
+    
+                // check if all filess have been loaded
+                filesHaveLoaded(simulation, files)
+            } catch {
+                alert("Er trad een fout op bij het inlezen van de metadata.")
+            }
         }
         const readerForces = new FileReader();
         readerForces.onload = (e) => {
@@ -127,8 +174,13 @@ export default () => {
             filesHaveLoaded(simulation, files)
 
         }
-        readerXSLX.readAsBinaryString(xlsxInput.files[0])
-        readerForces.readAsBinaryString(forcesInput.files[0])
-        readerCoords.readAsBinaryString(coordsInput.files[0])
+
+        try {
+            readerXSLX.readAsBinaryString(xlsxInput.files[0])
+            readerForces.readAsBinaryString(forcesInput.files[0])
+            readerCoords.readAsBinaryString(coordsInput.files[0])
+        } catch {
+            alert('Er ging iets fout bij het inladen van de bestanden. Probeer het opnieuw.');
+        }
     });
 };

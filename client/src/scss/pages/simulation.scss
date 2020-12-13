@@ -61,7 +61,6 @@ label{
 
 .input-container{
     div{
-
         margin-bottom: 10px;
     }
     button{
@@ -82,7 +81,34 @@ label{
         display: inline-block;
         padding: 6px 12px;
         cursor: pointer;
+        position: relative;
+        transition: color 0.5s;
+        min-width:200px; 
+
+        > div {
+            margin: 0;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        > span {
+            width: 0;
+            height: 100%;
+            background-color: black;
+            position: absolute;
+            top:0;
+            left:0;
+            z-index: -1;
+            transition: all 0.5s ease-out;
+        }
     }
+
+    .custom-button--uploaded {
+        color: white;
+    }
+    
     .btn-submit{
         button{
             width: 200px;

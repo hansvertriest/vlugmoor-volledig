@@ -65,14 +65,6 @@ export default class Controls {
             this.switchOutlineDisplay();
         };
     }
-
-    registerRestartButton(buttonId) {
-        const bttn = document.getElementById(buttonId);
-        bttn.onclick = () => {
-            this.setAnimationProgressInPercentage(0.001);
-        };
-    }
-
     /*
         Register Timeline
     */
@@ -137,15 +129,15 @@ export default class Controls {
 
     registerTimepointInput(buttonId) {
         const el = document.getElementById(buttonId);
-        el.onblur = (e) => {
+        el.onchange = (e) => {
             this.setAnimationProgress(Number(e.target.value));
         };
     }
 
     registerSpeedInput(buttonId) {
         const el = document.getElementById(buttonId);
-        el.onblur = (e) => {
-            this.setSpeed(Number(e.target.value));
+        el.onchange = (e) => {
+            if (e.target.value != '') this.setSpeed(Number(e.target.value));
         };
     }
 
@@ -186,15 +178,17 @@ export default class Controls {
     }
 
     setSpeed(speed) {
-        const animationTimeInterval = speed/(this.simCtx.fps*this.simulation.timePointInterval);
-
-        // if animationInterval < 1 => less than one timePoint per frame
-        if (animationTimeInterval < 1 ) {
-            this.simulation.setFPS(10)
-            this.simCtx.setAnimationTimeInterval(1);
-        } else {
-            this.simulation.setFPS(this.simCtx.initFPS)
-            this.simCtx.setAnimationTimeInterval(speed/(this.simCtx.fps*this.simulation.timePointInterval));
+        if (speed >= 1) {
+            const animationTimeInterval = speed/(this.simCtx.fps*this.simulation.timePointInterval);
+    
+            // if animationInterval < 1 => less than one timePoint per frame
+            if (animationTimeInterval < 1 ) {
+                this.simulation.setFPS(10)
+                this.simCtx.setAnimationTimeInterval(1);
+            } else {
+                this.simulation.setFPS(this.simCtx.initFPS)
+                this.simCtx.setAnimationTimeInterval(speed/(this.simCtx.fps*this.simulation.timePointInterval));
+            }
         }
     }
 

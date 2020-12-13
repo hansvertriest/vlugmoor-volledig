@@ -1,17 +1,39 @@
-import container400x63BigLeft from '../../assets/images/container_400x63_dirLeft.png';
-import container400x63BigRight from '../../assets/images/container_400x63_dirRight.png';
-import container400x63BigLeftOutline from '../../assets/images/container_400x63_dirLeft_outline.png';
-import container400x63BigRightOutline from '../../assets/images/container_400x63_dirRight_outline.png';
+import containerLargeLeft from '../../assets/images/ships/container/container_large_dirLeft.png';
+import containerLargeRight from '../../assets/images/ships/container/container_large_dirRight.png';
+import containerLargeLeftOutline from '../../assets/images/ships/container/container_large_dirLeft_outline.png';
+import containerLargeRightOutline from '../../assets/images/ships/container/container_large_dirRight_outline.png';
+import containerSmallLeft from '../../assets/images/ships/container/container_small_dirLeft.png';
+import containerSmallRight from '../../assets/images/ships/container/container_small_dirRight.png';
+import containerSmallLeftOutline from '../../assets/images/ships/container/container_small_dirLeft_outline.png';
+import containerSmallRightOutline from '../../assets/images/ships/container/container_small_dirRight_outline.png';
 
-import tanker280x48BigLeft from '../../assets/images/tanker_280x48_dirLeft.png';
-import tanker280x48BigRight from '../../assets/images/tanker_280x48_dirRight.png';
-import tanker280x48BigLeftOutline from '../../assets/images/tanker_280x48_dirLeft_outline.png';
-import tanker280x48BigRightOutline from '../../assets/images/tanker_280x48_dirRight_outline.png';
+import tankerLargeLeft from '../../assets/images/ships/tanker/oiltanker_large_dirLeft.png';
+import tankerLargeRight from '../../assets/images/ships/tanker/oiltanker_large_dirRight.png';
+import tankerLargeLeftOutline from '../../assets/images/ships/tanker/oiltanker_large_dirLeft_outline.png';
+import tankerLargeRightOutline from '../../assets/images/ships/tanker/oiltanker_large_dirRight_outline.png';
+import tankerSmallLeft from '../../assets/images/ships/tanker/oiltanker_small_dirLeft.png';
+import tankerSmallRight from '../../assets/images/ships/tanker/oiltanker_small_dirRight.png';
+import tankerSmallLeftOutline from '../../assets/images/ships/tanker/oiltanker_small_dirLeft_outline.png';
+import tankerSmallRightOutline from '../../assets/images/ships/tanker/oiltanker_small_dirRight_outline.png';
 
-import roroBigLeft from '../../assets/images/roro_dirLeft.png';
-import roroBigRight from '../../assets/images/roro_dirRight.png';
-import roroBigLeftOutline from '../../assets/images/roro_dirLeft_outline.png';
-import roroBigRightOutline from '../../assets/images/roro_dirRight_outline.png';
+import bulkcarrierLeft from '../../assets/images/ships/bulkcarrier/bulkcarrier_dirLeft.png';
+import bulkcarrierRight from '../../assets/images/ships/bulkcarrier/bulkcarrier_dirRight.png';
+import bulkcarrierLeftOutline from '../../assets/images/ships/bulkcarrier/bulkcarrier_dirLeft_outline.png';
+import bulkcarrierRightOutline from '../../assets/images/ships/bulkcarrier/bulkcarrier_dirRight_outline.png';
+
+import gascarrierPrismaLeft from '../../assets/images/ships/gascarrier/gascarrier_prismatanks_dirLeft.png';
+import gascarrierPrismaRight from '../../assets/images/ships/gascarrier/gascarrier_prismatanks_dirRight.png';
+import gascarrierPrismaLeftOutline from '../../assets/images/ships/gascarrier/gascarrier_prismatanks_dirLeft_outline.png';
+import gascarrierPrismaRightOutline from '../../assets/images/ships/gascarrier/gascarrier_prismatanks_dirRight_outline.png';
+import gascarrierSphericalLeft from '../../assets/images/ships/gascarrier/gascarrier_sphericaltanks_dirLeft.png';
+import gascarrierSphericalRight from '../../assets/images/ships/gascarrier/gascarrier_sphericaltanks_dirRight.png';
+import gascarrierSphericalLeftOutline from '../../assets/images/ships/gascarrier/gascarrier_sphericaltanks_dirLeft_outline.png';
+import gascarrierSphericalRightOutline from '../../assets/images/ships/gascarrier/gascarrier_sphericaltanks_dirRight_outline.png';
+
+import roroBigLeft from '../../assets/images/ships/roro/roro_dirLeft.png';
+import roroBigRight from '../../assets/images/ships/roro/roro_dirRight.png';
+import roroBigLeftOutline from '../../assets/images/ships/roro/roro_dirLeft_outline.png';
+import roroBigRightOutline from '../../assets/images/ships/roro/roro_dirRight_outline.png';
 
 export default class Ship {
     constructor(simCtx, type, width, length, distanceFromKaai, paramsPassingShip={}) {
@@ -61,20 +83,51 @@ export default class Ship {
     }
 
     setImageSrcs() {
-        if (this.type.trim() === 'container') {
-            this.imageStaticLeft.src = container400x63BigLeft;
-            this.imageStaticRight.src = container400x63BigRight;
-            this.imageStaticOutlineLeft.src = container400x63BigLeftOutline;
-            this.imageStaticOutlineRight.src = container400x63BigRightOutline;
-        } else if (this.type.trim() === 'tanker') {
-        //     this.imageStaticLeft.src = tanker280x48BigLeft;
-        //     this.imageStaticRight.src = tanker280x48BigRight;
-        //     this.imageStaticOutlineLeft.src = tanker280x48BigLeftOutline;
-        //     this.imageStaticOutlineRight.src = tanker280x48BigRightOutline;
+        if (this.type.trim() === 'container_large') {
+            this.imageStaticLeft.src = containerLargeLeft;
+            this.imageStaticRight.src = containerLargeRight;
+            this.imageStaticOutlineLeft.src = containerLargeLeftOutline;
+            this.imageStaticOutlineRight.src = containerLargeRightOutline;
+        } else if (this.type.trim() === 'container_small') {
+            this.imageStaticLeft.src = containerSmallLeft;
+            this.imageStaticRight.src = containerSmallRight;
+            this.imageStaticOutlineLeft.src = containerSmallLeftOutline;
+            this.imageStaticOutlineRight.src = containerSmallRightOutline;
+        } else if (this.type.trim() === 'oiltanker_large') {
+            this.imageStaticLeft.src = tankerLargeLeft;
+            this.imageStaticRight.src = tankerLargeRight;
+            this.imageStaticOutlineLeft.src = tankerLargeLeftOutline;
+            this.imageStaticOutlineRight.src = tankerLargeRightOutline;
+        }  else if (this.type.trim() === 'oiltanker_small') {
+            this.imageStaticLeft.src = tankerSmallLeft;
+            this.imageStaticRight.src = tankerSmallRight;
+            this.imageStaticOutlineLeft.src = tankerSmallLeftOutline;
+            this.imageStaticOutlineRight.src = tankerSmallRightOutline;
+        }  else if (this.type.trim() === 'bulkcarrier') {
+            this.imageStaticLeft.src = bulkcarrierLeft;
+            this.imageStaticRight.src = bulkcarrierRight;
+            this.imageStaticOutlineLeft.src = bulkcarrierLeftOutline;
+            this.imageStaticOutlineRight.src = bulkcarrierRightOutline;
+        }  else if (this.type.trim() === 'gascarrier_prismatanks') {
+            this.imageStaticLeft.src = gascarrierPrismaLeft;
+            this.imageStaticRight.src = gascarrierPrismaRight;
+            this.imageStaticOutlineLeft.src =gascarrierPrismaLeftOutline;
+            this.imageStaticOutlineRight.src = gascarrierPrismaRightOutline;
+        }  else if (this.type.trim() === 'gascarrier_sphericaltanks') {
+            this.imageStaticLeft.src = gascarrierSphericalLeft;
+            this.imageStaticRight.src = gascarrierSphericalRight;
+            this.imageStaticOutlineLeft.src =gascarrierSphericalLeftOutline;
+            this.imageStaticOutlineRight.src = gascarrierSphericalRightOutline;
+        } else if (this.type.trim() === 'roro') {
             this.imageStaticLeft.src = roroBigLeft;
             this.imageStaticRight.src = roroBigRight;
             this.imageStaticOutlineLeft.src = roroBigLeftOutline;
             this.imageStaticOutlineRight.src = roroBigRightOutline;
+        } else {
+            this.imageStaticLeft.src = containerLargeLeft;
+            this.imageStaticRight.src = containerLargeRight;
+            this.imageStaticOutlineLeft.src = containerLargeLeftOutline;
+            this.imageStaticOutlineRight.src = containerLargeRightOutline;
         }
     }
 
