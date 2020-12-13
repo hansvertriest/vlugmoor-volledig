@@ -13,7 +13,7 @@ export default () => {
     // render page
     const title = 'Simulation page';
     App.render(simulationTemplate({title}));
-    
+    let serverData;
     const appInit = async (simulation, files) => {
         // create Controls object
         const controls = new Controls(simulation);
@@ -39,6 +39,7 @@ export default () => {
                 alert("De opgegeven data kon niet correct worden verwerkt. Probeer het opnieuw")
             });
         console.log(data.get())
+        serverData = data.get();
         
         // SIMULATION
         simulation.addData(data);
@@ -81,6 +82,7 @@ export default () => {
     const forcesInput = document.getElementById('forces-input');
     const coordsInput = document.getElementById('coords-input');
     const submit = document.getElementById('submit');
+    const upload = document.getElementById('upload');
 
     // on upload change label
     xlsxInput.addEventListener('change', (e) => {
@@ -183,4 +185,11 @@ export default () => {
             alert('Er ging iets fout bij het inladen van de bestanden. Probeer het opnieuw.');
         }
     });
+
+    upload.addEventListener('click', () => {
+        // Handle data
+        console.log(serverData);
+    });
+
+
 };

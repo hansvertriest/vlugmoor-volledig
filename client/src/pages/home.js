@@ -6,9 +6,10 @@ const homeTemplate = require('../templates/home.hbs');
 export default () => {
     const apiService = new ApiService;
     const data = apiService.findAllMetaData();
+    data.then(
+        metaData => console.log(metaData)
+    );
 
-    console.log(data);
-    
     
 
     const title = 'Home page';
