@@ -8,10 +8,26 @@ export default () => {
     App.render(homeTemplate({title}));
 
     let documentContainer = document.getElementById('container-home');
-    
+
+    function getShipImage (imgName) {
+        if (imgName === 'bulkcarrier') {
+            return '../assets/images/ships/bulkcarrier/bulkcarrier_dirLeft.png';
+        } else if (imgName === 'container') {
+            return '../assets/images/ships/container/container_large_dirLeft.png';
+        } else if (imgName === 'gascarrier') {
+            return '../assets/images/ships/gascarrier/gascarrier_prismatanks_dirLeft.png';
+        } else if (imgName === 'roro') {
+            return '../assets/images/ships/roro/roro_dirLeft.png';
+        } else if (imgName === 'oiltanker_large') {
+            return '../assets/images/ships/tanker/oiltanker_large_dirLeft.png';
+        } else if (imgName === 'oiltanker_small') {
+            return '../assets/images/ships/tanker/oiltanker_small_dirLeft.png';
+        }
+    };
+
     const showMetaData = (metaData) => {
         metaData.forEach(data => {
-            console.log(data.description); 
+            console.log(data.picture);
     
             let container = document.createElement('div');
             let image = document.createElement('img');
@@ -21,11 +37,13 @@ export default () => {
             container.setAttribute('class', 'card col-12 col-sm-12 col-md-6 col-lg-4');
             
             documentContainer.appendChild(container);
+            container.appendChild(image);
             container.appendChild(title);
             container.appendChild(description);
 
             title.innerHTML = data.title;
             description.innerHTML = data.description;
+            image.src = getShipImage(data.picture);
             
             documentContainer.appendChild(container);
         })
