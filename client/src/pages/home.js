@@ -34,7 +34,7 @@ export default () => {
             let title = document.createElement('h3');
             let description = document.createElement('p');
 
-            container.setAttribute('class', 'card col-12 col-sm-12 col-md-6 col-lg-4');
+            container.setAttribute('class', 'card');
             
             documentContainer.appendChild(container);
             container.appendChild(image);

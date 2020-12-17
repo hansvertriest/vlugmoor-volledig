@@ -5,11 +5,13 @@ body{
 .container-home{
     margin: 20px;
     .row-card-container{
-        display: flex;
+        // display: flex;
         justify-content: space-around;
     }
     .card{
         margin: 10vh 2.5vw;
+        border: 0;
+        background-color: transparent;
         img{
             width: 15vw;
             padding: 7.5vh 2.5vw;
@@ -22,6 +24,7 @@ body{
             font-size: 20px;
             text-transform: uppercase;
             font-weight: 400;
+            margin-top: 10px;
         }
         p{
             font-family: 'Roboto', sans-serif;
@@ -29,6 +32,7 @@ body{
             color: #FF664F;
             font-weight: 400;
             font-size: 10px;
+            width: 15vw;
         }
     }
 }
