@@ -27,7 +27,6 @@ export default () => {
 
     const showMetaData = (metaData) => {
         metaData.forEach(data => {
-            console.log(data.picture);
     
             let container = document.createElement('div');
             let image = document.createElement('img');

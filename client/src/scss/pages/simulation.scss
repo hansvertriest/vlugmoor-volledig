@@ -202,3 +202,20 @@ label{
     display: flex;
     justify-content: space-around;
 }
+
+.upload-container{
+    //text-align: center;
+    .btn-submit{
+        button{
+            width: 200px;
+            border: none;
+            background-color: black;
+            color: white;
+            font-family: "Roboto", sans-serif;
+            font-size: 20px;
+            border-radius: 10px;
+            padding: 10px 20px;
+
+        }  
+    }
+}

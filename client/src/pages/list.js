@@ -2,13 +2,18 @@ import App from '../lib/App';
 import ApiService from '../lib/api/ApiService';
 
 const listTemplate = require('../templates/list.hbs');
+/*
+ *
+ * @TODO: Fix Dates 
+ * @TODO: link to the right page when clicking on LI
+ * @TODO: fix image
+ */
 
 export default () => {
     const title = 'Simulation list page';
     App.render(listTemplate({title}));
 
     let documentContainer = document.getElementById('list-content');
-    console.log(documentContainer);
 
     function getShipImage (imgName) {
         if (imgName === 'bulkcarrier') {
@@ -30,29 +35,41 @@ export default () => {
         metaData.forEach(data => {
     
             let container = document.createElement('div');
-            // let image = document.createElement('img');
+            let image = document.createElement('img');
             let date = document.createElement('p');
             let divider1 = document.createElement('p');
             let divider2 = document.createElement('p');
-
+            let divider3 = document.createElement('p');
+            let link = document.createElement('a');
             let title = document.createElement('h3');
             let description = document.createElement('p');
 
             container.setAttribute('class', 'list-item');
             
             documentContainer.appendChild(container);
-            // container.appendChild(image);
+            
             container.appendChild(date);
             container.appendChild(divider1);
             container.appendChild(title);
             container.appendChild(divider2);
             container.appendChild(description);
+            container.appendChild(divider3);
+            link.appendChild(image);
+            container.appendChild(link);
+            
 
+
+            let dateObject = new Date(data.date).toLocaleDateString("be-BE",{ year: 'numeric', month: '2-digit', day: '2-digit' })
+            
+            date.innerHTML = dateObject;
             title.innerHTML = data.title;
             description.innerHTML = data.description;
             divider1.innerHTML = '|';
             divider2.innerHTML = '|';
-            // image.src = getShipImage(data.picture);
+            divider3.innerHTML = '|';
+            image.src = '../assets/icons/edit-regular.svg';
+            link.href = '#';
+
             
             documentContainer.appendChild(container);
         })

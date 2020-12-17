@@ -2,6 +2,7 @@ import App from '../lib/App';
 import { Data, MetaData } from '../simulation/dataClasses';
 import { Simulation } from '../simulation/simulationClasses';
 import Controls from '../simulation/simulationClasses/Controls';
+import ApiService from '../lib/api/ApiService';
 
 const XLSX = require('xlsx');
 
@@ -187,7 +188,8 @@ export default () => {
     });
 
     upload.addEventListener('click', () => {
-        // Handle data
+        let apiService = new ApiService();
+        
         console.log(serverData);
     });
 

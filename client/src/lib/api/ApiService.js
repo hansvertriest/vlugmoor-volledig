@@ -18,5 +18,20 @@ export default class ApiService {
         return response.json();
     }
 
+    async storeMetaData (metaData) {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(metaData)
+        };
+
+        let url = `${this.BASE_URL}/metadata`;
+        const response = await fetch(url, options);
+        return response.json();
+    }
+
 
 }
