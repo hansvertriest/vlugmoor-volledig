@@ -5,12 +5,15 @@ import {
   Response,
   Router
 } from 'express';
+import { Data } from 'src/server/models/mongoose';
 import { IConfig, AuthService, Role } from '../../services';
 import {
   HelloController,
   UserController,
-  MetaDataController
+  MetaDataController,
+  DataController
 } from '../controllers';
+
 
 class ApiRouter {
   public router: Router;
@@ -18,6 +21,7 @@ class ApiRouter {
   private helloController: HelloController;
   private userController: UserController;
   private metaDataController: MetaDataController;
+  private dataController: DataController;
 
   // config / Authentication service
 
@@ -38,6 +42,7 @@ class ApiRouter {
     this.helloController = new HelloController();
     this.userController = new UserController(this.config, this.authService);
     this.metaDataController = new MetaDataController();
+    this.dataController = new DataController();
   }
 
   private registerRoutes(): void {
@@ -56,11 +61,21 @@ class ApiRouter {
      */
     this.router.get('/metadata', this.metaDataController.index);
     this.router.get('/metadata/create', this.metaDataController.create);
-    this.router.get('metadata/:id', this.metaDataController.show);
+    this.router.get('/metadata/:id', this.metaDataController.show);
     this.router.post('/metadata', this.metaDataController.store);
     this.router.get('/metadata/:id/edit', this.metaDataController.edit);
     this.router.put('/metadata/:id', this.metaDataController.update);
     this.router.delete('/metadata/:id', this.metaDataController.destroy);
+    /*
+     * Data routes
+     */
+    this.router.get('/data', this.dataController.index);
+    this.router.get('/data/create', this.dataController.create);
+    this.router.get('/data/:id', this.dataController.show);
+    this.router.post('/data', this.dataController.store);
+    this.router.get('/data/:id/edit', this.dataController.edit);
+    this.router.put('/data/:id', this.dataController.update);
+    this.router.delete('/data/:id', this.dataController.destroy);
 
     this.router.post('/auth/signin/', this.userController.signInLocal);
     this.router.post('/auth/signup/', this.userController.signupLocal);

@@ -18,7 +18,14 @@ export default class ApiService {
         return response.json();
     }
 
-    async storeMetaData (metaData) {
+    async storeMetaData (title, description, date, picture, _dataId) {
+        const metaData = {
+            title: title, 
+            description: description,
+            date: date,
+            picture: picture,
+            _dataId: _dataId, 
+        }
         const options = {
             method: 'POST',
             headers: {
@@ -31,6 +38,22 @@ export default class ApiService {
         let url = `${this.BASE_URL}/metadata`;
         const response = await fetch(url, options);
         return response.json();
+    }
+
+    async storeData (data) {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+
+        let url = `${this.BASE_URL}/data`;
+        const response = await fetch(url, options).then((result) => result.json());
+        console.log(response);
+        return response;
     }
 
 

@@ -37,6 +37,7 @@
     "webpack-dev-server": "^3.11.0",
     "webpack-serve": "^3.2.0"
   },
+  "proxy": "http://localhost:8080",
   "scripts": {
     "dev": "webpack-dev-server --mode development --open",
     "build": "webpack --mode production --config ./webpack.config.js ",

@@ -189,8 +189,18 @@ export default () => {
 
     upload.addEventListener('click', () => {
         let apiService = new ApiService();
+        let data = {data: serverData};
+
+        let title = document.getElementById('title-field').value;
+        let description = document.getElementById('description-field').value;
+        let date = document.getElementById('date-field').value;
+        let picture = serverData.caseMetaData.caseShip.type;
+
+
+        apiService.storeData(data)
+        .then((response) => console.log(response) );//apiService.storeMetaData(title, description, date, picture, response.id));
+
         
-        console.log(serverData);
     });
 
 

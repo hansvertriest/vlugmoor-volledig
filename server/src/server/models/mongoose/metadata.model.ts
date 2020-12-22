@@ -1,6 +1,7 @@
 import { default as mongoose, Schema, Document, PaginateModel } from 'mongoose';
 import { default as mongoosePaginate } from 'mongoose-paginate';
 import { default as slug } from 'slug';
+import { IData } from './data.model';
 import { IUser } from './user.model';
 
 interface IMetaData extends Document {
@@ -16,6 +17,7 @@ interface IMetaData extends Document {
   _modifiedAt: number;
   _deletedAt: number;
 
+  _dataId: IData['_id'];
   _userId: IUser['_id'];
   slugify(): void;
 }
@@ -67,6 +69,11 @@ const metaDataSchema: Schema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: false
+    },
+    _dataId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Data',
+        required: false
     }
   },
   {
@@ -90,12 +97,27 @@ metaDataSchema.virtual('id').get(function(this: IMetaData) {
   return this._id;
 });
 
+/*
+metaDataSchema.virtual('id').get(function(this: IData) {
+    return this._id;
+});
+*/
+
+
 metaDataSchema.virtual('user', {
   ref: 'User',
   localField: '_userId',
   foreignField: '_id',
   justOne: false
 });
+/*
+metaDataSchema.virtual('data', {
+    ref: 'Data',
+    localField: '_dataId',
+    foreignField: '_id',
+    justOne: false
+  });
+*/
 
 metaDataSchema.plugin(mongoosePaginate);
 const MetaData = mongoose.model<IMetaData, IMetaDataModel>(
