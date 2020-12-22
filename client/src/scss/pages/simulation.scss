@@ -196,15 +196,20 @@ label{
     label{
         margin-right: 10px;
     }
+
 }
 
 .input-control-container{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    margin: 0 10vw 0 10vw;
 }
 
 .upload-container{
-    //text-align: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10vw 0 10vw;
+
     .btn-submit{
         button{
             width: 200px;
@@ -218,4 +223,15 @@ label{
 
         }  
     }
+
+    .upload-fields{
+        div{
+            margin-top: 15px;
+            input{
+                width: 496px;
+            }
+        }
+    }
+
 }
+

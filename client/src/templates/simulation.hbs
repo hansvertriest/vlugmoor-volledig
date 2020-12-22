@@ -56,15 +56,15 @@
 
     <div class="controls-container">
         <div>
-            <label>Jump to</label>
+            <label>Jump to:</label>
             <input type="number" id="timepoint-input" value="0" step="100">
         </div>
         <div>
-            <label>Speed: <span id="current-speed"></span></label>
+            <label>Speed:<span id="current-speed"></span></label>
             <input type="number" id="speed-input" value="0">
         </div>
         <div>
-            <label>Outline</label>
+            <label>Outline:</label>
             <input type="checkbox" id="switch-outline">
         </div>
     </div>
@@ -74,14 +74,22 @@
     <div class="btn-submit">
         <button type="button" id="upload">Upload to server</button>
     </div>
-    <div>
-        <label for="title">Titel</label>
-        <input type="text">
-            
-        <label for="title">Beschrijving</label>
-        <textarea type='text'>
-
-        </textarea>
+    <div class="upload-fields">
+        <label for="title">Title:</label>
+        <div>
+            <input type="text">
+        </div>
+        <div>
+            <label for="title">Description:</label>
+        </div>
+        <div>
+            <textarea rows="6" cols="60" type='text'>
+            </textarea>
+        </div>
+        <label for="title">Date:</label>
+        <div>
+            <input type="date">
+        </div>
     </div>
 </div>
 
