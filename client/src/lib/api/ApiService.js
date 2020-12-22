@@ -24,7 +24,7 @@ export default class ApiService {
             description: description,
             date: date,
             picture: picture,
-            _dataId: _dataId, 
+            _dataId: _dataId
         }
         const options = {
             method: 'POST',

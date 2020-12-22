@@ -17,7 +17,7 @@ interface IMetaData extends Document {
   _modifiedAt: number;
   _deletedAt: number;
 
-  _dataId: IData['_id'];
+  _dataId: string;
   _userId: IUser['_id'];
   slugify(): void;
 }
@@ -71,9 +71,8 @@ const metaDataSchema: Schema = new Schema(
       required: false
     },
     _dataId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Data',
-        required: false
+      type: String,
+      required: true
     }
   },
   {
@@ -92,17 +91,16 @@ metaDataSchema.pre<IMetaData>('validate', function(next) {
   }
   return next();
 });
-
+/*
 metaDataSchema.virtual('id').get(function(this: IMetaData) {
   return this._id;
 });
 
-/*
+
 metaDataSchema.virtual('id').get(function(this: IData) {
     return this._id;
 });
 */
-
 
 metaDataSchema.virtual('user', {
   ref: 'User',

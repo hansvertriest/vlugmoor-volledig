@@ -1,7 +1,6 @@
 import { default as http, createServer, Server } from 'http';
 import {
-  default as 
-  express,
+  default as express,
   Application,
   NextFunction,
   Request,

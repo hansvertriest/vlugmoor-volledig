@@ -14,7 +14,6 @@ import {
   DataController
 } from '../controllers';
 
-
 class ApiRouter {
   public router: Router;
 

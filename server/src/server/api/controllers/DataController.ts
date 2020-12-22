@@ -13,10 +13,10 @@ class DataController {
 
       if (limit && skip) {
         const options = {
-          limit:  parseInt(limit, 10) || 10,
-          page:  parseInt(skip, 10) || 1,
+          limit: parseInt(limit, 10) || 10,
+          page: parseInt(skip, 10) || 1,
           sort: { _createdAt: -1 },
-          populate: ['metaData'],
+          populate: ['metaData']
         };
         datas = await Data.paginate({}, options);
       } else {
@@ -34,8 +34,6 @@ class DataController {
       next(err);
     }
   };
-
-
 
   show = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -115,13 +113,9 @@ class DataController {
       const dataUpdate = {
         data: req.body.data
       };
-      const data = await Data.findOneAndUpdate(
-        { _id: id },
-        dataUpdate,
-        {
-          new: true
-        }
-      ).exec();
+      const data = await Data.findOneAndUpdate({ _id: id }, dataUpdate, {
+        new: true
+      }).exec();
 
       if (!data) {
         throw new NotFoundError();
@@ -138,7 +132,7 @@ class DataController {
         data: req.body.data
       });
       const data = await dataCreate.save();
-      return res.status(201).json({id : data._id});
+      return res.status(201).json({ id: data._id });
     } catch (err) {
       next(err);
     }

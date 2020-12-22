@@ -198,9 +198,7 @@ export default () => {
 
 
         apiService.storeData(data)
-        .then((response) => console.log(response) );//apiService.storeMetaData(title, description, date, picture, response.id));
-
-        
+        .then((response) => apiService.storeMetaData(title, description, date, picture, toString(response.id)));
     });
 
 

@@ -12,7 +12,7 @@ export default () => {
     function getShipImage (imgName) {
         if (imgName === 'bulkcarrier') {
             return '../assets/images/ships/bulkcarrier/bulkcarrier_dirLeft.png';
-        } else if (imgName === 'container') {
+        } else if (imgName === 'containership_large') {
             return '../assets/images/ships/container/container_large_dirLeft.png';
         } else if (imgName === 'gascarrier') {
             return '../assets/images/ships/gascarrier/gascarrier_prismatanks_dirLeft.png';

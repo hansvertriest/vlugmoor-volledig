@@ -104,12 +104,11 @@ class MetaDataController {
 
     try {
       const metaDataUpdate = {
-        email: req.body.email,
-        firstName: req.body.profile.firstName,
-        lastName: req.body.profile.lastName,
-        role: req.body.role,
-        password: req.body.localProvider.password,
-        avatar: req.body.profile.avatar
+        title: req.body.title,
+        description: req.body.description,
+        picture: req.body.picture,
+        date: req.body.date,
+        _dataId: req.body._dataId
       };
       const metaData = await MetaData.findOneAndUpdate(
         { _id: id },
@@ -134,7 +133,8 @@ class MetaDataController {
         title: req.body.title,
         description: req.body.description,
         picture: req.body.picture,
-        date: req.body.date
+        date: req.body.date,
+        _dataId: req.body._dataId
       });
       const metaData = await metaDataCreate.save();
       return res.status(201).json(metaData);
