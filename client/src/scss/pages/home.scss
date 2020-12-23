@@ -5,17 +5,18 @@ body{
     background-repeat: no-repeat;
 }
 .container-home{
-    margin: 20px;
-    .row-card-container{
-        // display: flex;
-        justify-content: space-around;
-    }
+    margin: 0 0 0 5vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    
     .card{
         margin: 10vh 2.5vw;
         border: 0;
         background-color: transparent;
         img{
             width: 15vw;
+            min-width: 200px;
             padding: 7.5vh 2.5vw;
             background-color: #E0F3FD;
             box-shadow: 1.5px 2.5px 5px 0px rgba(0,0,0,0.75);

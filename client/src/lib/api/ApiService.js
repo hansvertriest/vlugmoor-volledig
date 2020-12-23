@@ -8,6 +8,12 @@ export default class ApiService {
         .map(key => encodeURIComponent(key) + '=' +encodeURIComponent(options[key])).join('&');
     }
 
+   /*
+    *   Metadata functions
+    */
+
+    // find all meta data 
+
     async findAllMetaData (query = null) {
         let url = `${this.BASE_URL}/metadata`;
         if (query !== null) {
@@ -17,6 +23,8 @@ export default class ApiService {
         
         return response.json();
     }
+
+    // store metadata to server
 
     async storeMetaData (title, description, date, picture, _dataId) {
         const metaData = {
@@ -40,6 +48,22 @@ export default class ApiService {
         return response.json();
     }
 
+    // find by id
+
+    async findMetaDataById (id) {
+        let url = `${this.BASE_URL}/metadata/${id}`;
+        const response = await fetch(url);
+        return response.json();
+    }
+
+    
+
+   /*
+    *   Data functions
+    */
+
+    // store data to server
+
     async storeData (data) {
         const options = {
             method: 'POST',
@@ -55,6 +79,15 @@ export default class ApiService {
         console.log(response);
         return response;
     }
+
+    // find by id
+
+    async findDataById (id) {
+        let url = `${this.BASE_URL}/data/${id}`;
+        const response = await fetch(url);
+        return response.json();
+    }
+
 
 
 }

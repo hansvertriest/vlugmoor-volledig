@@ -206,9 +206,10 @@ label{
 }
 
 .upload-container{
+
     display: flex;
     justify-content: space-between;
-    margin: 0 10vw 0 10vw;
+    margin: 5vh 10vw 0 10vw;
 
     .btn-submit{
         button{
@@ -229,6 +230,11 @@ label{
             margin-top: 15px;
             input{
                 width: 496px;
+                font-family: 'Roboto', sans-serif;
+            }
+            textarea{
+                width: 496px;
+                font-family: 'Roboto', sans-serif;
             }
         }
     }
