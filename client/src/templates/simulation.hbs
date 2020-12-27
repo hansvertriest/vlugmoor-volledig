@@ -1,30 +1,24 @@
 {{> header }}
 <div class="top-container" >
-    <a><p>{{routerLink "home" "terug"}}</p></a>
-    <h3>Kind of ship - Size</h3>
-    <p>Date: 21-11-2019</p>
+    <div class="top-left">
+        <a><p>{{routerLink "home" "terug"}}</p></a>
+        <h3>Kind of ship - Size</h3>
+        <p>Date: 21-11-2019</p>
+    </div>
+
+    <div class="top-right">
+        <div class="btn-load">
+            <button type="button" id="open-load">Laad simulatie</button>
+        </div>
+        <div class="btn-upload">
+            <button type="button" id="open-upload">Upload to server</button>
+        </div>
+    </div>
 </div>
 
-<canvas id="simulation-canvas" width="1200" height="800"></canvas> 
-<div class="video-control-container">
-    <div class="video-control">
-        <div id="previous"><img src="../assets/icons/forward-solid.svg" style="transform: scaleX(-1);" /></div>
-        <div id="play-pause"><img src="../assets/icons/play-solid.svg"/></div>
-        <div id="next"><img src="../assets/icons/forward-solid.svg" /></div>
-    </div>
-    <div class="timeline-hans" id="timeline-container">
-        <div class="timeline" id="timeline"><div id="timeline-progress"></div></div>
-    </div>
-    <div id="screenshot">
-        <img src="../assets/icons/camera.svg" />
-    </div>
-    <div class="info">
-        <label class="fps">FPS: <span id="current-fps"></span> |</label> 
-        <label>Time: <span id="current-timepoint">0</span>s</label>
-    </div>
-</div>
-<div class="input-control-container">
-    <div class="input-container">
+<div class="input-container" id="load-popup">
+    <div class="input-container__inner">
+        <div class="input-container__inner-close" id="close-load">Close</div>
         <div>
             <label>Case Data (*.xlsx)</label>
             <label class="custom-upload">
@@ -53,11 +47,61 @@
             <button type="button" id="submit">Submit</button>
         </div>
     </div>
+</div>
 
+<div class="input-container" id="upload-popup">
+    <div class='input-container__inner'>
+        <div class="input-container__inner-close" id="close-upload">Close</div>
+        <div class="upload-fields">
+            <label for="title">Title:</label>
+            <div>
+                <input id='title-field' type="text">
+            </div>
+            <div>
+                <label>Description:</label>
+            </div>
+            <div>
+                <textarea id='description-field' rows="6" cols="60" type='text'></textarea>
+            </div>
+            <label for="title">Date:</label>
+            <div>
+                <input id="date-field" type="date">
+            </div>
+            <div class="btn-upload">
+                <button type="button" id="upload">Upload to server</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<canvas id="simulation-canvas" width="1200" height="800"></canvas> 
+<div class="video-control-container">
+    <div class="video-control">
+        <div id="previous-container"><img id="previous" src="../assets/icons/forward-solid.svg" style="transform: scaleX(-1);" /></div>
+        <div id="play-pause-container"><img id="play-pause" src="../assets/icons/play-solid.svg" isPlaying="" srcPlay="../assets/icons/play-solid.svg" srcPause="../assets/icons/pause-solid.svg"/></div>
+        <div id="next-container"><img id="next" src="../assets/icons/forward-solid.svg" /></div>
+    </div>
+    <div class="timeline-hans" id="timeline-container">
+        <div class="timeline" id="timeline"><div id="timeline-progress"></div></div>
+    </div>
+    <div id="screenshot">
+        <img src="../assets/icons/camera.svg" />
+    </div>
+    <div class="info">
+        <label class="fps">FPS: <span id="current-fps"></span> |</label> 
+        <label>Time: <span id="current-time">0</span>s |</label>
+        <label>Timepoint: <span id="current-timepoint">0</span></label>
+    </div>
+</div>
+<div class="input-control-container">
     <div class="controls-container">
         <div>
-            <label>Jump to:</label>
+            <label>Jump to timepoint:</label>
             <input type="number" id="timepoint-input" value="0" step="100">
+        </div>
+         <div>
+            <label>Jump to time (s):</label>
+            <input type="number" id="time-input" value="0" step="100">
         </div>
         <div>
             <label>Speed:<span id="current-speed"></span></label>
@@ -67,30 +111,12 @@
             <label>Outline:</label>
             <input type="checkbox" id="switch-outline">
         </div>
+        <div>
+            <button type="button" id="reset-outline">Reset outline</button>
+        </div>
     </div>
 </div>
 
-<div class='upload-container'>
-    <div class="btn-submit">
-        <button type="button" id="upload">Upload to server</button>
-    </div>
-    <div class="upload-fields">
-        <label for="title">Title:</label>
-        <div>
-            <input id='title-field' type="text">
-        </div>
-        <div>
-            <label>Description:</label>
-        </div>
-        <div>
-            <textarea id='description-field' rows="6" cols="60" type='text'></textarea>
-        </div>
-        <label for="title">Date:</label>
-        <div>
-            <input id="date-field" type="date">
-        </div>
-    </div>
-</div>
 
 {{> footer }}
 

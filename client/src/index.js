@@ -3,8 +3,6 @@ import css from './scss/main.scss';
 import _ from 'lodash';
 import * as consts from './const';
 import routes from './routes';
-import 'bootstrap';
-
 
 const appInit = async () => {
     

@@ -23,28 +23,57 @@ body {
 }
 
 .top-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-left: 20px;
-    a{
-        text-decoration: none;
-        font-family: 'Roboto', sans-serif;
-        text-transform: uppercase;
-        color: #FF664F;
-        font-weight: 400;
-        font-size: 20px;
+    .top-left {
+        a{
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+            text-transform: uppercase;
+            color: #FF664F;
+            font-weight: 400;
+            font-size: 20px;
+        }
+        h3{
+            font-family: 'Roboto', sans-serif;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 50px;
+        }
+        p{
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+            text-transform: uppercase;
+            color: #FF664F;
+            font-weight: 400;
+            font-size: 16px;
+        }
     }
-    h3{
-        font-family: 'Roboto', sans-serif;
-        text-transform: uppercase;
-        font-weight: 500;
-        font-size: 50px;
-    }
-    p{
-        text-decoration: none;
-        font-family: 'Roboto', sans-serif;
-        text-transform: uppercase;
-        color: #FF664F;
-        font-weight: 400;
-        font-size: 16px;
+    .top-right {
+        display: flex;
+        .btn-upload button{
+            border: none;
+            background-color: black;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-size: 20px;
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin: 0 10px;
+        }
+        .btn-load button{
+            border: 1px solid black;
+            color: black;
+            font-family: 'Roboto', sans-serif;
+            font-size: 20px;
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+        button:hover {
+            cursor: pointer;
+        }
     }
 }
 
@@ -60,48 +89,82 @@ label{
 }
 
 .input-container{
-    div{
-        margin-bottom: 10px;
-    }
-    button{
-        border: none;
-        background-color: black;
-        color: white;
-        font-family: 'Roboto', sans-serif;
-        font-size: 20px;
-        border-radius: 10px;
-        padding: 10px 20px;
-    }
-    input[type="file"] {
-        display: none;
-    }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items:center;
+    background-color: rgba(0,0,0,0.75);
 
-    .custom-upload{
-        border: 1px solid #ccc;
-        display: inline-block;
-        padding: 6px 12px;
-        cursor: pointer;
-        position: relative;
-        transition: color 0.5s;
-        min-width:200px; 
+    .input-container__inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items:flex-start;
+        position: relative;        
+        padding: 80px 100px;
+        background-color: white;
 
-        > div {
-            margin: 0;
-        }
-
-        p {
-            text-align: center;
-        }
-
-        > span {
-            width: 0;
-            height: 100%;
-            background-color: black;
+        .input-container__inner-close {
             position: absolute;
-            top:0;
-            left:0;
-            z-index: -1;
-            transition: all 0.5s ease-out;
+            top: 10px;
+            right: 20px;
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+            text-transform: uppercase;
+            color: #FF664F;
+        }
+        .input-container__inner-close:hover {
+            cursor: pointer;
+        }
+
+        div{
+            margin-bottom: 10px;
+        }
+        button{
+            border: none;
+            background-color: black;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-size: 20px;
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-upload{
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.5s;
+            min-width:200px; 
+
+            > div {
+                margin: 0;
+            }
+
+            p {
+                text-align: center;
+                position: relative;
+                z-index: 1;
+            }
+
+            > span {
+                width: 0;
+                height: 100%;
+                background-color: black;
+                position: absolute;
+                top:0;
+                left:0;
+                transition: all 0.5s ease-out;
+            }
         }
     }
 
@@ -136,13 +199,16 @@ label{
             height: 40px;
             width: 40px;
             
-            cursor: pointer;
+            img {
+                cursor: pointer;
+            }
         }
-        #play-pause {
+
+        #play-pause-container {
             height: 40px;
             width: 40px;
         }
-        #previous, #next {
+        #previous-container, #next-container {
             height: 20px;
             width: 20px;
         }

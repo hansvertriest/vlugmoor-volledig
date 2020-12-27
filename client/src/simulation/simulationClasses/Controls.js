@@ -65,6 +65,13 @@ export default class Controls {
             this.switchOutlineDisplay();
         };
     }
+
+    registerOutlineReset(buttonId) {
+        const bttn = document.getElementById(buttonId);
+        bttn.onclick = () => {
+            this.setOutlineToCurrentPosition();
+        };
+    }
     /*
         Register Timeline
     */
@@ -75,12 +82,16 @@ export default class Controls {
         this.registerNext('next');
         this.registerPrevious('previous');
         this.registerTimepointInput('timepoint-input')
+        this.registerTimeInput('time-input')
         this.registerSpeedInput('speed-input');
         
         this.subscribeAnimationProgress((simInfo) => {
             // old time line
+            const time = document.getElementById('current-time');
+            time.innerHTML = (simInfo.timePoint * this.simulation.timePointInterval).toFixed(1);
+
             const timepoint = document.getElementById('current-timepoint');
-            timepoint.innerHTML = (simInfo.timePoint * this.simulation.timePointInterval).toFixed(1);
+            timepoint.innerHTML = simInfo.timePoint;
 
             const fps = document.getElementById('current-fps');
             fps.style.color =(this.simCtx.fps - 3 > this.simulation.calculatedFPS || this.simCtx.fps + 3 < this.simulation.calculatedFPS) ? "red" : "black";
@@ -107,7 +118,14 @@ export default class Controls {
 
     registerPlayPause(buttonId) {
         const bttn = document.getElementById(buttonId);
-        bttn.onclick = () => {
+        bttn.onclick = (e) => {
+            if (!e.target.getAttribute('isPlaying')) {
+                e.target.src = e.target.getAttribute('srcPlay');
+                e.target.setAttribute('isPlaying', "true");
+            } else {
+                e.target.src = e.target.getAttribute('srcPause');
+                e.target.setAttribute('isPlaying', "");
+            }
             this.switchPlayPause();
         };
     }
@@ -115,7 +133,6 @@ export default class Controls {
     registerNext(buttonId) {
         const bttn = document.getElementById(buttonId);
         bttn.onclick = () => {
-            console.log('dd');
             this.setNextFrame();
         };
     }
@@ -130,7 +147,14 @@ export default class Controls {
     registerTimepointInput(buttonId) {
         const el = document.getElementById(buttonId);
         el.onchange = (e) => {
-            this.setAnimationProgress(Number(e.target.value));
+            this.setAnimationProgressWithTimepoint(Number(e.target.value));
+        };
+    }
+    
+    registerTimeInput(buttonId) {
+        const el = document.getElementById(buttonId);
+        el.onchange = (e) => {
+            this.setAnimationProgressWithTime(Number(e.target.value));
         };
     }
 
@@ -173,7 +197,12 @@ export default class Controls {
         this.simulation.setNextAnimationTimeToSpecificTimepoint(Math.round(simulationTimePointCount*percentage) * this.simCtx.animationTimeInterval);
     }
 
-    setAnimationProgress(timePoint) {
+    setAnimationProgressWithTimepoint(timePoint) {
+        if (timePoint >= 0 && timePoint < this.simulation.timePointCount -1) this.simulation.setNextAnimationTimeToSpecificTimepoint(timePoint);
+    }
+
+    setAnimationProgressWithTime(time) {
+        const timePoint = time/this.simulation.timePointInterval;
         if (timePoint >= 0 && timePoint < this.simulation.timePointCount -1) this.simulation.setNextAnimationTimeToSpecificTimepoint(timePoint);
     }
 
@@ -190,6 +219,10 @@ export default class Controls {
                 this.simCtx.setAnimationTimeInterval(speed/(this.simCtx.fps*this.simulation.timePointInterval));
             }
         }
+    }
+
+    setOutlineToCurrentPosition() {
+        this.simulation.caseShip.setOutlineParamsToCurrentPosition();
     }
 
     /* ==============================

@@ -2,10 +2,6 @@ export default class SimulationContext {
     constructor(canvasId) {
         // create canvas
         this.canvas = document.getElementById(canvasId);
-        // set responsive canvas width
-        const factor =  (window.innerWidth / this.canvas.width)*0.5 || (document.body.clientWidth / this.canvas.width)*0.5
-        this.canvas.setAttribute('width', (this.canvas.width * factor > 800) ? this.canvas.width * factor : 1000);
-        this.canvas.setAttribute('height', (this.canvas.height * factor > 500) ? this.canvas.height * factor : 600);
         this.ctx = this.canvas.getContext("2d");
 
         // animation veriables

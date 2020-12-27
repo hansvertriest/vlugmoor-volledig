@@ -157,12 +157,20 @@ export default class Simulation {
                 speedInMPerS: shipInfo.speedInMPerS,
             }
 
+        const paramsOutline = (isCaseShip)
+            ? {
+                posX: this.caseData.timePoints[shipInfo.startContourTimePoint].shipData.posX,
+                posY: this.caseData.timePoints[shipInfo.startContourTimePoint].shipData.posY,
+                rotation: this.caseData.timePoints[shipInfo.startContourTimePoint].shipData.rotation,
+            } : {}
+
         const newShip = new Ship(
             this.simCtx,
             shipInfo.type, 
             shipInfo.width, 
             shipInfo.length, 
             shipInfo.distanceFromKaai,
+            paramsOutline,
             paramsPassingShip
         );
         if (isCaseShip) {

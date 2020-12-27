@@ -22,6 +22,7 @@ export default () => {
         controls.registerOutlineSwitch('switch-outline');
         controls.registerTimeLine('...');
         controls.registerScreenshotBttn('screenshot');
+        controls.registerOutlineReset('reset-outline');
 
         // get shipTranslation data
         const shipTranslations = files.forces.map((timePoint) => {
@@ -74,16 +75,20 @@ export default () => {
 
     // BEGIN SCRIPT
 
-    // create simulation
-    const canvasId = 'simulation-canvas';
-    const simulation = new Simulation(canvasId);
+    // give canvas dimensions and a color 
+    const canvas = document.getElementById('simulation-canvas');
+    const factor =  (window.innerWidth / canvas.width)*0.5 || (document.body.clientWidth / canvas.width)*0.5
+    canvas.setAttribute('width', (canvas.width * factor > 800) ? canvas.width * factor : 1000);
+    canvas.setAttribute('height', (canvas.height * factor > 500) ? canvas.height * factor : 600);
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#c1e6fb";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // get inputfields
     const xlsxInput = document.getElementById('metadata-input');
     const forcesInput = document.getElementById('forces-input');
     const coordsInput = document.getElementById('coords-input');
     const submit = document.getElementById('submit');
-    const upload = document.getElementById('upload');
 
     // on upload change label
     xlsxInput.addEventListener('change', (e) => {
@@ -128,6 +133,15 @@ export default () => {
 
     // when files are submitted
     submit.addEventListener('click', (e) => {
+        // create simulation object 
+        const canvasId = 'simulation-canvas';
+        const simulation = new Simulation(canvasId);
+
+        // close popup
+        const loadPopup = document.getElementById('load-popup');
+        loadPopup.style.display = 'none';
+
+        // load files
         const files = {};
 
         // read files
@@ -187,19 +201,54 @@ export default () => {
         }
     });
 
+
+    // button handlers
+    const upload = document.getElementById('upload');
+    const openLoad = document.getElementById('open-load');
+    const closeLoad = document.getElementById('close-load');
+    const openUpload = document.getElementById('open-upload');
+    const closeUpload = document.getElementById('close-upload');
+
     upload.addEventListener('click', () => {
         let apiService = new ApiService();
         let data = {data: serverData};
 
-        let title = document.getElementById('title-field').value;
-        let description = document.getElementById('description-field').value;
-        let date = document.getElementById('date-field').value;
-        let picture = serverData.caseMetaData.caseShip.type;
 
 
-        apiService.storeData(data)
-        .then((response) => apiService.storeMetaData(title, description, date, picture, toString(response.id)));
+        if (serverData) {
+            let title = document.getElementById('title-field').value;
+            let description = document.getElementById('description-field').value;
+            let date = document.getElementById('date-field').value;
+            let picture = serverData.caseMetaData.caseShip.type;
+    
+            apiService.storeData(data)
+            .then((response) => apiService.storeMetaData(title, description, date, picture, toString(response.id)));
+        } else {
+            alert('Gelieve eerst een simulatie op te laden.')
+        }
     });
 
+    openLoad.addEventListener('click', (e) => {
+        console.log('dd')
+        const loadPopup = document.getElementById('load-popup');
+        loadPopup.style.display = 'flex';
+    });
+
+    closeLoad.addEventListener('click', (e) => {
+        const loadPopup = document.getElementById('load-popup');
+        loadPopup.style.display = 'none';
+    });
+
+
+    openUpload.addEventListener('click', (e) => {
+        const loadPopup = document.getElementById('upload-popup');
+        loadPopup.style.display = 'flex';
+    });
+
+
+    closeUpload.addEventListener('click', (e) => {
+        const loadPopup = document.getElementById('upload-popup');
+        loadPopup.style.display = 'none';
+    });
 
 };

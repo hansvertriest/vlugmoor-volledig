@@ -36,18 +36,18 @@ import roroBigLeftOutline from '../../assets/images/ships/roro/roro_dirLeft_outl
 import roroBigRightOutline from '../../assets/images/ships/roro/roro_dirRight_outline.png';
 
 export default class Ship {
-    constructor(simCtx, type, width, length, distanceFromKaai, paramsPassingShip={}) {
+    constructor(simCtx, type, width, length, distanceFromKaai, paramsOutline={}, paramsIfIsPassingShip={}) {
         this.simCtx = simCtx;
         this.type = type;
         this.width = width;
         this.length = length;
         this.distanceFromKaai = distanceFromKaai;
+        this.paramsOutline = paramsOutline;
+
         this.posX = 0;
         this.posY = 0;
         this.startPosX = 0;
         this.startPosY = 0;
-        this.outlinePosX = this.posX;
-        this.outlinePosY = this.posY;
         this.rotationInDegrees = 0;
         this.direction = 1;
         this.speedInMPerS = 0;
@@ -55,13 +55,13 @@ export default class Ship {
         this.displacementLimitToBeStaticInPx = 0.0001;
 
         // if passingship
-        if (Object.keys(paramsPassingShip).length > 0) {
-            this.posX = paramsPassingShip.posX;
-            this.posY = paramsPassingShip.posY;
-            this.startPosX = paramsPassingShip.posX;
-            this.startPosY = paramsPassingShip.posY;
-            this.direction = paramsPassingShip.direction;
-            this.speedInMPerS = paramsPassingShip.speedInMPerS;
+        if (Object.keys(paramsIfIsPassingShip).length > 0) {
+            this.posX = paramsIfIsPassingShip.posX;
+            this.posY = paramsIfIsPassingShip.posY;
+            this.startPosX = paramsIfIsPassingShip.posX;
+            this.startPosY = paramsIfIsPassingShip.posY;
+            this.direction = paramsIfIsPassingShip.direction;
+            this.speedInMPerS = paramsIfIsPassingShip.speedInMPerS;
         }
 
         this.image;
@@ -217,9 +217,23 @@ export default class Ship {
         const length = this.simCtx.meterToPx(this.length);
         const width = this.simCtx.meterToPx(this.width);
 
-        const coords = this.simCtx.originToCanvasCoords(this.outlinePosX, this.outlinePosY, this.length, this.width );
-        // draw image of ship
-        ctx.drawImage(this.imageOutline, coords.x, coords.y, length, width);
+        // Converteer meter naar px
+        const posXInPx = this.simCtx.meterToPx(this.paramsOutline.posX);
+        const posYInPx = this.simCtx.meterToPx(this.paramsOutline.posY)*-1;
+
+        ctx.save();
+
+        // translate van context naar origin van de simulatie
+        ctx.translate(this.simCtx.originX, this.simCtx.originY);
+
+        // roteer de context naar de hoek van de outline
+        ctx.rotate(this.paramsOutline.rotation*-1);
+
+        // draw image of outline
+        ctx.drawImage(this.imageOutline, (posXInPx) - (length/2), (posYInPx) - (width/2), length, width);
+
+        // restore context
+        ctx.restore();
     }
 
     setImageToMoving(){
@@ -246,5 +260,13 @@ export default class Ship {
 
     setPosY(posY) {
         this.posY = posY;
+    }
+
+    setOutlineParams(posX, posY, rotation) {
+        this.paramsOutline = { posX, posY, rotation };
+    }
+
+    setOutlineParamsToCurrentPosition() {
+        this.setOutlineParams(this.posX, this.posY, this.rotationInDegrees)
     }
 }
