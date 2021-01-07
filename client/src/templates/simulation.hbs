@@ -96,16 +96,16 @@
 <div class="input-control-container">
     <div class="controls-container">
         <div>
-            <label>Jump to timepoint:</label>
-            <input type="number" id="timepoint-input" value="0" step="100">
+            <label title="Verplaats de simulatie naar een gekozen framenummer">Jump to timepoint:</label>
+            <input type="number" id="timepoint-input" value="0" step="100" min="0">
         </div>
          <div>
-            <label>Jump to time (s):</label>
-            <input type="number" id="time-input" value="0" step="100">
+            <label title="Verplaats de simulatie naar een gekozen tijdstip in seconden">Jump to time (s):</label>
+            <input type="number" id="time-input" value="0" step="60" min="0">
         </div>
         <div>
-            <label>Speed:<span id="current-speed"></span></label>
-            <input type="number" id="speed-input" value="0">
+            <label title="Pas de versnelling van de simulatie aan. Speed 1 komt overeen met de werkelijke tijd. ">Speed: <span id="current-speed"></span>x</label>
+            <input type="number" id="speed-input" value="0" min="0">
         </div>
         <div>
             <label>Outline:</label>
