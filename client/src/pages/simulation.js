@@ -8,8 +8,6 @@ const XLSX = require('xlsx');
 
 const simulationTemplate = require('../templates/simulation.hbs');
 
-// FUNCTIONS
-
 export default () => {
 
     /**
@@ -30,7 +28,7 @@ export default () => {
         const controls = new Controls(simulation);
         controls.registerBasicNav();
         controls.registerOutlineSwitch('switch-outline');
-        controls.registerTimeLine('...');
+        controls.registerTimeLine();
         controls.registerScreenshotBttn('screenshot');
         controls.registerOutlineReset('reset-outline');
 
@@ -163,7 +161,7 @@ export default () => {
         const files = {};
 
         // We maken voor elk bestand een nieuw FilReader-object aan en 
-        // definieren vervolgens wat er moet gebeuren als zo'n FileReader-bject
+        // definieren vervolgens wat er moet gebeuren als zo'n FileReader-object
         // een bestand heeft ingeladen.
         const readerXSLX = new FileReader();
         readerXSLX.onload = (e) => {
@@ -249,7 +247,6 @@ export default () => {
     });
 
     // Eventlisteners voor het openen en sluiten van de popups
-
     openLoad.addEventListener('click', (e) => {
         const loadPopup = document.getElementById('load-popup');
         loadPopup.style.display = 'flex';

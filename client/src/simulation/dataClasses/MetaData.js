@@ -1,10 +1,9 @@
-const XLSX = require('xlsx');
-
 export default class MetaData {
     constructor(file) {
         this.file = file;
         this.sheet = file.Sheets[file.SheetNames[0]];
 
+        // MetaData - properties
         this.caseShip = {};
         this.passingShip = {};
         this.wind = {};
@@ -30,6 +29,12 @@ export default class MetaData {
         this.load();
     }
  
+
+    /**
+     * Ophalen van de waarde van een cel uit this.sheet
+     * @param {*} cellLetter Letter van de locatie van de cel
+     * @param {*} cellNr Nummer van de Locatie van de cel
+     */
     getCellData(cellLetter, cellNr) {
         const cellAdress = `${cellLetter.toUpperCase()}${cellNr}`;
 
@@ -38,6 +43,9 @@ export default class MetaData {
         return (cell ? cell.v : '');
     }
 
+    /**
+     * Getter voor het object
+     */
     get() {
         return {
             timePointInterval: this.timePointInterval,
@@ -51,9 +59,14 @@ export default class MetaData {
         }
     }
 
+    /**
+     * De main-method om this.sheet te verwerken naar het MetaData-object
+     */
     load() {
         this.interpretFile();
+
         this.createGeneral();
+        
         this.caseShip = this.createCaseShip();
         this.passingShip = this.createPassingShip();
         this.wind = this.createWindParams();
@@ -62,11 +75,14 @@ export default class MetaData {
         this.fenderLimits = this.createfenderLimits();
 
         this.bolderData = this.createBolderData();
-        this.fenderMeta = this.createFenderMeta();
+        this.fenderMeta = this.createFenderData();
     }
 
+    /**
+     * Bepaal de locatie van de titels van de sheet door over kolom A te loopen
+     *  en voog ze toe aan this.fileTitleLocations
+     */
     interpretFile() {
-        // bepaal de locatie van de titels van de sheet door over kolom A te loopen
         let value = '';
         let record = 1;
 
@@ -89,10 +105,16 @@ export default class MetaData {
         } while(value !== '');
     }
 
+    /**
+     * Get general data from sheet
+     */
     createGeneral() {
         this.timePointInterval = this.getCellData('e',3);
     }
 
+    /**
+     * Get caseShip data from sheet
+     */
     createCaseShip() {
         return {
             type: this.getCellData('b',2),
@@ -103,6 +125,9 @@ export default class MetaData {
         }
     }
 
+    /**
+     * Get passingShip data from sheet
+     */
     createPassingShip() {
         return {
             present: (this.getCellData('b',17) === 'YES' ) ? true : false,
@@ -118,6 +143,9 @@ export default class MetaData {
         }
     }
 
+    /**
+     * Get wind data from sheet
+     */
     createWindParams() {
         if (!this.fileTitleLocations.paramsWind) {
             console.log('Wind parameters not available.');
@@ -132,6 +160,9 @@ export default class MetaData {
         }
     }
 
+    /**
+     * Get tros-limieten van sheet
+     */
     createhawserLimits() {
         const record = this.fileTitleLocations.paramsHawser + 1;
         return {
@@ -139,7 +170,9 @@ export default class MetaData {
             second: this.getCellData('f',record)/100,
         }
     }
-
+    /**
+     * Get bolder-locaties van sheet
+     */
     createBolderData() {
         if (!this.fileTitleLocations.paramsHawser) {
             console.log('Bolder data not available.');
@@ -162,6 +195,9 @@ export default class MetaData {
         return hawserArray;
     }
 
+    /**
+     * Get fender-limieten van sheet
+     */
     createfenderLimits() {
         const record = this.fileTitleLocations.paramsFender + 1;
         return {
@@ -172,7 +208,10 @@ export default class MetaData {
         }
     }
 
-    createFenderMeta() {
+    /**
+     * Get fender data van sheet
+     */
+    createFenderData() {
         if (!this.fileTitleLocations.paramsFender) {
             console.log('Fender data not available.');
             return([]);

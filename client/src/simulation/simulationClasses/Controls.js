@@ -76,8 +76,7 @@ export default class Controls {
         Register Timeline
     */
 
-    registerTimeLine(timeLineId) {
-        // const timeline = document.getElementById(timeLineId);
+    registerTimeLine() {
         this.registerPlayPause('play-pause');
         this.registerNext('next');
         this.registerPrevious('previous');

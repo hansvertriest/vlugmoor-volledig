@@ -4,13 +4,13 @@ import ShipData from './ShipData';
 export default class TimePoint {
     constructor(
         hawserDataArray,
-        fenderData,
+        fenderDataArray,
         posShipX,
         posShipY,
         rotationShip
     ) {
         this.hawserData = hawserDataArray;
-        this.fenderData = fenderData;
+        this.fenderData = fenderDataArray;
         this.shipData = new ShipData(posShipX, posShipY, rotationShip);
     }
 }
