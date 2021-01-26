@@ -354,7 +354,8 @@ export default class Simulation {
         // update fender currentforce
         this.fenderArray.forEach((fender, index) => {
             fender.setCurrentForce(timePoint.fenderData[index].force);
-            fender.setHasBroken(fender.breakingTimePoint < this.animationTime);
+            fender.setLoadRatio(timePoint.fenderData[index].force/timePoint.fenderData[index].forceMax);
+            // fender.setHasBroken(fender.breakingTimePoint < this.animationTime);
         });
 
 

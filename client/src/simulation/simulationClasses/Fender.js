@@ -5,6 +5,7 @@ export default class Fender {
 
         this.posX = fenderPosX;
         this.posY = fenderPosY;
+        this.loadRatio;
 
         this.forceLimit = forceLimit;
         this.thicknessInM = thickness;
@@ -20,7 +21,6 @@ export default class Fender {
     }
 
     draw(ctx=this.simCtx.ctx) {
-        // Calculating pos with height=0 bc fenderOriginDefinition = x: widhth/2 y:0
         const posOnCanvas = this.simCtx.originToCanvasCoords(this.posX, this.posY, this.thicknessInM, 0);
         ctx.fillStyle = this.getFenderColor();
         ctx.fillRect(posOnCanvas.x, posOnCanvas.y, this.simCtx.meterToPx(this.widthInM), this.simCtx.meterToPx(this.thicknessInM))
@@ -38,9 +38,12 @@ export default class Fender {
         this.hasBroken = hasBroken;
     }
 
+    setLoadRatio(loadRatio) {
+        this.loadRatio = loadRatio;
+    }
+
     getFenderColor() {
         if (this.hasBroken) return "blue";
-        // const ratio = this.currentLoad / this.forceMax;
         const ratio = this.loadRatio;
         if (ratio > this.limit.second && ratio <= this.limit.first) {
             return this.colorFirstLimit;
