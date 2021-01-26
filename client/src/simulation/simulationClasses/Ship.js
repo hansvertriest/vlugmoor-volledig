@@ -44,6 +44,7 @@ export default class Ship {
         this.distanceFromKaai = distanceFromKaai;
         this.paramsOutline = paramsOutline;
 
+        // Initiele waarden toewijzen
         this.posX = 0;
         this.posY = 0;
         this.startPosX = 0;
@@ -54,7 +55,7 @@ export default class Ship {
         
         this.displacementLimitToBeStaticInPx = 0.0001;
 
-        // if passingship
+        // Indien dit schip een passerend schip is
         if (Object.keys(paramsIfIsPassingShip).length > 0) {
             this.posX = paramsIfIsPassingShip.posX;
             this.posY = paramsIfIsPassingShip.posY;
@@ -64,6 +65,7 @@ export default class Ship {
             this.speedInMPerS = paramsIfIsPassingShip.speedInMPerS;
         }
 
+        // Properties voor het laden van de afbeeldingen
         this.image;
         this.imageOutline;
 
@@ -82,6 +84,9 @@ export default class Ship {
         this.setImageSrcs();
     }
 
+    /**
+     * Afhankelijk van het type wijs de juiste image-source toe
+     */
     setImageSrcs() {
         if (this.type.trim() === 'container_large') {
             this.imageStaticLeft.src = containerLargeLeft;
@@ -131,11 +136,15 @@ export default class Ship {
         }
     }
 
+    /**
+     * Laad alle afbeeldingen
+     */
     async loadImage() {
         return new Promise((resolve, reject) => {
             const allImagesLoaded = () => {
+                // Check of alle afbeeldingen ingeladen zijn
                 if (this.imageStaticLeftIsLoaded && this.imageStaticRightIsLoaded && this.imageStaticOutlineRightIsLoaded && this.imageStaticOutlineLeftIsLoaded) {
-                    // if both are loaded set correct direction
+                    // Stel de richting in
                     this.setImageDirection(this.direction);
                     console.log('Ship images loaded');
                     resolve();
@@ -164,15 +173,19 @@ export default class Ship {
         });
     }
 
+    /**
+     * Voer alle teken-bewgingen uit om dit object op het canvas te tonen
+     *      Meet info over het HTML5 canvas: https://developer.mozilla.org/nl/docs/Web/API/Canvas_API
+     * @param {*} ctx Instantie van een SimulationContext
+     */
     draw(ctx=this.simCtx.ctx) {
-
+        // Converteer meter naar px
         const length = this.simCtx.meterToPx(this.length);
         const width = this.simCtx.meterToPx(this.width);
-
-        // Converteer meter naar px
         const posXInPx = this.simCtx.meterToPx(this.posX);
         const posYInPx = this.simCtx.meterToPx(this.posY)*-1;
 
+        // context opslaan in voorbereiding van de context transformatie
         ctx.save();
 
         // translate van context naar origin van de simulatie
@@ -188,15 +201,20 @@ export default class Ship {
         ctx.restore();
     }
 
+    
+    /**
+     * Voer alle teken-bewgingen uit om een schaduw van dit object op het canvas te tonen (EXPERIMENTEEL)
+     *      Meet info over het HTML5 canvas: https://developer.mozilla.org/nl/docs/Web/API/Canvas_API
+     * @param {*} ctx Instantie van een SimulationContext
+     */
     drawShadow(ctx=this.simCtx.ctx) {
+        // Converteer meter naar px
         const length = this.simCtx.meterToPx(this.length);
         const width = this.simCtx.meterToPx(this.width);
-
-        // Converteer meter naar px
-        // 
         const posXInPx = this.simCtx.meterToPx(this.posX);
         const posYInPx = this.simCtx.meterToPx(this.posY);
 
+        // context opslaan in voorbereiding van de context transformatie
         ctx.save();
 
         // translate van context naar origin van de simulatie
@@ -213,14 +231,20 @@ export default class Ship {
         ctx.restore();
     }
 
+
+    /**
+     * Voer alle teken-bewgingen uit om een outline van dit object op het canvas te tonen
+     *      Meet info over het HTML5 canvas: https://developer.mozilla.org/nl/docs/Web/API/Canvas_API
+     * @param {*} ctx Instantie van een SimulationContext
+     */
     drawOutline(ctx=this.simCtx.ctx) {
+        // Converteer meter naar px
         const length = this.simCtx.meterToPx(this.length);
         const width = this.simCtx.meterToPx(this.width);
-
-        // Converteer meter naar px
         const posXInPx = this.simCtx.meterToPx(this.paramsOutline.posX);
         const posYInPx = this.simCtx.meterToPx(this.paramsOutline.posY)*-1;
 
+        // context opslaan in voorbereiding van de context transformatie
         ctx.save();
 
         // translate van context naar origin van de simulatie
@@ -236,9 +260,10 @@ export default class Ship {
         ctx.restore();
     }
 
-    setImageToMoving(){
-        this.image = this.imageMoving;
-    }
+    /**
+     * Wijzig de richting van het schi
+     * @param {*} direction 1: rechts, -1: links
+     */
     setImageDirection(direction){
         this.direction = direction;
         if ( this.direction > 0) {
@@ -250,22 +275,43 @@ export default class Ship {
         }
     }
 
+    /**
+     * Bereken de linieaire verplaatsing van het schip in functie van de tijd
+     * @param {*} time tijd in seconden
+     */
     applySpeedDisplacement(time) {
         this.setPosX(this.startPosX + this.speedInMPerS * time);
     }
 
+    /**
+     * Zet x-positie
+     * @param {*} posX x-positie in meter
+     */
     setPosX(posX) {
         this.posX = posX;
     }
 
+    /**
+     * Zet y-positie
+     * @param {*} posX y-positie in meter
+     */
     setPosY(posY) {
         this.posY = posY;
     }
 
+    /**
+     * Zet de parameters van de outline
+     * @param {*} posX x-positie in meter
+     * @param {*} posY y-positie in meter
+     * @param {*} rotation rotatie in graden
+     */
     setOutlineParams(posX, posY, rotation) {
         this.paramsOutline = { posX, posY, rotation };
     }
 
+    /**
+     * Update outline parameters naar die van dit object
+     */
     setOutlineParamsToCurrentPosition() {
         this.setOutlineParams(this.posX, this.posY, this.rotationInDegrees)
     }

@@ -15,6 +15,9 @@ export default class LoadingScreen {
         this.imageIsLoaded = false;
     }
 
+    /**
+     * Laad de afbeeldig
+     */
     async loadImage() {
         return new Promise((resolve, reject) => {
             this.image.onload = function(){
@@ -25,7 +28,12 @@ export default class LoadingScreen {
         });
     }
 
+    /**
+     * Voer alle teken-bewgingen uit om dit object op het canvas te tonen
+     *      Meet info over het HTML5 canvas: https://developer.mozilla.org/nl/docs/Web/API/Canvas_API
+     * @param {*} ctx Instantie van een SimulationContext
+     */
     draw() {
-        this.simCtx.ctx.drawImage(this.image, this.middleX, this.middleY, 100, 100);
+        this.simCtx.ctx.drawImage(this.image, this.middleX-50, this.middleY-50, 100, 100);
     }
 }

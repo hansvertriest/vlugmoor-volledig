@@ -54,7 +54,6 @@ export default () => {
         // SIMULATION
         simulation.addData(data);
         await simulation.init();
-        // simulation.registerController();
         await simulation.addShip(files.metaData.caseShip, true);
         await simulation.addShip(files.metaData.passingShip);
         await simulation.addHawsers(files.metaData.bolderData, files.metaData.hawserLimits, data.events.getHawserBreaks());

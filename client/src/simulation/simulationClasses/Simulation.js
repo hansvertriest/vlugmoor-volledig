@@ -1,6 +1,5 @@
 import * as C2S from 'canvas2svg';
 
-import Controls from './Controls';
 import Ship from "./Ship";
 import Hawser from "./Hawser";
 import Fender from "./Fender";
@@ -25,7 +24,6 @@ export default class Simulation {
 
         this.caseData;
         this.timePointCount;
-        // this.timePointInterval = 0.1; 
 
         // variables for improving visual message
         this.translationAmplifierFactor = 1;
@@ -56,20 +54,30 @@ export default class Simulation {
 
 
     /*
-        General
+        GENERAL
     */
 
+    /**
+     * De simulatie initieren
+     */
     async init() {
         this.setBackgroundColor();
         await this.addKaai();
     }
 
+    /**
+     * Data toevoegen aan de simulatie
+     * @param {*} data object van het type Data (/DataClasses/Data.js)
+     */
     addData(data) {
         this.caseData = data;
         this.timePointCount = data.timePoints.length;
         this.timePointInterval = data.caseMetaData.timePointInterval
     }
 
+    /**
+     * Haal algemene info over de huidige staat van de simulatie op
+     */
     getSimInfo() {
         return {
             timePoint: this.animationTime,
@@ -79,42 +87,85 @@ export default class Simulation {
         }
     }
 
+    /**
+     * Start/unpause simulatie
+     */
     play() {
         this.animationPlaying = true;
 
         this.startTimeStamp = performance.now();
     }
 
+    /**
+     * Pauzeer simulatie
+     */
     pause() {
         this.animationPlaying = false;
     }
 
+    /**
+     * Toggle tussen play en pause
+     */
     switchPlayPause() {
         this,this.animationPlaying = !this.animationPlaying;
     }
 
+    /**
+     * Neem een screenshot van het canvas
+     */
+    getScreenshot() {
+        // create png
+        const img = this.canvas.toDataURL("image/png");
+
+        // download png
+        const element = document.createElement('a');
+        element.setAttribute('href', img);
+        element.setAttribute('download', 'file.png');
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
     /*
-        Setting and getting animationTime
+        SETTING EN GETTING ANIMATION TIME
     */
 
+    /**
+     * Zet de simulatie naar vorige frame
+     */
     setPreviousAnimationTime() {
         this.setNextAnimationTimeToSpecificTimepoint(this.animationTime - this.simCtx.animationTimeInterval);
 
+        // callback functies die bij elke aanpassing aan de tijd uitgevoerd moeten worden
+        //      (Essentieel voor communicatie met de tijdlijn)
         if (this.onAnimationTimeCallback.length) {
             this.onAnimationTimeCallback.forEach((callback) => callback(this.getSimInfo()))
         }
     }
 
+    /**
+     * Zet de simulatie naar volgende frame
+     */
     setNextAnimationTime() {
         this.setNextAnimationTimeToSpecificTimepoint(this.animationTime + this.simCtx.animationTimeInterval);
 
+        // callback functies die bij elke aanpassing aan de tijd uitgevoerd moeten worden
+        //      (Essentieel voor communicatie met de tijdlijn)
         if (this.onAnimationTimeCallback.length) {
             this.onAnimationTimeCallback.forEach((callback) => callback(this.getSimInfo()))
         }
     }
 
+    /**
+     * Zet de animatie naar een specifiek tijdspunt (record-nr)
+     * @param {*} timepoint 
+     */
     setNextAnimationTimeToSpecificTimepoint(timepoint) {
-        // round up until next timeInterval 
+        // indien timepoint niet overeenkomt met een frame, rond deze timepoint af naar het eerst volgende frame 
         if (timepoint%this.simCtx.animationTimeInterval > 0){
             timepoint += this.simCtx.animationTimeInterval - (timepoint%this.simCtx.animationTimeInterval);
         }
@@ -123,11 +174,16 @@ export default class Simulation {
 
         this.updateSimulation();
 
+        // callback functies die bij elke aanpassing aan de tijd uitgevoerd moeten worden
+        //      (Essentieel voor communicatie met de tijdlijn)
         if (this.onAnimationTimeCallback.length) {
             this.onAnimationTimeCallback.forEach((callback) => callback(this.getSimInfo()))
         }
     }
 
+    /**
+     * Get volgende animationTimePoint
+     */
     getNextAnimationTime() {
         return this.animationTime + this.simCtx.animationTimeInterval;
     }
@@ -135,9 +191,12 @@ export default class Simulation {
 
 
     /*
-        Adding elements to simulation
+        COMPONENTEN MAKEN EN TOEVOEGEN AAN DE SIMULATIE
     */
 
+    /**
+     * Maak kaai-object en voeg toe aan simulatie
+     */
     async addKaai() {
         this.kaai = new Kaai(
             this.simCtx, 
@@ -147,7 +206,13 @@ export default class Simulation {
         await this.kaai.loadImage();
     }
 
+    /**
+     * Maak een Ship-object en voeg het toe aan de simulatie
+     * @param {*} shipInfo ShipData uit het MetaData-object
+     * @param {*} isCaseShip Boolean of het aan te maken schip he schip is waar de simulatie om draait
+     */
     async addShip(shipInfo, isCaseShip=false) {
+        // Als het schip niet de caseShip is maak extra paramter-object aan voor een passingShip
         const paramsPassingShip = (isCaseShip) 
             ? {} 
             : {
@@ -157,6 +222,7 @@ export default class Simulation {
                 speedInMPerS: shipInfo.speedInMPerS,
             }
 
+        // Indien caseShip, maak parameters voor de outline van het schip
         const paramsOutline = (isCaseShip)
             ? {
                 posX: this.caseData.timePoints[shipInfo.startContourTimePoint].shipData.posX,
@@ -164,6 +230,7 @@ export default class Simulation {
                 rotation: this.caseData.timePoints[shipInfo.startContourTimePoint].shipData.rotation,
             } : {}
 
+        // Maak schip aan
         const newShip = new Ship(
             this.simCtx,
             shipInfo.type, 
@@ -173,10 +240,13 @@ export default class Simulation {
             paramsOutline,
             paramsPassingShip
         );
+
+        // Voeg toe aan de simulatie
         if (isCaseShip) {
             this.caseShip = newShip;
             await this.caseShip.loadImage();
         } else {
+            // check of er al een caseShip bestaat
             if (this.caseShip) {
                 this.passingShips.unshift(newShip);
                 await this.passingShips[0].loadImage();
@@ -186,8 +256,14 @@ export default class Simulation {
         }
     }
 
+    /**
+     * Maak fenders aan en voeg ze toe aan de simulatie
+     * @param {*} fenderData fenderData uit MetaData-object
+     * @param {*} fenderLimits fenderLimits uit MetaData-object
+     * @param {*} fenderBreakingPoints breekpunten van de fender uit EventCollection.getFenderBreaks()
+     */
     addFenders(fenderData, fenderLimits, fenderBreakingPoints=[]) {
-        // loop over all fenders and add a Fender object to fenderArray
+        // loop over all fenders en voeg een Fender-object toe aan fenderArray
         fenderData.forEach((fender) => {
             const newFender = new Fender(
                 fender.id,
@@ -205,15 +281,21 @@ export default class Simulation {
             this.fenderArray.push(newFender);
         });
 
-        // assign a breakingTimePoint to hawsers
+        // assign a breakingTimePoint to fenders
         fenderBreakingPoints.forEach((fenderBreakingPoint) => {
             this.fenderArray[fenderBreakingPoint.id].setBreakingTimePoint(fenderBreakingPoint.timePointIndex);
         })
     }
 
+    /**
+     * Maak trossen aan en voeg ze toe aan de simulatie
+     * @param {*} bolderData bolderData uit MetaData-object
+     * @param {*} hawserLimits hawserLimits uit MetaData-object
+     * @param {*} hawserBreakingTimePoints breekpunten van de fender uit EventCollection.getFenderBreaks()
+     */
     async addHawsers(bolderData, hawserLimits, hawserBreakingTimePoints=[]) {
         return new Promise((resolve, reject) => {
-            // loop over all bolders and add a Hawser object to hawserArray
+            // loop over alle bolders en voeg een Hawser-object toe aan hawserArray
             bolderData.forEach((bolder, index) => {
                 const hawser = new Hawser(
                     index,
@@ -232,11 +314,11 @@ export default class Simulation {
             });
 
 
-            // load images of hawsers
+            // laad de afbeeldingen van de trossen
             this.hawserArray.forEach(async(hawser) => {
                 await hawser.loadImage();
 
-                // check if last hawser = loaded
+                // als laatste tros-afbeelding is geladen
                 if(this.hawserArray[this.hawserArray.length-1].imageIsLoaded) {
                     resolve();
                 }
@@ -245,31 +327,51 @@ export default class Simulation {
     }
 
     /*
-        Painting the canvas
+        TEKENEN VAN DE COMPONENTEN OP DE CANVAS
     */
 
+    /**
+     * Zet de achtergrond-kleur van de simulatie
+     * @param {*} color CSS-kleur
+     */
     setBackgroundColor(color=this.backgroundColor) {
         this.backgroundColor = color;
         this.ctx.fillStyle = this.backgroundColor;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    /**
+     * Teken alle fenders op het canvas
+     * @param {*} ctx een SimulationContext-object
+     */
     drawFenders(ctx) {
         this.fenderArray.forEach((fender) => {
             fender.draw(ctx)
         });
     }
 
+    /**
+     * Teken alle trossen op het canvas
+     * @param {*} ctx een SimulationContext-object
+     */
     drawHawsers(ctx) {
         this.hawserArray.forEach((hawser) => {
             hawser.draw(ctx)
         });
     }
 
+    /**
+     * Teken de kaai op het canvas
+     * @param {*} ctx een SimulationContext-object
+     */
     drawKaai(ctx) {
         this.kaai.draw(ctx);
     }
 
+    /**
+     * Teken alle schepen op het canvas
+     * @param {*} ctx een SimulationContext-object
+     */
     drawShips(ctx) {
         this.caseShip.draw(ctx);
         if (this.passingShips) {
@@ -280,20 +382,29 @@ export default class Simulation {
     }
 
     /*
-        Controlling animation speed
+        SNELHEID VAN DE ANIMATIE CONTROLEREN
     */
 
+    /**
+     * Check of het tijd is om een nieuwe frame te renderen
+     */
     fpsIntervalIsElapsed() {
         this.currentFrameTimeStamp = performance.now();
         if (!this.lastFrameTimeStamp) return true;
 
-        // calculate fps
+        // calculate fps 
+        //      Als de tijd tussen de het begin van deze seecondeeme en nu groters is dan 1s
+        //          => fps = frameCount
+        //          => reset frameCount
+        //          => reset startTimeStamp
         if (this.currentFrameTimeStamp - this.startTimeStamp > 1000) {
             this.calculatedFPS = this.frameCount;
             this.frameCount = 0;
             this.startTimeStamp = this.currentFrameTimeStamp;
         }
         
+        // Als de tijd voor 1 frame kleiner is dan dee tijd van het begin van de seconde tot nu
+        //      => het is tijd voor een nieuwe frame => this.framCount += 1
         if (this.fpsIntervalInMilS < this.currentFrameTimeStamp - this.lastFrameTimeStamp) {
             this.frameCount +=1;
         }
@@ -302,19 +413,29 @@ export default class Simulation {
         return this.fpsIntervalInMilS < this.currentFrameTimeStamp - this.lastFrameTimeStamp;
     }
 
+    /**
+     * Bereken de snelheid van de animatie
+     */
     getAnimationSpeed() {
         return this.simCtx.fps * this.timePointInterval * this.simCtx.animationTimeInterval;
     }
 
+    /**
+     * Update fps
+     * @param {*} fps aantal frames die per seconde getoond worden
+     */
     setFPS(fps) {
         this.simCtx.fps = fps;
         this.fpsIntervalInMilS = 1000 / this.simCtx.fps;
     }
 
     /*
-        Animation loops
+        ANIMATIE LOOPS
     */
 
+    /**
+     * Laat het laad-scherm zien
+     */
     doLoading() {
         if (!this.animationPlaying) {
             // clear screen
@@ -329,6 +450,9 @@ export default class Simulation {
         }
     }
 
+    /**
+     * Voer alle aanpassingen aan de simulatie-componenten uit zoals positie, rotatie, belasting...
+     */
     updateSimulation() {
         // get timePoint
         const timePoint = this.caseData.timePoints[this.animationTime];
@@ -355,74 +479,45 @@ export default class Simulation {
         this.fenderArray.forEach((fender, index) => {
             fender.setCurrentForce(timePoint.fenderData[index].force);
             fender.setLoadRatio(timePoint.fenderData[index].force/timePoint.fenderData[index].forceMax);
-            // fender.setHasBroken(fender.breakingTimePoint < this.animationTime);
         });
 
 
     }
 
+    /**
+     * De loop waar voor elke frame oa alle draw-methods wordeen aangeroepen
+     * @param {*} time huidig record-nr
+     */
     doAnimation(time) {
-        // check if animation is done
+        // check of animatie afgelopen is
         if (this.getNextAnimationTime() >= this.caseData.timePoints.length) {
             this.pause();
-        } else if (this.animationPlaying && this.fpsIntervalIsElapsed()) {
-            // update alle elements of the simulation
+        } else 
+        // anders kijk of de animatie aan heeeet lopen is en of het reeds tijd is om een nieuwe frame te tekenen
+        if (this.animationPlaying && this.fpsIntervalIsElapsed()) {
+            // update alle elementeen of the simulation
             this.updateSimulation();
 
-            // set next animationTime
+            // update de animationTime
             this.setNextAnimationTime();
 
             // set lastFrameTimeStamp to now
             this.lastFrameTimeStamp = time;
+
+            // clear screen
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+            // drawElements
+            this.setBackgroundColor();
+            // this.caseShip.drawShadow();
+            this.drawKaai();
+            this.drawShips();
+            this.drawHawsers();
+            this.drawFenders();
+            if (this.simCtx.drawCaseShipOutline) this.caseShip.drawOutline();
         }
 
-        // clear screen
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // drawElements
-        this.setBackgroundColor();
-        // this.caseShip.drawShadow();
-        this.drawKaai();
-        this.drawShips();
-        this.drawHawsers();
-        this.drawFenders();
-        if (this.simCtx.drawCaseShipOutline) this.caseShip.drawOutline();
-       
+        // hoe dee loop in stand    
         window.requestAnimationFrame(this.doAnimation.bind(this));
-    }
-
-    getScreenshot() {
-        // // clear screen
-        // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // // drawElements
-        // this.setBackgroundColor();
-        // // this.caseShip.drawShadow();
-        // this.drawKaai(this.SVGctx);
-        // this.drawShips(this.SVGctx);
-        // this.drawHawsers(this.SVGctx);
-        // this.drawFenders(this.SVGctx);
-        // if (this.simCtx.drawCaseShipOutline) this.caseShip.drawOutline(this.SVGctx);
-
-        // // create svg
-        // const svgData = this.SVGctx.getSerializedSvg(true); //returns the serialized SVG document
-        // const img = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svgData);
-
-        // // embed png's
-
-        // create png
-        const img = this.canvas.toDataURL("image/png");
-
-        // download png
-        const element = document.createElement('a');
-        element.setAttribute('href', img);
-        element.setAttribute('download', 'file.png');
-
-        element.style.display = 'none';
-        document.body.appendChild(element);
-
-        element.click();
-
-        document.body.removeChild(element);
     }
 }
