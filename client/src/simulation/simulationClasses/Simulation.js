@@ -14,7 +14,6 @@ export default class Simulation {
         this.ctx = this.simCtx.ctx;
         this.SVGctx = new C2S(this.canvas.width, this.canvas.height)
 
-        this.backgroundColor = "#c1e6fb";
 
         this.originX = this.canvas.width/2;
         this.originY = this.canvas.height/2;
@@ -27,7 +26,6 @@ export default class Simulation {
 
         // variables for improving visual message
         this.translationAmplifierFactor = 1;
-        this.distanceToKaaiInMeter = 0;
 
         // ships
         this.caseShip;
@@ -73,6 +71,26 @@ export default class Simulation {
         this.caseData = data;
         this.timePointCount = data.timePoints.length;
         this.timePointInterval = data.caseMetaData.timePointInterval
+
+        // Voeg caseShip toe aan simulation als het bestaat
+        if (this.caseData.caseMetaData && this.caseData.caseMetaData.caseShip) {
+            this.addShip(this.caseData.caseMetaData.caseShip, true);
+        }
+
+        // Voeg passingShip toe aan simulation als het bestaat
+        if (this.caseData.caseMetaData && this.caseData.caseMetaData.passingShip) {
+            this.addShip(this.caseData.caseMetaData.passingShip);
+        }
+
+        // Voeg bolderData toe aan simulation als het bestaat
+        if (this.caseData.caseMetaData && this.caseData.caseMetaData.bolderData) {
+            this.addHawsers(this.caseData.caseMetaData.bolderData, this.caseData.caseMetaData.hawserLimits, this.caseData.events.hawserBreaks);
+        }
+
+        // Voeg fenderData toe aan simulation als het bestaat
+        if (this.caseData.caseMetaData && this.caseData.caseMetaData.fenderData) {
+            this.addFenders(this.caseData.caseMetaData.fenderData, this.caseData.caseMetaData.fenderLimits, this.caseData.events.fenderBreaks);
+        }
     }
 
     /**
@@ -246,13 +264,8 @@ export default class Simulation {
             this.caseShip = newShip;
             await this.caseShip.loadImage();
         } else {
-            // check of er al een caseShip bestaat
-            if (this.caseShip) {
-                this.passingShips.unshift(newShip);
-                await this.passingShips[0].loadImage();
-            } else {
-                console.log("!!! ERROR: Make sure to firstly set the caseShip before any other ship as this ship defines the origin of the simulation!")
-            }
+            this.passingShips.unshift(newShip);
+            await this.passingShips[0].loadImage();
         }
     }
 
@@ -334,9 +347,9 @@ export default class Simulation {
      * Zet de achtergrond-kleur van de simulatie
      * @param {*} color CSS-kleur
      */
-    setBackgroundColor(color=this.backgroundColor) {
-        this.backgroundColor = color;
-        this.ctx.fillStyle = this.backgroundColor;
+    setBackgroundColor(color=this.simCtx.backgroundColor) {
+        this.simCtx.backgroundColor = color;
+        this.ctx.fillStyle = this.simCtx.backgroundColor;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
