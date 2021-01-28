@@ -48,14 +48,14 @@ cd ..
 
 # Client-side
 
-[Mappenstructuur](Development%20guide%207d4851063efe45409ffc5c8bff2eb250/Mappenstructuur%20556e20a5fd1544159f147d348779e635.md)
+[Mappenstructuur](Onderdelen/Mappenstructuur.md)
 
-[Handelbars](Development%20guide%207d4851063efe45409ffc5c8bff2eb250/Handelbars%20f19adcea3b9f4d028400afcdca8efc05.md)
+[Handelbars](Onderdelen/Handelbars.md)
 
-[DataClasses](Development%20guide%207d4851063efe45409ffc5c8bff2eb250/DataClasses%2052f2ed7c688343ba9d09abac2c0f908f.md)
+[DataClasses](Onderdelen/DataClasses.md)
 
-[SimulationClasses](Development%20guide%207d4851063efe45409ffc5c8bff2eb250/SimulationClasses%2037227c283b6b4d0d99966276feb34952.md)
+[SimulationClasses](Onderdelen/SimulationClasses.md)
 
-[simulation.js](Development%20guide%207d4851063efe45409ffc5c8bff2eb250/simulation%20js%20948c0e1ce80845b5b0d5da22aa89f65f.md)
+[simulation.js](Onderdelen/simulation_js.md)
 
 # Server-side
