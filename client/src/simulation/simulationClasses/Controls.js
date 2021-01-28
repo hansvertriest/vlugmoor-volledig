@@ -47,7 +47,6 @@ export default class Controls {
     }
 
     registerZoom() {
-        console.log('registering zoom')
         this.simCtx.canvas.addEventListener('wheel', (e) => {
             e.preventDefault();
             this.simCtx.addToMeterToPxFactor(this.zoomRate * e.deltaY * -0.01);
@@ -72,9 +71,6 @@ export default class Controls {
             this.setOutlineToCurrentPosition();
         };
     }
-    /*
-        Register Timeline
-    */
 
     registerTimeLine() {
         this.registerPlayPause('play-pause');
@@ -95,9 +91,6 @@ export default class Controls {
             const fps = document.getElementById('current-fps');
             fps.style.color =(this.simCtx.fps - 3 > this.simulation.calculatedFPS || this.simCtx.fps + 3 < this.simulation.calculatedFPS) ? "red" : "black";
             fps.innerHTML = simInfo.calculatedFPS;
-
-            // const timepointInput = document.getElementById('timepoint-input');
-            // timepointInput.placeholder = `${simInfo.timePoint}`;
 
             const speed = document.getElementById('current-speed');
             speed.innerHTML = Math.round(simInfo.speed);
@@ -171,7 +164,7 @@ export default class Controls {
         };
     }
 
-    /* ==============================
+    /* 
         Setting simulation parameters
     */
 
@@ -224,7 +217,7 @@ export default class Controls {
         this.simulation.caseShip.setOutlineParamsToCurrentPosition();
     }
 
-    /* ==============================
+    /* 
         Getting simulation parameters
     */
 
