@@ -1,3 +1,5 @@
+[< Terug](Development-guide.md)
+
 # SimulationClasses
 
 Hier bevinden zich de klassen die adhv de verwerkte data een beeld zullen vormen op het scherm. Ook hier kunnen we twee soorten onderscheiden: component-klassen en operationele-klassen.
@@ -104,3 +106,5 @@ Dit zijn de methods die effectief bepaalde variabelen in de simulatie gaan aanpa
 ### Getting simulation parameters
 
 Deze methods worden gebruikt voor het verkrijgen van informatie over de simulatie.
+
+[< Terug](Development-guide.md)

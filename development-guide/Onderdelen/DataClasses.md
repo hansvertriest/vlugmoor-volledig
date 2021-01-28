@@ -1,3 +1,5 @@
+[< Terug](Development-guide.md)
+
 # DataClasses
 
 Alle bestanden onder de map ./src/simulation/DataClasses worden gebruikt om de de bestanden die worden geüpload op de pagina te verwerken naar een handiger formaat. We kunnen deze klassen opdelen in twee soorten: de "blauwdrukken" en de "fabrieken".
@@ -96,3 +98,5 @@ Deze method overloopt elke record en maakt voor elke tijdsstap eerst een HawserD
 ## EventCollection.js
 
 Hier worden de events in de simulatie vastgelegd. Dit zijn  de momenten dat een tros of een fender een bepaalde limiet overschrijdt. Zoals eerder gezegd worden de .checkHawserForEvent() en .checkFenderForEvent() aangeroepen bij het aanmaken van corresponderende objecten. Wat deze methods doen is kijken of er een event plaatsvind bij die bepaalde tros of fender op dat bepaald tijdspunt. Indien dit zo is wordt er een event-object aangemaakt via de .constructLimitEvent() method en vervolgens toegevoegd aan de juiste array van het EventCollection-object.
+
+[< Terug](Development-guide.md)

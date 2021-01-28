@@ -1,3 +1,5 @@
+[< Terug](Development-guide.md)
+
 # Mappenstructuur
 
 Hier bespreken we de verschillende mappen binnenin het project en hun functie.
@@ -89,3 +91,5 @@ Hier staat een gecompileerde versie van de ./client map. Deze map wordt gebruikt
 # ./server
 
 Deze map bevat alle code voor de server.
+
+[< Terug](Development-guide.md)

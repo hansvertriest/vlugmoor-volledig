@@ -1,3 +1,5 @@
+[< Terug](Development-guide.md)
+
 # simulation.js
 
 Locatie: ./client/src/pages/simulation.js
@@ -47,3 +49,5 @@ Het eerste stukje configureert de dimensies en de kleur van het canvas-element.
 Daarna maken we een [eventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventListener) voor ieder file-input-element waar een bestand zal worden geüpload. Deze eventListener dienen enkel voor het genereren van de animatie op de knop wanneer een bestand succesvol is geselecteerd. Daarna wordt echter een eventListener gezet op de submit-knop. Wanneer deze wordt ge-'click't wordt voor elke file-input-input een functie gedefinieerd dat zal worden aangesproken wanneer het desbetreffende bestand volledig is ingeladen in de browser. Voor het XLSX-bestand zal deze functie een metaData-object aanmaken en toewijzen aan files.metadata. Voor de andere twee csv-bestanden wordt een array gegenereerd via de getParsedCSVData() functie. Deze worden dan ook aan het files-object toegevoegd. Tot slot wordt in elke onload-functie filesHaveLoaded() aangeroepen zodat appInit() zal worden aangeroepen als alle bestanden zijn ingeladen.
 
 Tot slot halen we alle knop-elementen op voor het openen van de twee popups. Wat daarna volgt is de logica voor het al dan niet tonen van deze popups.
+
+[< Terug](Development-guide.md)
