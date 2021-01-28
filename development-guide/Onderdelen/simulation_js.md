@@ -1,4 +1,4 @@
-[< Terug](Development-guide.md)
+[< Terug](../Development-guide.md)
 
 # simulation.js
 
@@ -50,4 +50,4 @@ Daarna maken we een [eventListener](https://developer.mozilla.org/en-US/docs/Web
 
 Tot slot halen we alle knop-elementen op voor het openen van de twee popups. Wat daarna volgt is de logica voor het al dan niet tonen van deze popups.
 
-[< Terug](Development-guide.md)
+[< Terug](../Development-guide.md)

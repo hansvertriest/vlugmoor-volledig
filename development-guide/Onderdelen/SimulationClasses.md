@@ -1,4 +1,4 @@
-[< Terug](Development-guide.md)
+[< Terug](../Development-guide.md)
 
 # SimulationClasses
 
@@ -107,4 +107,4 @@ Dit zijn de methods die effectief bepaalde variabelen in de simulatie gaan aanpa
 
 Deze methods worden gebruikt voor het verkrijgen van informatie over de simulatie.
 
-[< Terug](Development-guide.md)
+[< Terug](../Development-guide.md)

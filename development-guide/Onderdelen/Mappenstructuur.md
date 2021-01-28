@@ -1,4 +1,4 @@
-[< Terug](Development-guide.md)
+[< Terug](../Development-guide.md)
 
 # Mappenstructuur
 
@@ -92,4 +92,4 @@ Hier staat een gecompileerde versie van de ./client map. Deze map wordt gebruikt
 
 Deze map bevat alle code voor de server.
 
-[< Terug](Development-guide.md)
+[< Terug](../Development-guide.md)
