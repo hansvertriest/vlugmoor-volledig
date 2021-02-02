@@ -519,16 +519,16 @@ export default class Simulation {
 
             // clear screen
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-            // drawElements
-            this.setBackgroundColor();
-            // this.caseShip.drawShadow();
-            this.drawKaai();
-            this.drawShips();
-            this.drawHawsers();
-            this.drawFenders();
-            if (this.simCtx.drawCaseShipOutline) this.caseShip.drawOutline();
         }
+
+        // drawElements
+        this.setBackgroundColor();
+        // this.caseShip.drawShadow();
+        this.drawKaai();
+        this.drawShips();
+        this.drawHawsers();
+        this.drawFenders();
+        if (this.simCtx.drawCaseShipOutline) this.caseShip.drawOutline();
 
         // hoe dee loop in stand    
         window.requestAnimationFrame(this.doAnimation.bind(this));
