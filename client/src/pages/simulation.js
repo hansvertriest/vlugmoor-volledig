@@ -16,7 +16,7 @@ export default () => {
     const title = 'Simulation page';
     App.render(simulationTemplate({title}));
     let serverData;
-    console.log('v1.1')
+    console.log('CHANGELOG: added option for no passingship')
 
     /**
      * 2. FUNCTIONS

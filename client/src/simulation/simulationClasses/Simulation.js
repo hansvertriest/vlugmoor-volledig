@@ -78,7 +78,7 @@ export default class Simulation {
         }
 
         // Voeg passingShip toe aan simulation als het bestaat
-        if (this.caseData.caseMetaData && this.caseData.caseMetaData.passingShip) {
+        if (this.caseData.caseMetaData && this.caseData.caseMetaData.passingShip.present) {
             this.addShip(this.caseData.caseMetaData.passingShip);
         }
 

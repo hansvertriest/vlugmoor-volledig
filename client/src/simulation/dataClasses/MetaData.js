@@ -129,8 +129,10 @@ export default class MetaData {
      * Get passingShip data from sheet
      */
     createPassingShip() {
+        const isPresent = (this.getCellData('b',17) === 'YES' );
+        if ( !isPresent ) return { present: isPresent }
         return {
-            present: (this.getCellData('b',17) === 'YES' ) ? true : false,
+            present: isPresent,
             type: this.getCellData('b',18),
             length: this.getCellData('b',19),
             width: this.getCellData('b',20),
