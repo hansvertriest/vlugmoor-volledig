@@ -3,20 +3,20 @@ import { Data, MetaData } from '../simulation/dataClasses';
 import { Simulation } from '../simulation/simulationClasses';
 import Controls from '../simulation/simulationClasses/Controls';
 import ApiService from '../lib/api/ApiService';
-import AdvancedControls from '../simulation/simulationClasses/AdvancedControls';
+// import AdvancedControls from '../simulation/simulationClasses/AdvancedControls';
 
 const XLSX = require('xlsx');
 
 const simulationTemplate = require('../templates/simulation.hbs');
 
 export default () => {
-
     /**
      * 1. RENDER PAGE
      */
     const title = 'Simulation page';
     App.render(simulationTemplate({title}));
     let serverData;
+    console.log('v1.1')
 
     /**
      * 2. FUNCTIONS
@@ -53,7 +53,7 @@ export default () => {
         serverData = data.get();
 
         // Create advancedControls
-        // const advancedControls = new AdvancedControls();
+        // const advancedControls = new Advancedgit push Controls();
         // advancedControls.addDataToHawsersTimeline(data, controls)
         // advancedControls.addDataToFendersTimeline(data, controls)
         
