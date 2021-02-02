@@ -110,17 +110,29 @@ export default class Controls {
     }
 
     registerPlayPause(buttonId) {
-        const bttn = document.getElementById(buttonId);
-        bttn.onclick = (e) => {
-            if (!e.target.getAttribute('isPlaying')) {
-                e.target.src = e.target.getAttribute('srcPlay');
-                e.target.setAttribute('isPlaying', "true");
-            } else {
-                e.target.src = e.target.getAttribute('srcPause');
-                e.target.setAttribute('isPlaying', "");
-            }
+        // const bttn = document.getElementById(buttonId);
+        // bttn.onclick = (e) => {
+        //     if (!e.target.getAttribute('isPlaying')) {
+        //         e.target.src = e.target.getAttribute('srcPlay');
+        //         e.target.setAttribute('isPlaying', "true");
+        //     } else {
+        //         e.target.src = e.target.getAttribute('srcPause');
+        //         e.target.setAttribute('isPlaying', "");
+        //     }
+        //     this.switchPlayPause();
+        // };
+        const playBtn = document.getElementById('play-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        playBtn.onclick = (e) => {
+            playBtn.style.display = 'none';
+            pauseBtn.style.display = 'block';
             this.switchPlayPause();
-        };
+        }
+        pauseBtn.onclick = (e) => {
+            playBtn.style.display = 'block';
+            pauseBtn.style.display = 'none';
+            this.switchPlayPause();
+        }
     }
 
     registerNext(buttonId) {
