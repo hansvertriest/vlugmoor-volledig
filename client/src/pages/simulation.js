@@ -3,6 +3,7 @@ import { Data, MetaData } from '../simulation/dataClasses';
 import { Simulation } from '../simulation/simulationClasses';
 import Controls from '../simulation/simulationClasses/Controls';
 import ApiService from '../lib/api/ApiService';
+import AdvancedControls from '../simulation/simulationClasses/AdvancedControls';
 
 const XLSX = require('xlsx');
 
@@ -50,6 +51,11 @@ export default () => {
             });
         console.log(data.get())
         serverData = data.get();
+
+        // Create advancedControls
+        // const advancedControls = new AdvancedControls();
+        // advancedControls.addDataToHawsersTimeline(data, controls)
+        // advancedControls.addDataToFendersTimeline(data, controls)
         
         // SIMULATION
         simulation.addData(data);

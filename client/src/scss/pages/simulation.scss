@@ -253,6 +253,161 @@ label{
     }
 }
 
+.sub-timelines {
+    .sub-timeline-container {
+        height: 100%;
+        display: flex;
+        margin: 0 auto 40px;
+        width: 100vw;
+        .sub-timeline-container-total {
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+            .sub-timeline {
+                width: 1000px;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 40px;
+                .sub-timeline-title-container {
+                    .sub-timeline-title {
+                        width: 100px;
+                        p {
+                            font-size: 14px;
+                            font-family: "Roboto", sans-serif;
+                            text-align: right;
+                            text-transform: uppercase;
+                        }
+                    }
+                    .sub-timeline-titles {
+                        &-hawsers,
+                        &-fenders {
+                            display: none;
+                            margin-top: 40px;
+                            &.visible {
+                                display: block;
+                            }
+                            p {
+                                margin: 10px 0;
+                            }
+                        }
+                    }
+                }
+                .sub-timeline-timeline-container {
+                    justify-content: space-between;
+                    display: flex;
+                    flex-direction: column;
+                    position: relative;
+                    margin: 0px 40px;
+                    #timeline-progress-hawsers,
+                    #timeline-progress-fenders {
+                        background-color: #ff664f;
+                        height: calc(100% + 20px);
+                        width: 2px;
+                        position: absolute;
+                        left: 0;
+                        top: -10px;
+                        z-index: 1;
+                    }
+                    .sub-timeline-container-content {
+                        height: 5px;
+                        margin: 10px 0;
+                        width: 800px;
+                        .timeline {
+                            position: relative;
+                            width: 100%;
+                            height: 100%;
+                            background-color: #d1d1d1;
+                            .point {
+                                position: absolute;
+                                display: flex;
+                                justify-content: center;
+                                border-radius: 15px;
+                                border: 1px solid black;
+                                width: 20px;
+                                height: 20px;
+                                background: #ff664f;
+                                margin-left: -10px;
+                                top: -10px;
+                                z-index: 2;
+                                &.top {
+                                    top: -28px;
+                                    .line {
+                                        width: 1px;
+                                        height: 12px;
+                                        background-color: black;
+                                        margin-top: 20px;
+                                    }
+                                }
+                                &.bottom {
+                                    top: 12px;
+                                    .line {
+                                        width: 1px;
+                                        height: 12px;
+                                        background-color: black;
+                                        margin-top: -13px;
+                                    }
+                                }
+                            }
+                        }
+                        &-hawsers,
+                        &-fenders {
+                            display: none;
+                            .sub-timeline-container-content {
+                                margin: 20px 0px;
+                                &:first-of-type {
+                                    margin-top: 40px;
+                                }
+                                .timeline {
+                                    .hawserbreak-btn,
+                                    .fenderbreak-btn {
+                                        .point {
+                                            background-color: lightgrey;
+                                            position: absolute;
+                                            display: flex;
+                                            justify-content: center;
+                                            border: 1px solid #ff664f;
+                                            border-radius: 15px;
+                                            width: 10px;
+                                            height: 10px;
+                                            margin-left: -5px;
+                                            margin-bottom: -10px;
+                                            z-index: 3;
+                                            top: -4px;
+                                        }
+                                    }
+                                    .point-danger {
+                                        background-color: #f7cb40;
+                                        position: absolute;
+                                        border: none;
+                                        border-radius: 0;
+                                        width: 1px;
+                                        height: 100%;
+                                        z-index: 2;
+                                    }
+                                }
+                            }
+                            &.visible {
+                                display: block;
+                            }
+                        }
+                    }
+                }
+                .sub-timeline-icon-container {
+                    .sub-timeline-icon {
+                        .chevron-icon {
+                            height: 20px;
+                            width: 20px;
+                            margin: 0px;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 /*
  * Control styles
  */

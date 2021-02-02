@@ -1,4 +1,7 @@
 {{> header }}
+
+{{!-- Button top --}}
+
 <div class="top-container" >
     <div class="top-left">
         <a><p>{{routerLink "home" "terug"}}</p></a>
@@ -15,6 +18,8 @@
         </div>
     </div>
 </div>
+
+{{!-- Load popup --}}
 
 <div class="input-container" id="load-popup">
     <div class="input-container__inner">
@@ -49,7 +54,9 @@
     </div>
 </div>
 
-<div class="input-container" id="upload-popup">
+{{!-- Upload popup --}}
+
+{{!-- <div class="input-container" id="upload-popup">
     <div class='input-container__inner'>
         <div class="input-container__inner-close" id="close-upload">Close</div>
         <div class="upload-fields">
@@ -72,9 +79,14 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
+
+{{!-- Canvas --}}
 
 <canvas id="simulation-canvas" width="1200" height="800"></canvas> 
+
+{{!-- Timeline --}}
+
 <div class="video-control-container">
     <div class="video-control">
         <div id="previous-container"><img id="previous" src="../assets/icons/forward-solid.svg" style="transform: scaleX(-1);" /></div>
@@ -93,6 +105,78 @@
         <label>Timepoint: <span id="current-timepoint">0</span></label>
     </div>
 </div>
+
+{{!-- Advanced timeline --}}
+{{!-- <div class="sub-timelines" id="sub-timelines">
+    <div class="sub-timeline-container">
+        <div class="sub-timeline-container-total">
+            <div class="sub-timeline">
+                <div class="sub-timeline-title-container" id="sub-timeline-title-container-hawsers">
+                    <div class="sub-timeline-title">
+                        <p>Hawsers</p>
+                    </div>
+                    <div class="sub-timeline-titles-hawsers" id="sub-timeline-titles-hawsers">
+
+                    </div>
+                </div>
+                <div class="sub-timeline-timeline-container">
+
+                    <div class="timeline-progress" id="timeline-progress-hawsers"></div>
+                    <div class="sub-timeline-container-content" id="timeline-container-hawsers">
+                        <div id="timeline" class="timeline hawsers">
+                            <div id="hawser-breakpoints"></div>
+                        </div>
+                    </div>
+                    <div class="sub-timeline-container-content-hawsers" id="sub-timeline-container-content-hawsers">
+                        <!-- Imported from JavaScript simulation.js --->
+                    </div>
+                </div>
+                <div class="sub-timeline-icon-container">
+
+                    <div class="sub-timeline-icon">
+                        <img id="open-hawsers" class="chevron-icon"
+                            src="../assets/icons/chevron-circle-down-solid.svg" />
+                    </div>
+
+                </div>
+            </div>
+            <div class="sub-timeline">
+                <div class="sub-timeline-title-container" id="sub-timeline-title-container-fenders">
+                    <div class="sub-timeline-title">
+                        <p>Fenders</p>
+                    </div>
+                    <div class="sub-timeline-titles-fenders" id="sub-timeline-titles-fenders">
+
+                    </div>
+                </div>
+                <div class="sub-timeline-timeline-container">
+
+                    <div class="timeline-progress" id="timeline-progress-fenders"></div>
+
+                    <div class="sub-timeline-container-content" id="timeline-container-fenders">
+                        <div id="timeline" class="timeline fenders">
+                            <div id="fender-breakpoints"></div>
+                        </div>
+                    </div>
+                    <div class="sub-timeline-container-content-fenders" id="sub-timeline-container-content-fenders">
+                        <!-- Imported from JavaScript simulation.js --->
+                    </div>
+                </div>
+                <div class="sub-timeline-icon-container">
+
+                    <div class="sub-timeline-icon">
+                        <img id="open-fenders" class="chevron-icon"
+                            src="../assets/icons/chevron-circle-down-solid.svg" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+{{!-- Controls --}}
+
 <div class="input-control-container">
     <div class="controls-container">
         <div>

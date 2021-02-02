@@ -20,7 +20,7 @@ class DataController {
         };
         datas = await Data.paginate({}, options);
       } else {
-        const options = [{ path: 'meatData' }];
+        const options = [{ path: 'metaData' }];
         datas = await Data.find()
 
           .populate(options)
@@ -132,8 +132,10 @@ class DataController {
         data: req.body.data
       });
       const data = await dataCreate.save();
+      console.log(data);
       return res.status(201).json({ id: data._id });
     } catch (err) {
+      console.log(err)
       next(err);
     }
   };
