@@ -135,7 +135,7 @@ class DataController {
       console.log(data);
       return res.status(201).json({ id: data._id });
     } catch (err) {
-      console.log(err)
+      console.log(err);
       next(err);
     }
   };

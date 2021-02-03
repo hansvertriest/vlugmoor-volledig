@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { default as multer} from 'multer';
-const upload = multer({dest: '../../uploads' });
+import { default as multer } from 'multer';
+const upload = multer({ dest: '../../uploads' });
 
 import { NotFoundError } from '../../utilities';
 
@@ -107,7 +107,7 @@ class DataController {
       console.log(data);
       return res.status(201).json({ id: data._id });
     } catch (err) {
-      console.log(err)
+      console.log(err);
       next(err);
     }
   };
