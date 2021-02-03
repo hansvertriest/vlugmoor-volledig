@@ -7,6 +7,7 @@
   "author": "drdynscript",
   "license": "MIT",
   "dependencies": {
+    "@types/multer": "^1.4.5",
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "chalk": "^4.0.0",
@@ -21,6 +22,7 @@
     "mongoose": "^5.9.5",
     "mongoose-paginate": "^5.0.3",
     "morgan": "^1.9.1",
+    "multer": "^1.4.2",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
