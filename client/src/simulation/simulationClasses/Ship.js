@@ -205,7 +205,7 @@ export default class Ship {
     /**
      * Voer alle teken-bewgingen uit om een schaduw van dit object op het canvas te tonen (EXPERIMENTEEL)
      *      Meet info over het HTML5 canvas: https://developer.mozilla.org/nl/docs/Web/API/Canvas_API
-     * @param {*} ctx Instantie van een SimulationContext
+     * @param {*} ctx een canvas-context
      */
     drawShadow(ctx=this.simCtx.ctx) {
         // Converteer meter naar px
@@ -235,7 +235,7 @@ export default class Ship {
     /**
      * Voer alle teken-bewgingen uit om een outline van dit object op het canvas te tonen
      *      Meet info over het HTML5 canvas: https://developer.mozilla.org/nl/docs/Web/API/Canvas_API
-     * @param {*} ctx Instantie van een SimulationContext
+     * @param {*} ctx een canvas-context
      */
     drawOutline(ctx=this.simCtx.ctx) {
         // Converteer meter naar px
