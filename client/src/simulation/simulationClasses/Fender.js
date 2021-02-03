@@ -24,7 +24,7 @@ export default class Fender {
     /**
      * Voer alle teken-bewgingen uit om dit object op het canvas te tonen
      *      Meet info over het HTML5 canvas: https://developer.mozilla.org/nl/docs/Web/API/Canvas_API
-     * @param {*} ctx Instantie van een SimulationContext
+     * @param {*} ctx een canvas-context
      */
     draw(ctx=this.simCtx.ctx) {
         // converteer meter naar pixels

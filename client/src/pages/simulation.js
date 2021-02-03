@@ -58,7 +58,7 @@ export default () => {
         // advancedControls.addDataToFendersTimeline(data, controls)
         
         // SIMULATION
-        simulation.addData(data);
+        await simulation.addData(data);
         await simulation.init();
         simulation.drawShips();
         simulation.play();
