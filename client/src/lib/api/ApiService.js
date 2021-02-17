@@ -80,6 +80,23 @@ export default class ApiService {
         return response;
     }
 
+    async storeDataFile (data) {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'multipart/form-data'
+            },
+            body: data
+        };
+
+        let url = `${this.BASE_URL}/upload`;
+        console.log(options);
+        const response = await fetch(url, options).then((result) => result.json());
+        console.log(response);
+        return response;
+    }
+
     // find by id
 
     async findDataById (id) {
@@ -88,6 +105,11 @@ export default class ApiService {
         return response.json();
     }
 
+    async findFile (filePath) {
+        let url = `${this.BASE_URL}/upload`;
+        const response = await fetch(url);
+        return response.arrayBuffer();
+    }
 
 
 }

@@ -164,9 +164,6 @@ export default () => {
         }
     }); 
 
-    let coordsCsv;
-    let forcesCsv;
-
     // Luister wanneer de submit button wordt aangeklikt en lees vervolgens de bestanden in.
     submit.addEventListener('click', (e) => {
         // De upload-popup wordt gesloten
@@ -179,7 +176,7 @@ export default () => {
 
         const files = {};
 
-        // We maken voor elk bestand een nieuw FileReader-object aan en 
+        // We maken voor elk bestand een nieuw FilReader-object aan en 
         // definieren vervolgens wat er moet gebeuren als zo'n FileReader-object
         // een bestand heeft ingeladen.
         const readerXSLX = new FileReader();
@@ -204,10 +201,10 @@ export default () => {
         const readerForces = new FileReader();
         readerForces.onload = (e) => {
             const data = e.target.result;
-            forcesCsv = data;
+        
             // Formatteer bestand
             const forces = getParsedCSVData(data);
-            
+
             // We voegen de forces data toe aan het files-object
             files.forces = forces;
 
@@ -217,9 +214,7 @@ export default () => {
         const readerCoords = new FileReader();
         readerCoords.onload = (e) => {
             const data = e.target.result;
-            coordsCsv = data;
-            //console.log(coordsCsv);
-            //console.log(data);
+
             // Formatteer bestand
             const coords = getParsedCSVData(data);
 
@@ -251,7 +246,6 @@ export default () => {
 
     // Wanneer de upload button wordt aangeklikt
     //      => maak een ApiService aan en upload het bestand
-    /*
     upload.addEventListener('click', () => {
         let apiService = new ApiService();
         let data = {data: serverData};
@@ -263,31 +257,6 @@ export default () => {
     
             apiService.storeData(data)
             .then((response) => apiService.storeMetaData(title, description, date, picture, toString(response.id)));
-        } else {
-            alert('Gelieve eerst een simulatie op te laden.')
-        }
-    });
-    */
-    upload.addEventListener('click', () => {
-        let apiService = new ApiService();
-        let data = {data: serverData};
-        if (serverData) {
-            let title = document.getElementById('title-field').value;
-            let description = document.getElementById('description-field').value;
-            let date = document.getElementById('date-field').value;
-            let picture = serverData.caseMetaData.caseShip.type;
-            let forcesPath;
-            let coordsPath;
-            //console.log(coordsCsv);
-            //console.log(forcesCsv);
-            
-            let cvsForces = document.getElementById('forces-input').files[0];
-            console.log(cvsForces);
-            console.log(document.getElementById('forces-input').files);
-            cvsForces.fieldname = 'File';
-            console.log(cvsForces.fieldname);
-            apiService.storeDataFile(document.getElementById('forces-input').files[0])
-            .then((response) => console.log(response.json()));
         } else {
             alert('Gelieve eerst een simulatie op te laden.')
         }

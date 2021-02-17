@@ -5,14 +5,17 @@ import { default as cors } from 'cors';
 import { default as helmet } from 'helmet';
 import { default as path } from 'path';
 
+import {default as multer } from 'multer';
+
 import { IConfig, Environment } from '../services';
 
 class GlobalMiddleware {
   public static load(rootPath: string, app: Application, config: IConfig) {
-    app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+    app.use(bodyParser.urlencoded({ limit: '250mb', extended: true }));
     app.use(express.urlencoded({ extended: true }));
-    app.use(bodyParser.json({ limit: '50mb' }));
+    app.use(bodyParser.json({ limit: '250mb' }));
     app.use(express.static(path.resolve(rootPath, 'server', 'static')));
+    //app.use(multer);
     app.set('views', path.resolve(rootPath, 'server', 'views'));
     app.set('view engine', 'ejs');
     /*

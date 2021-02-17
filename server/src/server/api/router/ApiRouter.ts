@@ -3,7 +3,8 @@ import {
   Application,
   Request,
   Response,
-  Router
+  Router,
+  NextFunction
 } from 'express';
 import { Data } from 'src/server/models/mongoose';
 import { IConfig, AuthService, Role } from '../../services';
@@ -11,8 +12,15 @@ import {
   HelloController,
   UserController,
   MetaDataController,
-  DataController
+  DataController,
+  FileController
 } from '../controllers';
+
+import { default as multer } from 'multer';
+import { default as path } from 'path';
+import { nextTick } from 'process';
+import { default as fs } from 'fs';
+
 
 class ApiRouter {
   public router: Router;
@@ -21,6 +29,7 @@ class ApiRouter {
   private userController: UserController;
   private metaDataController: MetaDataController;
   private dataController: DataController;
+  private fileController: FileController;
 
   // config / Authentication service
 
@@ -42,6 +51,7 @@ class ApiRouter {
     this.userController = new UserController(this.config, this.authService);
     this.metaDataController = new MetaDataController();
     this.dataController = new DataController();
+    this.fileController = new FileController();
   }
 
   private registerRoutes(): void {
@@ -78,6 +88,41 @@ class ApiRouter {
 
     this.router.post('/auth/signin/', this.userController.signInLocal);
     this.router.post('/auth/signup/', this.userController.signupLocal);
+
+    /*
+     * Upload file route 
+     */ 
+
+    const storage = multer.diskStorage({
+      destination: './server/uploads/',
+      filename: function (req, file, cb) {
+        cb(null, file.originalname + '-' + Date.now() + path.extname(file.originalname));
+        console.log(req.file)
+        }
+      })
+    const upload = multer({storage: storage}).single('File');
+
+
+    //this.router.post('/upload',(req) => {console.log(req.file)} , upload);
+
+    this.router.post('/upload', upload, (req, res) => {
+      console.log(req.file)
+      return res.send("Single file")
+    });
+    this.router.get('/upload/:path', function (req, res) {
+      const path = req.params;
+      console.log(path);
+      var src = fs.createReadStream('./server/uploads/S1.1.xlsx-1613567426078.xlsx');
+      src.on('open', function () {
+          src.pipe(res);
+          console.log('down completed: ');
+      });
+      src.on('error', function (err: any) {
+        console.log(err);
+      })
+    });
+
+
   }
 }
 
