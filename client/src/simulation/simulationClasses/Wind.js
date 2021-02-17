@@ -21,6 +21,7 @@ export default class Wind {
         this.simCtx = simCtx;
         this.direction = direction;
         this.speedInMPerS = speedInMPerS;
+        this.speedInKnots = speedInMPerS*1.94384449;
 
         this.posXOnCanvas = 10;
         this.posYOnCanvas = 10;
@@ -70,17 +71,38 @@ export default class Wind {
         ctx.save();
 
         // translate van context naar midden van de afbeelding
-        ctx.translate(this.posXOnCanvas + this.width/2, this.posYOnCanvas + this.height/2);
+        ctx.translate(this.posXOnCanvas+this.width/2, this.posYOnCanvas+this.height/2);
 
         // roteer de context naar de hoek van het schip
         ctx.rotate((this.direction * -1)*Math.PI/180);
 
-
         // afbeelding op canvas tekenen
-        ctx.drawImage(this.symbol, this.posXOnCanvas-this.width/2, this.posYOnCanvas-this.height/2, this.width, this.height);
+        ctx.drawImage(this.symbol, this.width/-2, this.height/-2, this.width, this.height);
 
         // restore context
         ctx.restore();
 
+        ctx.fillStyle = 'black';
+        ctx.fillRect(this.posXOnCanvas + 100, this.posYOnCanvas + 20, 200, 30); 
+        ctx.fillStyle = 'white';
+        ctx.fillRect(this.posXOnCanvas + 100 + 200*(this.speedInKnots/35), this.posYOnCanvas + 20, 10, 30);
+        ctx.fill();
+
+    }
+
+    /**
+     * Sets the direction of the wind
+     * @param {*} directionInDegrees new direction of wind
+     */
+    setDirection(directionInDegrees) {
+        this.direction = directionInDegrees;
+    }
+
+    /**
+     * Sets the direction of the speedInKnots
+     * @param {*} speedInKnots neew speed of wind
+     */
+    setSpeedInKnots(speedInKnots) {
+        this.speedInKnots = speedInKnots;
     }
 }

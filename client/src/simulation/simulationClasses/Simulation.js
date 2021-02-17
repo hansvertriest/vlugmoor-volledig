@@ -249,6 +249,8 @@ export default class Simulation {
                 speedInMPerS: shipInfo.speedInMPerS,
             }
 
+        console.log(this.caseData.timePoints[shipInfo.startContourTimePoint], shipInfo.startContourTimePoint)
+
         // Indien caseShip, maak parameters voor de outline van het schip
         const paramsOutline = (isCaseShip)
             ? {
@@ -355,7 +357,6 @@ export default class Simulation {
      */
     async addWind( direction, speedInMPerS) {
         this.wind = new Wind(this.simCtx, direction, speedInMPerS);
-        console.log(this.wind);
         await this.wind.loadImage();
     }
 
@@ -522,6 +523,9 @@ export default class Simulation {
             fender.setLoadRatio(timePoint.fenderData[index].force/timePoint.fenderData[index].forceMax);
         });
 
+        // update windroos
+        this.wind.setDirection(timePoint.windData.directionInDegrees);
+        this.wind.setSpeedInKnots(timePoint.windData.speedInKnots);
 
     }
 

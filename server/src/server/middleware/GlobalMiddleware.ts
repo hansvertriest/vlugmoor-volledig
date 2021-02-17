@@ -5,7 +5,7 @@ import { default as cors } from 'cors';
 import { default as helmet } from 'helmet';
 import { default as path } from 'path';
 
-import {default as multer } from 'multer';
+import { default as multer } from 'multer';
 
 import { IConfig, Environment } from '../services';
 

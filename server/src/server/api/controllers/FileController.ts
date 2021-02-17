@@ -6,33 +6,24 @@ import { default as path } from 'path';
 
 import { default as multer } from 'multer';
 
-
 import { NotFoundError } from '../../utilities';
 
 class FileController {
-  constructor () {
-
-  }
-  store = async () => {
-
-  }
-
+  constructor() {}
+  store = async () => {};
 
   upload = () => {
-     
     const storage = multer.diskStorage({
       destination: '../../uploads/',
-      filename: function (req, file, cb) {
-        cb(null, file.originalname + '-' + Date.now() + path.extname(file.originalname))
+      filename: function(req, file, cb) {
+        cb(
+          null,
+          file.originalname + '-' + Date.now() + path.extname(file.originalname)
+        );
       }
-    })
-    const upload = multer({storage: storage}).single('myCsv');
-
-  }
-  
-
-
-  
+    });
+    const upload = multer({ storage: storage }).single('myCsv');
+  };
 
   /*
 
@@ -54,7 +45,6 @@ class FileController {
     }
   };
   */
-
 }
 
 export default FileController;

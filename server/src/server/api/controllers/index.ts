@@ -4,4 +4,10 @@ import FileController from './FileController';
 import { default as MetaDataController } from './MetaDataController';
 import { default as DataController } from './DataController';
 
-export { HelloController, UserController, MetaDataController, DataController, FileController };
+export {
+  HelloController,
+  UserController,
+  MetaDataController,
+  DataController,
+  FileController
+};

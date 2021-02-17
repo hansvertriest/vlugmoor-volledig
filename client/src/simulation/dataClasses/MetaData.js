@@ -121,7 +121,7 @@ export default class MetaData {
             length: this.getCellData('b',3),
             width: this.getCellData('b',5),
             distanceFromKaai: this.getCellData('b',14),
-            startContourTimePoint: this.getCellData('e',4),
+            startContourTimePoint: (this.getCellData('e',4) != '') ? this.getCellData('e',4) : 0 ,
         }
     }
 

@@ -47,7 +47,7 @@ export default () => {
         
         // create data object
         const data = new Data(files.metaData);
-        data.addTimePoints(files.coords, files.forces, shipTranslations)
+        data.addTimePoints(files.coords, files.forces, shipTranslations, files.wind)
             .catch(() => {
                 alert("De opgegeven data kon niet correct worden verwerkt. Probeer het opnieuw")
             });
@@ -118,6 +118,7 @@ export default () => {
     const xlsxInput = document.getElementById('metadata-input');
     const forcesInput = document.getElementById('forces-input');
     const coordsInput = document.getElementById('coords-input');
+    const windInput = document.getElementById('wind-input');
     const submit = document.getElementById('submit');
 
     // Luisteren naar wanneer een bestand wordt geupload en vervolgens de stijl van het element veranderen
@@ -163,9 +164,19 @@ export default () => {
             bg.style.width = "0";
         }
     }); 
-
-    let coordsCsv;
-    let forcesCsv;
+    windInput.addEventListener('change', (e) => {
+        const el = document.getElementById('wind-input-label');
+        const bg = document.getElementById('wind-input-bg');
+        if (e.target.files[0]) {
+            el.innerHTML = e.target.files[0].name;
+            el.parentElement.classList.add('custom-button--uploaded');
+            bg.style.width = "100%";
+        } else {
+            el.parentElement.classList.remove('custom-button--uploaded');
+            el.innerHTML = "Bestand kiezen";
+            bg.style.width = "0";
+        }
+    }); 
 
     // Luister wanneer de submit button wordt aangeklikt en lees vervolgens de bestanden in.
     submit.addEventListener('click', (e) => {
@@ -204,7 +215,7 @@ export default () => {
         const readerForces = new FileReader();
         readerForces.onload = (e) => {
             const data = e.target.result;
-            forcesCsv = data;
+
             // Formatteer bestand
             const forces = getParsedCSVData(data);
             
@@ -217,7 +228,7 @@ export default () => {
         const readerCoords = new FileReader();
         readerCoords.onload = (e) => {
             const data = e.target.result;
-            coordsCsv = data;
+
             //console.log(coordsCsv);
             //console.log(data);
             // Formatteer bestand
@@ -228,7 +239,19 @@ export default () => {
 
             // Controlleer of alle bestanden zijn ingeladen, zo ja => start de simulatie
             filesHaveLoaded(simulation, files)
+        }
+        const readerWind = new FileReader();
+        readerWind.onload = (e) => {
+            const data = e.target.result;
 
+            // Formatteer bestand
+            const wind = getParsedCSVData(data);
+
+            // We voegen de wind data toe aan het files-object
+            files.wind = wind;
+
+            // Controlleer of alle bestanden zijn ingeladen, zo ja => start de simulatie
+            filesHaveLoaded(simulation, files)
         }
 
         try {
@@ -236,6 +259,7 @@ export default () => {
             readerXSLX.readAsBinaryString(xlsxInput.files[0])
             readerForces.readAsBinaryString(forcesInput.files[0])
             readerCoords.readAsBinaryString(coordsInput.files[0])
+            readerWind.readAsBinaryString(windInput.files[0])
         } catch {
             alert('Er ging iets fout bij het inladen van de bestanden. Probeer het opnieuw.');
         }
