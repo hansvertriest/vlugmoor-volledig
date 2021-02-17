@@ -21,6 +21,7 @@ export default class Wind {
         this.simCtx = simCtx;
         this.direction = direction;
         this.speedInMPerS = speedInMPerS;
+        this.speedInKnots = speedInMPerS*1.94384449;
 
         this.posXOnCanvas = 10;
         this.posYOnCanvas = 10;
@@ -81,9 +82,27 @@ export default class Wind {
         // restore context
         ctx.restore();
 
+        ctx.fillStyle = 'black';
+        ctx.fillRect(this.posXOnCanvas + 100, this.posYOnCanvas + 20, 200, 30); 
+        ctx.fillStyle = 'white';
+        ctx.fillRect(this.posXOnCanvas + 100 + 200*(this.speedInKnots/35), this.posYOnCanvas + 20, 10, 30);
+        ctx.fill();
+
     }
 
+    /**
+     * Sets the direction of the wind
+     * @param {*} directionInDegrees new direction of wind
+     */
     setDirection(directionInDegrees) {
         this.direction = directionInDegrees;
+    }
+
+    /**
+     * Sets the direction of the speedInKnots
+     * @param {*} speedInKnots neew speed of wind
+     */
+    setSpeedInKnots(speedInKnots) {
+        this.speedInKnots = speedInKnots;
     }
 }

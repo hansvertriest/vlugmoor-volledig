@@ -525,6 +525,7 @@ export default class Simulation {
 
         // update windroos
         this.wind.setDirection(timePoint.windData.directionInDegrees);
+        this.wind.setSpeedInKnots(timePoint.windData.speedInKnots);
 
     }
 
