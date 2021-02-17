@@ -4,6 +4,7 @@ import HawserData from './HawserData';
 import ShipData from './ShipData';
 import TimePoint from './TimePoint';
 import EventCollection from './EventCollection';
+import WindData from './WindData';
 
 export {
     Data,
@@ -11,5 +12,5 @@ export {
     ShipData,
     TimePoint,
     MetaData,
-    EventCollection
+    WindData,
 }

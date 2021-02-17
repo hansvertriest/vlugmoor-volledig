@@ -1,7 +1,8 @@
 import HawserData from './HawserData';
 import FenderData from './FenderData';
 import TimePoint from './TimePoint';
-import { EventCollection } from '.';
+import EventCollection from './EventCollection';
+import WindData from './WindData';
 
 export default class Data {
     constructor( caseMetaData ) {
@@ -11,6 +12,7 @@ export default class Data {
         this.timePoints = []; 
         const fenderLimits = {first: this.caseMetaData.fenderLimits.first, second: this.caseMetaData.fenderLimits.second}
         this.events = new EventCollection(this.caseMetaData.hawserLimits, fenderLimits);
+        console.log('sss')
     }
 
     get() {
@@ -26,8 +28,9 @@ export default class Data {
      * @param {*} dataCoords 2D array met de coordinaten van de trossen: x = dataCoords[tros*2][time], y = dataCoords[time] [tros*2+1]
      * @param {*} dataForces 2D array met de krachten op de trossen: dataForces[time] [tros]
      * @param {*} shipTranslation 2D array met de beweging van het schip: x = shipTranslation[time][0], y = shipTranslation[time][1], rotation = shipTranslation[time][2]
+     * @param {*} windData 2D array met de data van het schip.
      */
-    async addTimePoints( dataCoords, dataForces, shipTranslation ) {
+    async addTimePoints( dataCoords, dataForces, shipTranslation, windData = undefined ) {
         return new Promise((resolve, reject) => {
             try {
               
@@ -74,11 +77,20 @@ export default class Data {
                         timePointFenderData.push(fenderData);
                     }
 
+                    // WIND
+                    // Maak een WindData-object aan 
+                    const timePointWindData = new WindData(
+                        (windData) ? Number(windData[time][0]) :  0,
+                        (windData) ? Number(windData[time][1]) :  0,
+                    );
+
+
                     // 3 TIMEPOINT
                     // create timePoint
                     const timePoint = new TimePoint(
                         timePointHawserData, 
                         timePointFenderData,
+                        timePointWindData,
                         Number(shipTranslation[time][0].replace(',','.')),
                         Number(shipTranslation[time][1].replace(',','.')),
                         Number(shipTranslation[time][2].replace(',','.')),

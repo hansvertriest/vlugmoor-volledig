@@ -70,17 +70,20 @@ export default class Wind {
         ctx.save();
 
         // translate van context naar midden van de afbeelding
-        ctx.translate(this.posXOnCanvas + this.width/2, this.posYOnCanvas + this.height/2);
+        ctx.translate(this.posXOnCanvas+this.width/2, this.posYOnCanvas+this.height/2);
 
         // roteer de context naar de hoek van het schip
         ctx.rotate((this.direction * -1)*Math.PI/180);
 
-
         // afbeelding op canvas tekenen
-        ctx.drawImage(this.symbol, this.posXOnCanvas-this.width/2, this.posYOnCanvas-this.height/2, this.width, this.height);
+        ctx.drawImage(this.symbol, this.width/-2, this.height/-2, this.width, this.height);
 
         // restore context
         ctx.restore();
 
+    }
+
+    setDirection(directionInDegrees) {
+        this.direction = directionInDegrees;
     }
 }
