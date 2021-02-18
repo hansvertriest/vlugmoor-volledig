@@ -93,22 +93,23 @@ class ApiRouter {
      */
 
     const storage = multer.diskStorage({
-      destination: './server/uploads/',
+      destination: 'uploads/',
       filename: function(req, file, cb) {
         cb(
           null,
           file.originalname + '-' + Date.now() + path.extname(file.originalname)
         );
+        req.body.path = file.originalname + '-' + Date.now() + path.extname(file.originalname);
         console.log(req.file);
       }
     });
-    const upload = multer({ storage: storage }).single('File');
+    const upload = multer({ storage: storage }).single('file');
 
     //this.router.post('/upload',(req) => {console.log(req.file)} , upload);
 
     this.router.post('/upload', upload, (req, res) => {
       console.log(req.file);
-      return res.send('Single file');
+      return res.json({message: 'file sent', path: req.body.path});
     });
     this.router.get('/upload/:path', function(req, res) {
       const path = req.params;

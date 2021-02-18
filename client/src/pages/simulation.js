@@ -292,7 +292,7 @@ export default () => {
         }
     });
     */
-    upload.addEventListener('click', () => {
+    upload.addEventListener('click', async () =>  {
         let apiService = new ApiService();
         let data = {data: serverData};
         if (serverData) {
@@ -300,18 +300,16 @@ export default () => {
             let description = document.getElementById('description-field').value;
             let date = document.getElementById('date-field').value;
             let picture = serverData.caseMetaData.caseShip.type;
-            let forcesPath;
-            let coordsPath;
-            //console.log(coordsCsv);
-            //console.log(forcesCsv);
-            
-            let cvsForces = document.getElementById('forces-input').files[0];
-            console.log(cvsForces);
-            console.log(document.getElementById('forces-input').files);
-            cvsForces.fieldname = 'File';
-            console.log(cvsForces.fieldname);
-            apiService.storeDataFile(document.getElementById('forces-input').files[0])
-            .then((response) => console.log(response.json()));
+
+            const forces = await apiService.storeDataFile(forcesInput.files[0]);
+            const positions = await apiService.storeDataFile(coordsInput.files[0]);
+            const wind = await apiService.storeDataFile(windInput.files[0]);
+
+            console.log(forces.path);
+            console.log(positions.path);
+            console.log(wind.path);
+
+
         } else {
             alert('Gelieve eerst een simulatie op te laden.')
         }

@@ -81,19 +81,22 @@ export default class ApiService {
     }
 
     async storeDataFile (data) {
+        console.log(data);
+        const formData = new FormData();
+        formData.append('file', data); 
+        console.log(formData);
         const options = {
             method: 'POST',
             headers: {
                 'Accept': '*/*',
-                'Content-Type': 'multipart/form-data'
+                //'Content-Type': 'multipart/form-data'
             },
-            body: data
+            body: formData
+            
         };
 
         let url = `${this.BASE_URL}/upload`;
-        console.log(options);
         const response = await fetch(url, options).then((result) => result.json());
-        console.log(response);
         return response;
     }
 
