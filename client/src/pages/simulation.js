@@ -91,6 +91,7 @@ export default () => {
      * 3. BEGIN SCRIPT
      */
 
+    /*
     let apiService =  new ApiService();
     const data = apiService.findFile()
     .then(
@@ -102,6 +103,7 @@ export default () => {
             console.log(file.Sheets[file.SheetNames[0]]);
         }
     );
+    */
 
 
     // Toewijzen van dimensies en kleur aan het canvas-element
@@ -301,14 +303,25 @@ export default () => {
             let date = document.getElementById('date-field').value;
             let picture = serverData.caseMetaData.caseShip.type;
 
+            const caseData = await apiService.storeDataFile(xlsxInput.files[0]);
             const forces = await apiService.storeDataFile(forcesInput.files[0]);
-            const positions = await apiService.storeDataFile(coordsInput.files[0]);
+            const coords = await apiService.storeDataFile(coordsInput.files[0]);
             const wind = await apiService.storeDataFile(windInput.files[0]);
 
-            console.log(forces.path);
-            console.log(positions.path);
-            console.log(wind.path);
 
+            const caseDataPath = caseData.path;
+            const forcesPath = forces.path;
+            const coordsPath = coords.path;
+            const windPath = wind.path;
+
+            console.log(caseDataPath);
+            console.log(forcesPath);
+            console.log(coordsPath);
+            console.log(windPath);
+
+
+            const response = await apiService.storeMetaData(title, description, date, picture, caseDataPath, coordsPath, forcesPath, windPath);
+            console.log(response);
 
         } else {
             alert('Gelieve eerst een simulatie op te laden.')

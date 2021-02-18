@@ -104,8 +104,8 @@ userSchema.methods.comparePassword = function(
   candidatePassword: String,
   cb: Function
 ) {
-  const user = this;
-  bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
+    const user: IUser = this as IUser;
+  bcrypt.compare(candidatePassword, user.localProvider.password, (err, isMatch) => {
     if (err) return cb(err, null);
     return cb(null, isMatch);
   });

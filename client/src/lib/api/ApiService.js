@@ -26,14 +26,19 @@ export default class ApiService {
 
     // store metadata to server
 
-    async storeMetaData (title, description, date, picture, _dataId) {
+    async storeMetaData (title, description, date, picture, caseDataPath, coordsPath, forcesPath, windPath) {
         const metaData = {
             title: title, 
             description: description,
             date: date,
             picture: picture,
-            _dataId: _dataId
+            caseDataPath: caseDataPath,
+            coordsPath: coordsPath,
+            forcesPath: forcesPath,
+            windPath: windPath
         }
+
+        console.log(metaData);
         const options = {
             method: 'POST',
             headers: {
@@ -42,6 +47,7 @@ export default class ApiService {
             },
             body: JSON.stringify(metaData)
         };
+
 
         let url = `${this.BASE_URL}/metadata`;
         const response = await fetch(url, options);
@@ -109,7 +115,7 @@ export default class ApiService {
     }
 
     async findFile (filePath) {
-        let url = `${this.BASE_URL}/upload`;
+        let url = `${this.BASE_URL}/upload/:id`;
         const response = await fetch(url);
         return response.arrayBuffer();
     }
