@@ -99,7 +99,11 @@ class ApiRouter {
           null,
           file.originalname + '-' + Date.now() + path.extname(file.originalname)
         );
-        req.body.path = file.originalname + '-' + Date.now() + path.extname(file.originalname);
+        req.body.path =
+          file.originalname +
+          '-' +
+          Date.now() +
+          path.extname(file.originalname);
         console.log(req.file);
       }
     });
@@ -109,17 +113,18 @@ class ApiRouter {
 
     this.router.post('/upload', upload, (req, res) => {
       console.log(req.file);
-      return res.json({message: 'file sent', path: req.body.path});
+      return res.json({ message: 'file sent', path: req.body.path });
     });
+
     this.router.get('/upload/:path', function(req, res) {
-      const path = req.params;
+      const {path} = req.params;
       console.log(path);
       var src = fs.createReadStream(
-        './server/uploads/S1.1.xlsx-1613567426078.xlsx'
+        `uploads/${path}`
       );
       src.on('open', function() {
         src.pipe(res);
-        console.log('down completed: ');
+        console.log('download completed');
       });
       src.on('error', function(err: any) {
         console.log(err);

@@ -1,5 +1,7 @@
 import App from '../lib/App';
 import ApiService from '../lib/api/ApiService';
+import Router from '../lib/core/Router';
+import routes from '../routes';
 
 const homeTemplate = require('../templates/home.hbs');
 
@@ -12,13 +14,13 @@ export default () => {
     function getShipImage (imgName) {
         if (imgName === 'bulkcarrier') {
             return '../assets/images/ships/bulkcarrier/bulkcarrier_dirLeft.png';
-        } else if (imgName === 'containership_large') {
+        } else if (imgName === 'container') {
             return '../assets/images/ships/container/container_large_dirLeft.png';
         } else if (imgName === 'gascarrier') {
             return '../assets/images/ships/gascarrier/gascarrier_prismatanks_dirLeft.png';
         } else if (imgName === 'roro') {
             return '../assets/images/ships/roro/roro_dirLeft.png';
-        } else if (imgName === 'oiltanker_large') {
+        } else if (imgName === 'oiltanker') {
             return '../assets/images/ships/tanker/oiltanker_large_dirLeft.png';
         } else if (imgName === 'oiltanker_small') {
             return '../assets/images/ships/tanker/oiltanker_small_dirLeft.png';
@@ -45,8 +47,15 @@ export default () => {
             image.src = getShipImage(data.picture);
             
             documentContainer.appendChild(container);
+            container.addEventListener('click', (e) => {
+                loadSimulation(data.id);
+            })
         })
-    }
+    };
+
+    const loadSimulation = (id) => {
+        App.router.navigate(`/simulation/${id}`);
+    };
 
 
     const apiService = new ApiService;

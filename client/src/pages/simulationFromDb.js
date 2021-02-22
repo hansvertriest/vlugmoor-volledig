@@ -21,6 +21,7 @@ export default () => {
     /**
      * 2. FUNCTIONS
      */
+    console.log('dit is de juiste');
 
     
 

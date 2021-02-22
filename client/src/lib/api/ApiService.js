@@ -115,7 +115,7 @@ export default class ApiService {
     }
 
     async findFile (filePath) {
-        let url = `${this.BASE_URL}/upload/:id`;
+        let url = `${this.BASE_URL}/upload/${filePath}`;
         const response = await fetch(url);
         return response.arrayBuffer();
     }

@@ -9,7 +9,7 @@ interface IMetaData extends Document {
   description: string;
 
   picture: string;
-  caseDataPath: string; 
+  caseDataPath: string;
   coordsPath: string;
   forcesPath: string;
   windPath: string;
@@ -44,20 +44,20 @@ const metaDataSchema: Schema = new Schema(
       required: false
     },
     caseDataPath: {
-        type: String,
-        required: false
+      type: String,
+      required: false
     },
     coordsPath: {
-        type: String,
-        required: false
+      type: String,
+      required: false
     },
-    forcesPath:{
-        type: String,
-        required: false
+    forcesPath: {
+      type: String,
+      required: false
     },
     windPath: {
-        type: String,
-        required: false
+      type: String,
+      required: false
     },
     date: {
       type: Date,
