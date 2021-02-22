@@ -6,7 +6,7 @@ import SimulationFromDbPage from './pages/simulationFromDb';
 export default [
     {path: '/simulation', view: SimulationPage},
     {path: '/simulation/:id', view: SimulationFromDbPage, f: (params, query) => {
-        console.log(params);
+        console.log(params.id);
         console.log(query);
     }},
     {path: '/simulation-list', view: SimulationListPage},

@@ -117,11 +117,9 @@ class ApiRouter {
     });
 
     this.router.get('/upload/:path', function(req, res) {
-      const {path} = req.params;
+      const { path } = req.params;
       console.log(path);
-      var src = fs.createReadStream(
-        `uploads/${path}`
-      );
+      var src = fs.createReadStream(`uploads/${path}`);
       src.on('open', function() {
         src.pipe(res);
         console.log('download completed');

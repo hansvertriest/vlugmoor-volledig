@@ -21,8 +21,33 @@ export default () => {
     /**
      * 2. FUNCTIONS
      */
-    console.log('dit is de juiste');
 
+    // parameter id uit URL halen
+    let str = window.location.hash;
+    let id = str.replace('#!/simulation/', '');
+
+    // functie voor zoeken naar data op de server
+
+    const getDataFromServer = async (id) => {
+        console.log(id);
+        const apiService = new ApiService();
+        const metaData = await apiService.findMetaDataById(id);
+        const xlsx = await apiService.findFile(metaData.caseDataPath);
+        const forces = await apiService.findFile(metaData.forcesPath);
+        const coords = await apiService.findFile(metaData.coordsPath);
+        const wind = await apiService.findFile(metaData.windPath);
+
+
+
+
+        console.log(metaData);
+        console.log(coords);
+        console.log(xlsx);
+        console.log(forces);
+        console.log(wind);
+        
+    }
+   
     
 
 
@@ -88,10 +113,13 @@ export default () => {
         return parsedData;
     }
 
-    /**
-     * 3. BEGIN SCRIPT
-     */
+   /*
+    * 3. BEGIN SCRIPT
+    */
 
+    getDataFromServer(id);
+
+    /*
     let apiService =  new ApiService();
     const data = apiService.findFile()
     .then(
@@ -103,7 +131,7 @@ export default () => {
             console.log(file.Sheets[file.SheetNames[0]]);
         }
     );
-
+    */
 
     // Toewijzen van dimensies en kleur aan het canvas-element
     const canvas = document.getElementById('simulation-canvas');
