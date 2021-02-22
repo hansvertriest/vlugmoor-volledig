@@ -114,10 +114,16 @@ export default class ApiService {
         return response.json();
     }
 
-    async findFile (filePath) {
+    async findXlsx (filePath) {
         let url = `${this.BASE_URL}/upload/${filePath}`;
         const response = await fetch(url);
         return response.arrayBuffer();
+    }
+
+    async findCsv (filePath) {
+        let url = `${this.BASE_URL}/upload/${filePath}`;
+        const response = await fetch(url);
+        return response.text();
     }
 
 

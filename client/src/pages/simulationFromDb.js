@@ -1,6 +1,11 @@
 import App from '../lib/App';
-import { Data, MetaData } from '../simulation/dataClasses';
-import { Simulation } from '../simulation/simulationClasses';
+import {
+    Data,
+    MetaData
+} from '../simulation/dataClasses';
+import {
+    Simulation
+} from '../simulation/simulationClasses';
 import Controls from '../simulation/simulationClasses/Controls';
 import ApiService from '../lib/api/ApiService';
 // import AdvancedControls from '../simulation/simulationClasses/AdvancedControls';
@@ -14,7 +19,9 @@ export default () => {
      * 1. RENDER PAGE
      */
     const title = 'Simulation page';
-    App.render(simulationTemplate({title}));
+    App.render(simulationTemplate({
+        title
+    }));
     let serverData;
     console.log('CHANGELOG: added option for no passingship')
 
@@ -37,18 +44,17 @@ export default () => {
         const coords = await apiService.findFile(metaData.coordsPath);
         const wind = await apiService.findFile(metaData.windPath);
 
-
-
-
-        console.log(metaData);
+        /* console.log(metaData);
         console.log(coords);
         console.log(xlsx);
         console.log(forces);
         console.log(wind);
-        
-    }
-   
-    
+        */
+
+        return metaData, coords, xlsx, forces, wind;
+    };
+
+
 
 
     // Functie voor het effectief initialiseren van de simulatie
@@ -70,7 +76,7 @@ export default () => {
                 return false;
             });
         });
-        
+
         // create data object
         const data = new Data(files.metaData);
         data.addTimePoints(files.coords, files.forces, shipTranslations)
@@ -84,19 +90,19 @@ export default () => {
         // const advancedControls = new Advancedgit push Controls();
         // advancedControls.addDataToHawsersTimeline(data, controls)
         // advancedControls.addDataToFendersTimeline(data, controls)
-        
+
         // SIMULATION
         await simulation.addData(data);
         await simulation.init();
         simulation.drawShips();
         simulation.play();
     }
-    
+
     // Functie die kijkt of alle vereiste bestanden ingeladen zijn. 
     // Zo ja, wordt de simulatie gestart via de functie appInit()
     const filesHaveLoaded = (simulation, files) => {
         const keys = Object.keys(files);
-        if (keys.includes('metaData') && keys.includes('forces') && keys.includes('coords')){
+        if (keys.includes('metaData') && keys.includes('forces') && keys.includes('coords')) {
             appInit(simulation, files);
         }
     }
@@ -106,18 +112,19 @@ export default () => {
         const parsedData = [];
 
         const newLinebrk = data.split("\n");
-        for(let i = 0; i < newLinebrk.length; i++) {
+        for (let i = 0; i < newLinebrk.length; i++) {
             parsedData.push(newLinebrk[i].split(","))
         }
 
         return parsedData;
     }
 
-   /*
-    * 3. BEGIN SCRIPT
-    */
+    /*
+     * 3. BEGIN SCRIPT
+     */
 
-    getDataFromServer(id);
+    // const serverDataObj = getDataFromServer(id);
+    // console.log(serverDataObj);
 
     /*
     let apiService =  new ApiService();
@@ -135,7 +142,7 @@ export default () => {
 
     // Toewijzen van dimensies en kleur aan het canvas-element
     const canvas = document.getElementById('simulation-canvas');
-    const factor =  (window.innerWidth / canvas.width)*0.5 || (document.body.clientWidth / canvas.width)*0.5
+    const factor = (window.innerWidth / canvas.width) * 0.5 || (document.body.clientWidth / canvas.width) * 0.5
     canvas.setAttribute('width', (canvas.width * factor > 800) ? canvas.width * factor : 1000);
     canvas.setAttribute('height', (canvas.height * factor > 500) ? canvas.height * factor : 600);
 
@@ -165,7 +172,7 @@ export default () => {
             el.innerHTML = "Bestand kiezen";
             bg.style.width = "0";
         }
-    }); 
+    });
     forcesInput.addEventListener('change', (e) => {
         const el = document.getElementById('forces-input-label');
         const bg = document.getElementById('forces-input-bg');
@@ -178,7 +185,7 @@ export default () => {
             el.innerHTML = "Bestand kiezen";
             bg.style.width = "0";
         }
-    }); 
+    });
     coordsInput.addEventListener('change', (e) => {
         const el = document.getElementById('coords-input-label');
         const bg = document.getElementById('coords-input-bg');
@@ -191,13 +198,19 @@ export default () => {
             el.innerHTML = "Bestand kiezen";
             bg.style.width = "0";
         }
-    }); 
+    });
 
-    // Luister wanneer de submit button wordt aangeklikt en lees vervolgens de bestanden in.
-    submit.addEventListener('click', (e) => {
-        // De upload-popup wordt gesloten
-        const loadPopup = document.getElementById('load-popup');
-        loadPopup.style.display = 'none';
+    const startSimulationWithServerData = async (id) => {
+
+        const apiService = new ApiService();
+        const serverMetaData = await apiService.findMetaDataById(id);
+        const xlsxUnparsed = await apiService.findXlsx(serverMetaData.caseDataPath);
+        const forcesUnparsed = await apiService.findCsv(serverMetaData.forcesPath);
+        const coordsUnparsed = await apiService.findCsv(serverMetaData.coordsPath);
+        const windUnparsed = await apiService.findCsv(serverMetaData.windPath);
+
+        const file = XLSX.read(new Uint8Array(xlsxUnparsed), {type: 'array'});
+        console.log(file.Sheets[file.SheetNames[0]]);
 
         // Hier maken we een Simulation-object aan
         const canvasId = 'simulation-canvas';
@@ -205,66 +218,21 @@ export default () => {
 
         const files = {};
 
-        // We maken voor elk bestand een nieuw FilReader-object aan en 
-        // definieren vervolgens wat er moet gebeuren als zo'n FileReader-object
-        // een bestand heeft ingeladen.
-        const readerXSLX = new FileReader();
-        readerXSLX.onload = (e) => {
-            try {
-                const data = e.target.result;
+        // De xlsx wordt geformateerd naar een Metadata-object
+        const metaData = new MetaData(file).get();
 
-                const file = XLSX.read(data, {type: 'binary'});
+        // We voegen het metaData-object toe aan het files-object
+        files.metaData = metaData;
 
-                // De xlsx wordt geformateerd naar een Metadata-object
-                const metaData = new MetaData(file).get();
-
-                // We voegen het metaData-object toe aan het files-object
-                files.metaData = metaData;
-    
-                // Controlleer of alle bestanden zijn ingeladen, zo ja => start de simulatie
-                filesHaveLoaded(simulation, files)
-            } catch {
-                alert("Er trad een fout op bij het inlezen van de metadata.")
-            }
-        }
-        const readerForces = new FileReader();
-        readerForces.onload = (e) => {
-            const data = e.target.result;
+        files.forces = getParsedCSVData(forcesUnparsed);
+        files.coords = getParsedCSVData(coordsUnparsed);
+        files.wind = getParsedCSVData(windUnparsed);
         
-            // Formatteer bestand
-            const forces = getParsedCSVData(data);
+        appInit(simulation, files);
 
-            // We voegen de forces data toe aan het files-object
-            files.forces = forces;
+    }
 
-            // Controlleer of alle bestanden zijn ingeladen, zo ja => start de simulatie
-            filesHaveLoaded(simulation, files)
-        }
-        const readerCoords = new FileReader();
-        readerCoords.onload = (e) => {
-            const data = e.target.result;
-
-            // Formatteer bestand
-            const coords = getParsedCSVData(data);
-
-            // We voegen de coordinaat data toe aan het files-object
-            files.coords = coords;
-
-            // Controlleer of alle bestanden zijn ingeladen, zo ja => start de simulatie
-            filesHaveLoaded(simulation, files)
-
-        }
-
-        try {
-            // We laten elk FileReader-object het respectievelijke bestand inladen
-            readerXSLX.readAsBinaryString(xlsxInput.files[0])
-            readerForces.readAsBinaryString(forcesInput.files[0])
-            readerCoords.readAsBinaryString(coordsInput.files[0])
-        } catch {
-            alert('Er ging iets fout bij het inladen van de bestanden. Probeer het opnieuw.');
-        }
-    });
-
+    startSimulationWithServerData(id);
 
     // Ophalen van elementen ivm de popups
     const upload = document.getElementById('upload');
@@ -277,15 +245,17 @@ export default () => {
     //      => maak een ApiService aan en upload het bestand
     upload.addEventListener('click', () => {
         let apiService = new ApiService();
-        let data = {data: serverData};
+        let data = {
+            data: serverData
+        };
         if (serverData) {
             let title = document.getElementById('title-field').value;
             let description = document.getElementById('description-field').value;
             let date = document.getElementById('date-field').value;
             let picture = serverData.caseMetaData.caseShip.type;
-    
+
             apiService.storeData(data)
-            .then((response) => apiService.storeMetaData(title, description, date, picture, toString(response.id)));
+                .then((response) => apiService.storeMetaData(title, description, date, picture, toString(response.id)));
         } else {
             alert('Gelieve eerst een simulatie op te laden.')
         }
@@ -314,7 +284,7 @@ export default () => {
     });
 
 
-    
+
 
 
 };

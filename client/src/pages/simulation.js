@@ -217,13 +217,13 @@ export default () => {
         const readerForces = new FileReader();
         readerForces.onload = (e) => {
             const data = e.target.result;
-
+            console.log(data);
             // Formatteer bestand
             const forces = getParsedCSVData(data);
-            
+
             // We voegen de forces data toe aan het files-object
             files.forces = forces;
-
+            console.log(forces);
             // Controlleer of alle bestanden zijn ingeladen, zo ja => start de simulatie
             filesHaveLoaded(simulation, files)
         }
