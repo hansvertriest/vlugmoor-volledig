@@ -12,7 +12,7 @@ import ApiService from '../lib/api/ApiService';
 
 const XLSX = require('xlsx');
 
-const simulationTemplate = require('../templates/simulation.hbs');
+const simulationTemplate = require('../templates/simulationServer.hbs');
 
 export default () => {
     /**
@@ -34,7 +34,7 @@ export default () => {
     let id = str.replace('#!/simulation/', '');
 
     // functie voor zoeken naar data op de server
-
+    /*
     const getDataFromServer = async (id) => {
         console.log(id);
         const apiService = new ApiService();
@@ -44,15 +44,13 @@ export default () => {
         const coords = await apiService.findFile(metaData.coordsPath);
         const wind = await apiService.findFile(metaData.windPath);
 
-        /* console.log(metaData);
-        console.log(coords);
-        console.log(xlsx);
-        console.log(forces);
-        console.log(wind);
-        */
+        console.log(metaData);
+
+
 
         return metaData, coords, xlsx, forces, wind;
     };
+    */
 
 
 
@@ -119,25 +117,8 @@ export default () => {
         return parsedData;
     }
 
-    /*
-     * 3. BEGIN SCRIPT
-     */
-
-    // const serverDataObj = getDataFromServer(id);
-    // console.log(serverDataObj);
-
-    /*
-    let apiService =  new ApiService();
-    const data = apiService.findFile()
-    .then(
-        (result) => {
-            console.log(result);
-            console.log('file');
-
-            const file = XLSX.read(new Uint8Array(result), {type: 'array'});
-            console.log(file.Sheets[file.SheetNames[0]]);
-        }
-    );
+   /*
+    * 3. BEGIN SCRIPT
     */
 
     // Toewijzen van dimensies en kleur aan het canvas-element
@@ -200,9 +181,30 @@ export default () => {
         }
     });
 
+
+    // Functie die data van de server in de html zet
+
+    const setTextWithServerData = (serverMetaData) => {
+
+        // DOM aanspreken 
+        const titleElement = document.getElementById('simulation-title');
+        const dateElement = document.getElementById('simulation-date');
+        const descriptionElement = document.getElementById('descrition-paragraph');
+        
+        titleElement.innerHTML = serverMetaData.title;
+        dateElement.innerHTML = serverMetaData.date;  
+        descriptionElement.innerHTML = serverMetaData.description;
+    }; 
+
+    // Simulatie data van de server halen en deze dan omzetten in leesbare data 
+    // dan de simulatie starten
+
     const startSimulationWithServerData = async (id) => {
 
+        // ApiService obj aanmaken 
         const apiService = new ApiService();
+
+        // functies aanroepen om data van server te halen
         const serverMetaData = await apiService.findMetaDataById(id);
         const xlsxUnparsed = await apiService.findXlsx(serverMetaData.caseDataPath);
         const forcesUnparsed = await apiService.findCsv(serverMetaData.forcesPath);
@@ -210,7 +212,9 @@ export default () => {
         const windUnparsed = await apiService.findCsv(serverMetaData.windPath);
 
         const file = XLSX.read(new Uint8Array(xlsxUnparsed), {type: 'array'});
-        console.log(file.Sheets[file.SheetNames[0]]);
+
+        setTextWithServerData(serverMetaData);
+        console.log(serverMetaData);
 
         // Hier maken we een Simulation-object aan
         const canvasId = 'simulation-canvas';
