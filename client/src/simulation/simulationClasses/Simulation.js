@@ -249,8 +249,6 @@ export default class Simulation {
                 speedInMPerS: shipInfo.speedInMPerS,
             }
 
-        console.log(this.caseData.timePoints[shipInfo.startContourTimePoint], shipInfo.startContourTimePoint)
-
         // Indien caseShip, maak parameters voor de outline van het schip
         const paramsOutline = (isCaseShip)
             ? {
@@ -524,8 +522,11 @@ export default class Simulation {
         });
 
         // update windroos
-        this.wind.setDirection(timePoint.windData.directionInDegrees);
-        this.wind.setSpeedInKnots(timePoint.windData.speedInKnots);
+        if (this.wind) {
+            this.wind.setDirection(timePoint.windData.directionInDegrees);
+            this.wind.setSpeedInKnots(timePoint.windData.speedInKnots);
+            this.wind.showStrengthScale = timePoint.windData.present;
+        }
 
     }
 

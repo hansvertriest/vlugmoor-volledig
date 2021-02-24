@@ -3,7 +3,7 @@ import { Data, MetaData } from '../simulation/dataClasses';
 import { Simulation } from '../simulation/simulationClasses';
 import Controls from '../simulation/simulationClasses/Controls';
 import ApiService from '../lib/api/ApiService';
-// import AdvancedControls from '../simulation/simulationClasses/AdvancedControls';
+import AdvancedControls from '../simulation/simulationClasses/AdvancedControls';
 
 const XLSX = require('xlsx');
 
@@ -21,7 +21,6 @@ export default () => {
     /**
      * 2. FUNCTIONS
      */
-
 
     // Functie voor het effectief initialiseren van de simulatie
     const appInit = async (simulation, files) => {
@@ -53,7 +52,7 @@ export default () => {
         serverData = data.get();
 
         // Create advancedControls
-        // const advancedControls = new Advancedgit push Controls();
+        // const advancedControls = new AdvancedControls();
         // advancedControls.addDataToHawsersTimeline(data, controls)
         // advancedControls.addDataToFendersTimeline(data, controls)
         
@@ -242,8 +241,9 @@ export default () => {
             readerXSLX.readAsBinaryString(xlsxInput.files[0])
             readerForces.readAsBinaryString(forcesInput.files[0])
             readerCoords.readAsBinaryString(coordsInput.files[0])
-            readerWind.readAsBinaryString(windInput.files[0])
-        } catch {
+            if (windInput.files[0]) readerWind.readAsBinaryString(windInput.files[0]);
+        } catch (e) {
+            console.log(e);
             alert('Er ging iets fout bij het inladen van de bestanden. Probeer het opnieuw.');
         }
     });

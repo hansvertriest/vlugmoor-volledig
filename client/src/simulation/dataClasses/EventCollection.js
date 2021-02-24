@@ -1,6 +1,5 @@
 export default class EventCollection {
     constructor(hawserLimits, fenderLimits) {
-        console.log(hawserLimits, fenderLimits)
         this.hawserLimits = hawserLimits;
         this.fenderLimits = fenderLimits;
 
