@@ -45,7 +45,7 @@ export default () => {
             title.innerHTML = data.title;
             
             const d = new Date(data.date);
-            const dateParsed = d.getDay()+ '/' + d.getMonth() + '/' + d.getFullYear();
+            const dateParsed = d.getDate()+ '/' + (d.getMonth()+1) + '/' + d.getFullYear();
 
             date.innerHTML = dateParsed;
             image.src = getShipImage(data.picture);

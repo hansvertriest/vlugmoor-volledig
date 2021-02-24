@@ -77,7 +77,7 @@ export default () => {
 
         // create data object
         const data = new Data(files.metaData);
-        data.addTimePoints(files.coords, files.forces, shipTranslations)
+        data.addTimePoints(files.coords, files.forces, shipTranslations, files.wind)
             .catch(() => {
                 alert("De opgegeven data kon niet correct worden verwerkt. Probeer het opnieuw")
             });
@@ -192,7 +192,7 @@ export default () => {
         const descriptionElement = document.getElementById('descrition-paragraph');
 
         const d = new Date(serverMetaData.date);
-        const dateParsed = d.getDay()+ '/' + d.getMonth() + '/' + d.getFullYear();
+        const dateParsed = d.getDate()+ '/' + (d.getMonth()+1) + '/' + d.getFullYear();
         
         titleElement.innerHTML = serverMetaData.title;
         dateElement.innerHTML = dateParsed;  
@@ -214,6 +214,8 @@ export default () => {
         const coordsUnparsed = await apiService.findCsv(serverMetaData.coordsPath);
         const windUnparsed = await apiService.findCsv(serverMetaData.windPath);
 
+        console.log(windUnparsed);
+
         const file = XLSX.read(new Uint8Array(xlsxUnparsed), {type: 'array'});
 
         setTextWithServerData(serverMetaData);
@@ -234,6 +236,8 @@ export default () => {
         files.forces = getParsedCSVData(forcesUnparsed);
         files.coords = getParsedCSVData(coordsUnparsed);
         files.wind = getParsedCSVData(windUnparsed);
+
+        console.log(files.wind);
         
         appInit(simulation, files);
 
