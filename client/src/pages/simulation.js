@@ -22,12 +22,6 @@ export default () => {
      * 2. FUNCTIONS
      */
 
-<<<<<<< HEAD
-=======
-    
-
-
->>>>>>> 36fde56fb57e3c0828b12468e02a35cd82fbb0d7
     // Functie voor het effectief initialiseren van de simulatie
     const appInit = async (simulation, files) => {
         // create Controls object
