@@ -1,5 +1,6 @@
 export default class WindData {
-    constructor( speedInKnots, directionInDegrees ) {
+    constructor( present, speedInKnots, directionInDegrees ) {
+        this.present = present;
         this.speedInKnots = speedInKnots;
         this.directionInDegrees = directionInDegrees;
     }

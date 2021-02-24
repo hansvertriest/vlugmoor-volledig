@@ -9,7 +9,13 @@ module.exports = (argv) => {
     const dev  = 'development';
     
     return ({
+<<<<<<< HEAD
+
+    devtool: 'eval-source-map',
+
+=======
     devtool: '#eval-source-map',
+>>>>>>> 36fde56fb57e3c0828b12468e02a35cd82fbb0d7
     devServer: {
         contentBase: path.join(__dirname, './src'),
         compress: true,

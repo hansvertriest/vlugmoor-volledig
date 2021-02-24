@@ -27,6 +27,9 @@ export default class Wind {
         this.posYOnCanvas = 10;
         this.width = 60;
         this.height = 60;
+        this.showStrengthScale = true;
+        this.strengthIntervalsInKnots = 5;
+        this.strengthScaleIntervalAmount = 7;
 
         this.speedBorderValues = [ {value:0, src: speed0}, {value:9, src: speed9}, {value:19, src: speed19}, {value:28, src: speed28}, {value:37, src: speed37}, {value:46, src: speed46}, {value:56, src: speed56}, {value:65, src: speed65}, {value:74, src: speed74}, {value:83, src: speed83}, {value:93, src: speed93}, {value:102, src: speed102}, {value:111, src: speed111}, {value:120, src: speed120}, {value:185, src: speed185}, {value:194, src: speed194} ];
         this.symbol = new Image();
@@ -82,11 +85,38 @@ export default class Wind {
         // restore context
         ctx.restore();
 
-        ctx.fillStyle = 'black';
-        ctx.fillRect(this.posXOnCanvas + 100, this.posYOnCanvas + 20, 200, 30); 
-        ctx.fillStyle = 'white';
-        ctx.fillRect(this.posXOnCanvas + 100 + 200*(this.speedInKnots/35), this.posYOnCanvas + 20, 10, 30);
-        ctx.fill();
+        // Draw scale
+        if (this.showStrengthScale) {
+            const scaleHeight = 30;
+            const scaleWidth = 300;
+            const offsetLeft = 100;
+
+            ctx.fillStyle = 'black';
+            ctx.fillRect(this.posXOnCanvas + offsetLeft, this.posYOnCanvas + 20, scaleWidth+1, scaleHeight); 
+            ctx.fillStyle = 'white';
+            ctx.fillRect(this.posXOnCanvas + offsetLeft + 200*(this.speedInKnots/35), this.posYOnCanvas + 20, 10, scaleHeight);
+            ctx.fill();
+
+
+            // draw labels
+            const intervalWidth = scaleWidth / this.strengthScaleIntervalAmount;
+            for (let intervalIndex = 0; intervalIndex < this.strengthScaleIntervalAmount+1; intervalIndex++) {
+                const posXLabel = this.posXOnCanvas+offsetLeft+1 + intervalWidth*intervalIndex;
+
+                ctx.strokeStyle = 'black';
+                ctx.beginPath();
+                ctx.moveTo(posXLabel, this.posYOnCanvas+ 20+scaleHeight);
+                ctx.lineTo(posXLabel, this.posYOnCanvas+ 20+scaleHeight+5);
+                ctx.stroke();
+
+                let fontOffsetLeft = -5;
+                if (intervalIndex*this.strengthIntervalsInKnots < 10) fontOffsetLeft = -3;
+
+                ctx.fillStyle = 'black';
+                ctx.font = "10px Arial";
+                ctx.fillText(intervalIndex*this.strengthIntervalsInKnots, posXLabel+fontOffsetLeft, this.posYOnCanvas+ 20+scaleHeight+15);
+            }
+        }
 
     }
 

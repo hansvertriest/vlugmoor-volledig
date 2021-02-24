@@ -99,15 +99,13 @@ class ApiRouter {
           null,
           file.originalname + '-' + Date.now() + path.extname(file.originalname)
         );
-        
-        req.body.path = 
-        
+
+        req.body.path =
           file.originalname +
           '-' +
           Date.now() +
           path.extname(file.originalname);
-        
-          
+
         console.log(req.body.path + 'hier');
       }
     });
