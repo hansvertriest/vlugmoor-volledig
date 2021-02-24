@@ -26,14 +26,19 @@ export default class ApiService {
 
     // store metadata to server
 
-    async storeMetaData (title, description, date, picture, _dataId) {
+    async storeMetaData (title, description, date, picture, caseDataPath, coordsPath, forcesPath, windPath) {
         const metaData = {
             title: title, 
             description: description,
             date: date,
             picture: picture,
-            _dataId: _dataId
+            caseDataPath: caseDataPath,
+            coordsPath: coordsPath,
+            forcesPath: forcesPath,
+            windPath: windPath
         }
+
+        console.log(metaData);
         const options = {
             method: 'POST',
             headers: {
@@ -42,6 +47,7 @@ export default class ApiService {
             },
             body: JSON.stringify(metaData)
         };
+
 
         let url = `${this.BASE_URL}/metadata`;
         const response = await fetch(url, options);
@@ -80,6 +86,26 @@ export default class ApiService {
         return response;
     }
 
+    async storeDataFile (data) {
+        console.log(data);
+        const formData = new FormData();
+        formData.append('file', data); 
+        console.log(formData);
+        const options = {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*',
+                //'Content-Type': 'multipart/form-data'
+            },
+            body: formData
+            
+        };
+
+        let url = `${this.BASE_URL}/upload`;
+        const response = await fetch(url, options).then((result) => result.json());
+        return response;
+    }
+
     // find by id
 
     async findDataById (id) {
@@ -88,6 +114,17 @@ export default class ApiService {
         return response.json();
     }
 
+    async findXlsx (filePath) {
+        let url = `${this.BASE_URL}/upload/${filePath}`;
+        const response = await fetch(url);
+        return response.arrayBuffer();
+    }
+
+    async findCsv (filePath) {
+        let url = `${this.BASE_URL}/upload/${filePath}`;
+        const response = await fetch(url);
+        return response.text();
+    }
 
 
 }
