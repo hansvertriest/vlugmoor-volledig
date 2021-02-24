@@ -99,12 +99,16 @@ class ApiRouter {
           null,
           file.originalname + '-' + Date.now() + path.extname(file.originalname)
         );
-        req.body.path =
+        
+        req.body.path = 
+        
           file.originalname +
           '-' +
           Date.now() +
           path.extname(file.originalname);
-        console.log(req.file);
+        
+          
+        console.log(req.body.path + 'hier');
       }
     });
     const upload = multer({ storage: storage }).single('file');
@@ -113,7 +117,8 @@ class ApiRouter {
 
     this.router.post('/upload', upload, (req, res) => {
       console.log(req.file);
-      return res.json({ message: 'file sent', path: req.body.path });
+      console.log(req.file.path);
+      return res.json({ message: 'file sent', path: req.file.path });
     });
 
     this.router.get('/upload/:path', function(req, res) {

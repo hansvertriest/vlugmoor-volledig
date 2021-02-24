@@ -190,9 +190,12 @@ export default () => {
         const titleElement = document.getElementById('simulation-title');
         const dateElement = document.getElementById('simulation-date');
         const descriptionElement = document.getElementById('descrition-paragraph');
+
+        const d = new Date(serverMetaData.date);
+        const dateParsed = d.getDay()+ '/' + d.getMonth() + '/' + d.getFullYear();
         
         titleElement.innerHTML = serverMetaData.title;
-        dateElement.innerHTML = serverMetaData.date;  
+        dateElement.innerHTML = dateParsed;  
         descriptionElement.innerHTML = serverMetaData.description;
     }; 
 

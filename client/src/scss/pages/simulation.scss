@@ -20,6 +20,7 @@ canvas {
 body {
     background-image: url('../assets/images/background_img.svg');
     background-repeat: no-repeat;
+    
 }
 
 .top-container{
@@ -460,5 +461,26 @@ label{
         }
     }
 
+}
+
+.simulation-description-container{
+    margin: 5vh 10vw;
+    h3{
+        text-decoration: none;
+        font-family: 'Roboto', sans-serif;
+        text-transform: uppercase;
+        color: #FF664F;
+        font-weight: 400;
+        font-size: 20px;
+    }
+    p{
+        margin-top: 10px;
+        text-decoration: none;
+        font-family: 'Roboto', sans-serif;
+        color: black;
+        font-weight: 500;
+        font-size: 16px; 
+        width: 60vw;
+    }
 }
 
