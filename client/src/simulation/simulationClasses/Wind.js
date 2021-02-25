@@ -116,6 +116,11 @@ export default class Wind {
                 ctx.font = "10px Arial";
                 ctx.fillText(intervalIndex*this.strengthIntervalsInKnots, posXLabel+fontOffsetLeft, this.posYOnCanvas+ 20+scaleHeight+15);
             }
+
+            // draw symbol
+            ctx.fillStyle = 'black';
+            ctx.font = "10px Arial";
+            ctx.fillText('(kn)', this.posXOnCanvas + offsetLeft + scaleWidth + 15, this.posYOnCanvas+ 20+scaleHeight+15);
         }
 
     }
