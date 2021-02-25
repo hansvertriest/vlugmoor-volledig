@@ -111,14 +111,15 @@ class ApiRouter {
     });
     const upload = multer({ storage: storage }).single('file');
 
-    //this.router.post('/upload',(req) => {console.log(req.file)} , upload);
 
+    // Upload file
     this.router.post('/upload', upload, (req, res) => {
       console.log(req.file);
       console.log(req.file.path);
       return res.json({ message: 'file sent', path: req.file.path });
     });
 
+    // Download file
     this.router.get('/upload/:path', function(req, res) {
       const { path } = req.params;
       console.log(path);
@@ -131,6 +132,19 @@ class ApiRouter {
         console.log(err);
       });
     });
+
+    // Delete file
+    this.router.delete('/upload/:path', (req, res) => {
+        const { path } = req.params;
+        console.log(path);
+        fs.unlink(path, (err) => {
+            console.log(err);
+            return
+        });
+    });
+
+
+
   }
 }
 

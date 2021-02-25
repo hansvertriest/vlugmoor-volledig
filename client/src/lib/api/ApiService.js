@@ -86,6 +86,22 @@ export default class ApiService {
         return response;
     }
 
+
+    async deleteData (id) {
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Accept': '*/*'
+            },
+        }
+        let url = `${this.BASE_URL}/data/${id}`;
+        const response = await fetch(url, options).then((result) => result);
+        console.log(response);
+        return response;
+    };
+
+    // Store file to server
+
     async storeDataFile (data) {
         console.log(data);
         const formData = new FormData();
@@ -125,6 +141,20 @@ export default class ApiService {
         const response = await fetch(url);
         return response.text();
     }
+
+    // Delete file from server
+
+    async deleteFile (filePath) {
+        let url = `${this.BASE_URL}/upload/${filePath}`;
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Accept': '*/*'
+            },
+        }
+        const response = await fetch(url);
+        return response;
+    };
 
 
 }

@@ -8,6 +8,7 @@ import {
 } from '../simulation/simulationClasses';
 import Controls from '../simulation/simulationClasses/Controls';
 import ApiService from '../lib/api/ApiService';
+import Router from '../lib/core/Router';
 // import AdvancedControls from '../simulation/simulationClasses/AdvancedControls';
 
 const XLSX = require('xlsx');
@@ -81,7 +82,7 @@ export default () => {
             .catch(() => {
                 alert("De opgegeven data kon niet correct worden verwerkt. Probeer het opnieuw")
             });
-        console.log(data.get())
+        // console.log(data.get())
         serverData = data.get();
 
         // Create advancedControls
@@ -120,6 +121,12 @@ export default () => {
    /*
     * 3. BEGIN SCRIPT
     */
+    // Inputs fields aanspreken
+
+    const xlsxInput = document.getElementById('metadata-input');
+    const forcesInput = document.getElementById('forces-input');
+    const coordsInput = document.getElementById('coords-input');
+    const windInput = document.getElementById('wind-input');
 
     // Toewijzen van dimensies en kleur aan het canvas-element
     const canvas = document.getElementById('simulation-canvas');
@@ -130,12 +137,6 @@ export default () => {
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "#c1e6fb";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Ophalen van input-elementen 
-    const xlsxInput = document.getElementById('metadata-input');
-    const forcesInput = document.getElementById('forces-input');
-    const coordsInput = document.getElementById('coords-input');
-    const submit = document.getElementById('submit');
 
     // Luisteren naar wanneer een bestand wordt geupload en vervolgens de stijl van het element veranderen
     //      element.addEventListener(event, callback)
@@ -181,6 +182,60 @@ export default () => {
         }
     });
 
+    const deleteSimulation = async (id) => {
+
+        const apiService = new ApiService();
+
+        const serverMetaData = await apiService.findMetaDataById(id);
+        
+        await apiService.deleteFile(serverMetaData.forcesPath);
+        await apiService.deleteFile(serverMetaData.coordsPath);
+        await apiService.deleteFile(serverMetaData.windPath);
+        await apiService.deleteFile(serverMetaData.caseDataPath);
+
+        await apiService.deleteData(id);
+        console.log('deleted simulation');
+
+        //const router = new Router();
+
+        //router.navigate('/home');
+    };
+
+    // Updaten van server data
+
+    const updateServerData = async () => {
+
+        // DOM aanspreken
+    
+        const submit = document.getElementById('submit');
+        const title = document.getElementById('title-field');
+        const description = document.getElementById('description-field');
+        const date = document.getElementById('date-field');
+        const picture = serverData.caseMetaData.caseShip.type;
+
+        // metadata form ophalen
+        const file = XLSX.read(new Uint8Array(xlsxInput.files[0]), {type: 'array'});
+        // De xlsx wordt geformateerd naar een Metadata-object
+        const metaData = new MetaData(file).get();
+
+        const caseData = await apiService.storeDataFile(xlsxInput.files[0]);
+        const forces = await apiService.storeDataFile(forcesInput.files[0]);
+        const coords = await apiService.storeDataFile(coordsInput.files[0]);
+        const wind = await apiService.storeDataFile(windInput.files[0]);
+
+        const caseDataPath = caseData.path.replace('uploads/', '');
+        const forcesPath = forces.path.replace('uploads/', '');
+        const coordsPath = coords.path.replace('uploads/', '');
+        const windPath = wind.path.replace('uploads/', '');
+
+
+
+
+    };
+
+    const setServerDataForm = () => {
+        
+    };
 
     // Functie die data van de server in de html zet
 
@@ -214,12 +269,12 @@ export default () => {
         const coordsUnparsed = await apiService.findCsv(serverMetaData.coordsPath);
         const windUnparsed = await apiService.findCsv(serverMetaData.windPath);
 
-        console.log(windUnparsed);
+ 
 
         const file = XLSX.read(new Uint8Array(xlsxUnparsed), {type: 'array'});
 
         setTextWithServerData(serverMetaData);
-        console.log(serverMetaData);
+
 
         // Hier maken we een Simulation-object aan
         const canvasId = 'simulation-canvas';
@@ -236,8 +291,6 @@ export default () => {
         files.forces = getParsedCSVData(forcesUnparsed);
         files.coords = getParsedCSVData(coordsUnparsed);
         files.wind = getParsedCSVData(windUnparsed);
-
-        console.log(files.wind);
         
         appInit(simulation, files);
 
@@ -246,7 +299,7 @@ export default () => {
     startSimulationWithServerData(id);
 
     // Ophalen van elementen ivm de popups
-    const upload = document.getElementById('upload');
+    // const upload = document.getElementById('upload');
     const openLoad = document.getElementById('open-load');
     const closeLoad = document.getElementById('close-load');
     const openUpload = document.getElementById('open-upload');
@@ -254,6 +307,8 @@ export default () => {
 
     // Wanneer de upload button wordt aangeklikt
     //      => maak een ApiService aan en upload het bestand
+
+    /*
     upload.addEventListener('click', () => {
         let apiService = new ApiService();
         let data = {
@@ -271,6 +326,8 @@ export default () => {
             alert('Gelieve eerst een simulatie op te laden.')
         }
     });
+
+    */
 
     // Eventlisteners voor het openen en sluiten van de popups
     openLoad.addEventListener('click', (e) => {
@@ -292,6 +349,12 @@ export default () => {
     closeUpload.addEventListener('click', (e) => {
         const loadPopup = document.getElementById('upload-popup');
         loadPopup.style.display = 'none';
+    });
+
+    const deleteOpen = document.getElementById('delete-popup');
+    deleteOpen.addEventListener('click', (e) => {
+        deleteSimulation(id);
+        console.log('deleted');
     });
 
 
