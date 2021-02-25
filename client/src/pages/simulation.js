@@ -302,25 +302,14 @@ export default () => {
             let picture = serverData.caseMetaData.caseShip.type;
 
             const caseData = await apiService.storeDataFile(xlsxInput.files[0]);
-            console.log(caseData);
             const forces = await apiService.storeDataFile(forcesInput.files[0]);
-            console.log(forces);
             const coords = await apiService.storeDataFile(coordsInput.files[0]);
-            console.log(caseData);
             const wind = await apiService.storeDataFile(windInput.files[0]);
-            console.log(caseData);
-
 
             const caseDataPath = caseData.path.replace('uploads/', '');
             const forcesPath = forces.path.replace('uploads/', '');
             const coordsPath = coords.path.replace('uploads/', '');
             const windPath = wind.path.replace('uploads/', '');
-
-            console.log(caseDataPath);
-            console.log(forcesPath);
-            console.log(coordsPath);
-            console.log(windPath);
-
 
             const response = await apiService.storeMetaData(title, description, date, picture, caseDataPath, coordsPath, forcesPath, windPath);
             console.log(response);

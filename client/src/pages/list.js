@@ -59,11 +59,12 @@ export default () => {
             
 
 
-            let dateObject = new Date(data.date).toLocaleDateString("be-BE",{ year: 'numeric', month: '2-digit', day: '2-digit' })
+            const d = new Date(data.date);
+            const dateParsed = d.getDate()+ '/' + (d.getMonth()+1) + '/' + d.getFullYear();
             
-            date.innerHTML = dateObject;
+            date.innerHTML = dateParsed;
             title.innerHTML = data.title;
-            description.innerHTML = data.description;
+            //description.innerHTML = data.description;
             divider1.innerHTML = '|';
             divider2.innerHTML = '|';
             divider3.innerHTML = '|';

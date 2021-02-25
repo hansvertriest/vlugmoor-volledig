@@ -11,7 +11,10 @@
 
     <div class="top-right">
         <div class="btn-load">
-            <button type="button" id="open-load">Simulatie Inladen</button>
+            <button type="button" id="open-load">Simulatie aanpassen</button>
+        </div>
+            <div class="btn-delete">
+            <button type="button" id="delete-popup">Delete simulation</button>
         </div>
         <div class="btn-upload">
             <button type="button" id="open-upload">Upload to server</button>
@@ -57,17 +60,8 @@
             </label>
         </div>
         <div class="btn-submit">
-            <button type="button" id="submit">Submit</button>
         </div>
-    </div>
-</div>
-
-{{!-- Upload popup --}}
-
-<div class="input-container" id="upload-popup">
-    <div class='input-container__inner'>
-        <div class="input-container__inner-close" id="close-upload">Close</div>
-        <div class="upload-fields">
+                <div class="upload-fields">
             <label for="title">Title:</label>
             <div>
                 <input id='title-field' type="text">
@@ -82,10 +76,19 @@
             <div>
                 <input id="date-field" type="date">
             </div>
-            <div class="btn-upload">
-                <button type="button" id="upload">Upload to server</button>
-            </div>
+
         </div>
+
+        <button type="button" id="submit">Submit</button>
+    </div>
+</div>
+
+{{!-- Upload popup --}}
+
+<div class="input-container" id="upload-popup">
+    <div class='input-container__inner'>
+        <div class="input-container__inner-close" id="close-upload">Close</div>
+
     </div>
 </div>
 
