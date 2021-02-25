@@ -78,11 +78,13 @@ export default class Data {
 
                     // WIND
                     // Maak een WindData-object aan 
+                  
                     const timePointWindData = new WindData(
                         windData !== undefined,
                         (windData) ? Number(windData[time][0]) :  0,
                         (windData) ? Number(windData[time][1]) :  0,
                     );
+
 
 
                     // 3 TIMEPOINT

@@ -33,17 +33,21 @@ export default () => {
             let container = document.createElement('div');
             let image = document.createElement('img');
             let title = document.createElement('h3');
-            let description = document.createElement('p');
+            let date = document.createElement('p');
 
             container.setAttribute('class', 'card');
             
             documentContainer.appendChild(container);
             container.appendChild(image);
             container.appendChild(title);
-            container.appendChild(description);
+            container.appendChild(date);
 
             title.innerHTML = data.title;
-            description.innerHTML = data.description;
+            
+            const d = new Date(data.date);
+            const dateParsed = d.getDate()+ '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+
+            date.innerHTML = dateParsed;
             image.src = getShipImage(data.picture);
             
             documentContainer.appendChild(container);
