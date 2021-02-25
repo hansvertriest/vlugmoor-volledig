@@ -71,11 +71,18 @@ export default () => {
             image.src = '../assets/icons/edit-regular.svg';
             link.href = '#';
 
+
             
             documentContainer.appendChild(container);
+            container.addEventListener('click', (e) => {
+                loadSimulation(data.id);
+            });
         })
     }
 
+    const loadSimulation = (id) => {
+        App.router.navigate(`/simulation/${id}`);
+    };
 
     const apiService = new ApiService;
     const data = apiService.findAllMetaData();

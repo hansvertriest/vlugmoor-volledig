@@ -62,39 +62,16 @@ export default class ApiService {
         return response.json();
     }
 
-    
-
-   /*
-    *   Data functions
-    */
-
-    // store data to server
-
-    async storeData (data) {
-        const options = {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        };
-
-        let url = `${this.BASE_URL}/data`;
-        const response = await fetch(url, options).then((result) => result.json());
-        console.log(response);
-        return response;
-    }
 
 
-    async deleteData (id) {
+    async deleteMetaData (id, mode = 0) {
         const options = {
             method: 'DELETE',
             headers: {
                 'Accept': '*/*'
             },
         }
-        let url = `${this.BASE_URL}/data/${id}`;
+        let url = `${this.BASE_URL}/metadata/${id}?mode=${mode}`;
         const response = await fetch(url, options).then((result) => result);
         console.log(response);
         return response;
@@ -152,7 +129,7 @@ export default class ApiService {
                 'Accept': '*/*'
             },
         }
-        const response = await fetch(url);
+        const response = await fetch(url, options);
         return response;
     };
 

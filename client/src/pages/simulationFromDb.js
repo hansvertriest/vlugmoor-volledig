@@ -122,11 +122,12 @@ export default () => {
     * 3. BEGIN SCRIPT
     */
     // Inputs fields aanspreken
-
+    /*
     const xlsxInput = document.getElementById('metadata-input');
     const forcesInput = document.getElementById('forces-input');
     const coordsInput = document.getElementById('coords-input');
     const windInput = document.getElementById('wind-input');
+    */
 
     // Toewijzen van dimensies en kleur aan het canvas-element
     const canvas = document.getElementById('simulation-canvas');
@@ -142,6 +143,7 @@ export default () => {
     //      element.addEventListener(event, callback)
     //          Luistert naar een bepaalde 'event', in dit geval 'change', op een bepaald element en voert 
     //          een functie (arrow function) uit wanneer dit event gedetecteerd wordt
+    /*
     xlsxInput.addEventListener('change', (e) => {
         const el = document.getElementById('metadata-input-label');
         const bg = document.getElementById('metadata-input-bg');
@@ -181,9 +183,9 @@ export default () => {
             bg.style.width = "0";
         }
     });
+    */
 
     const deleteSimulation = async (id) => {
-
         const apiService = new ApiService();
 
         const serverMetaData = await apiService.findMetaDataById(id);
@@ -192,13 +194,11 @@ export default () => {
         await apiService.deleteFile(serverMetaData.coordsPath);
         await apiService.deleteFile(serverMetaData.windPath);
         await apiService.deleteFile(serverMetaData.caseDataPath);
+        
+        await apiService.deleteMetaData(id);
+        console.log('Deleted simulation with id: '+ id );
 
-        await apiService.deleteData(id);
-        console.log('deleted simulation');
-
-        //const router = new Router();
-
-        //router.navigate('/home');
+        App.router.navigate('/home');
     };
 
     // Updaten van server data
@@ -214,10 +214,10 @@ export default () => {
         const picture = serverData.caseMetaData.caseShip.type;
 
         // metadata form ophalen
-        const file = XLSX.read(new Uint8Array(xlsxInput.files[0]), {type: 'array'});
+        // const file = XLSX.read(new Uint8Array(xlsxInput.files[0]), {type: 'array'});
         // De xlsx wordt geformateerd naar een Metadata-object
         const metaData = new MetaData(file).get();
-
+        /*
         const caseData = await apiService.storeDataFile(xlsxInput.files[0]);
         const forces = await apiService.storeDataFile(forcesInput.files[0]);
         const coords = await apiService.storeDataFile(coordsInput.files[0]);
@@ -228,7 +228,7 @@ export default () => {
         const coordsPath = coords.path.replace('uploads/', '');
         const windPath = wind.path.replace('uploads/', '');
 
-
+        */
 
 
     };
@@ -354,7 +354,6 @@ export default () => {
     const deleteOpen = document.getElementById('delete-popup');
     deleteOpen.addEventListener('click', (e) => {
         deleteSimulation(id);
-        console.log('deleted');
     });
 
 
