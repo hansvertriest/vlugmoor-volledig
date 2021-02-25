@@ -48,7 +48,7 @@ class DataController {
 
   destroy = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-
+    console.log(id);
     try {
       let data = null;
 

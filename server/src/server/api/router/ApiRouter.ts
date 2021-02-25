@@ -4,7 +4,8 @@ import {
   Request,
   Response,
   Router,
-  NextFunction
+  NextFunction,
+  response
 } from 'express';
 import { Data } from 'src/server/models/mongoose';
 import { IConfig, AuthService, Role } from '../../services';
@@ -111,7 +112,6 @@ class ApiRouter {
     });
     const upload = multer({ storage: storage }).single('file');
 
-
     // Upload file
     this.router.post('/upload', upload, (req, res) => {
       console.log(req.file);
@@ -134,17 +134,35 @@ class ApiRouter {
     });
 
     // Delete file
+
+    function deleteFile(path: string) {
+      fs.unlink(path, function(err) {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
+
     this.router.delete('/upload/:path', (req, res) => {
-        const { path } = req.params;
-        console.log(path);
-        fs.unlink(path, (err) => {
+      const path = `uploads/${req.params.path}`;
+
+      var stream = fs.createReadStream(path);
+      stream.pipe(res).once('close', function() {
+        stream.close();
+        deleteFile(path);
+      });
+      /*
+      fs.unlink(path, (err) => {
+          if (err) {
             console.log(err);
-            return
-        });
+            return;
+        } else {
+            console.log(`file with path ${path} deleted.`);
+            console.log(res.json());
+        }
+      });
+      */
     });
-
-
-
   }
 }
 
