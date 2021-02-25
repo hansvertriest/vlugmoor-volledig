@@ -14,10 +14,7 @@
             <button type="button" id="open-load">Simulatie aanpassen</button>
         </div>
             <div class="btn-delete">
-            <button type="button" id="delete-popup">Delete simulation</button>
-        </div>
-        <div class="btn-upload">
-            <button type="button" id="open-upload">Upload to server</button>
+            <button type="button" id="open-delete">Delete simulation</button>
         </div>
     </div>
 </div>
@@ -27,43 +24,9 @@
 <div class="input-container" id="load-popup">
     <div class="input-container__inner">
         <div class="input-container__inner-close" id="close-load">Close</div>
-        {{!--
-        <div>
-            <label>Case Data (*.xlsx)</label>
-            <label class="custom-upload">
-                <span id="metadata-input-bg"></span>
-                <p id="metadata-input-label">Bestand kiezen</p>
-                <input type="file" id="metadata-input" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
-            </label>
-        </div>
-        <div>
-            <label>Forces Data (*.csv)</label>
-            <label class="custom-upload">
-                <span id="forces-input-bg"></span>
-                <p id="forces-input-label">Bestand kiezen</p>
-                <input type="file" name='file' id="forces-input" />
-            </label>
-        </div>
-        <div>
-            <label>Wind Data (*.csv)</label>
-            <label class="custom-upload">
-                <span id="wind-input-bg"></span>
-                <p id="wind-input-label">Bestand kiezen</p>
-                <input type="file" id="wind-input" />
-            </label>
-        </div>
-        <div>
-            <label>Ship coordinates (*.csv)</label>
-            <label class="custom-upload">
-                <span id="coords-input-bg"></span>
-                <p id="coords-input-label">Bestand kiezen</p>
-                <input type="file" id="coords-input" />
-            </label>
-        </div>
-        --}}
-        <div class="btn-submit">
-        </div>
-                <div class="upload-fields">
+        
+        
+            <div class="upload-fields">
             <label for="title">Title:</label>
             <div>
                 <input id='title-field' type="text">
@@ -85,13 +48,17 @@
     </div>
 </div>
 
-{{!-- Upload popup --}}
+{{!-- Delete popup --}}
 
-<div class="input-container" id="upload-popup">
-    <div class='input-container__inner'>
-        <div class="input-container__inner-close" id="close-upload">Close</div>
-
+<div class="input-container" id="delete-popup">
+    <div class="input-container__inner">
+        <div class="input-container__inner-close" id="close-delete">Close</div>
+        
+        <button type="button" id="delete-simulation">Delete simulation</button>
+        
+        </div>
     </div>
+
 </div>
 
 {{!-- Canvas --}}

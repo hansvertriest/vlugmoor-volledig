@@ -34,28 +34,6 @@ export default () => {
     let str = window.location.hash;
     let id = str.replace('#!/simulation/', '');
 
-    // functie voor zoeken naar data op de server
-    /*
-    const getDataFromServer = async (id) => {
-        console.log(id);
-        const apiService = new ApiService();
-        const metaData = await apiService.findMetaDataById(id);
-        const xlsx = await apiService.findFile(metaData.caseDataPath);
-        const forces = await apiService.findFile(metaData.forcesPath);
-        const coords = await apiService.findFile(metaData.coordsPath);
-        const wind = await apiService.findFile(metaData.windPath);
-
-        console.log(metaData);
-
-
-
-        return metaData, coords, xlsx, forces, wind;
-    };
-    */
-
-
-
-
     // Functie voor het effectief initialiseren van de simulatie
     const appInit = async (simulation, files) => {
         // create Controls object
@@ -122,12 +100,6 @@ export default () => {
     * 3. BEGIN SCRIPT
     */
     // Inputs fields aanspreken
-    /*
-    const xlsxInput = document.getElementById('metadata-input');
-    const forcesInput = document.getElementById('forces-input');
-    const coordsInput = document.getElementById('coords-input');
-    const windInput = document.getElementById('wind-input');
-    */
 
     // Toewijzen van dimensies en kleur aan het canvas-element
     const canvas = document.getElementById('simulation-canvas');
@@ -139,51 +111,6 @@ export default () => {
     ctx.fillStyle = "#c1e6fb";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Luisteren naar wanneer een bestand wordt geupload en vervolgens de stijl van het element veranderen
-    //      element.addEventListener(event, callback)
-    //          Luistert naar een bepaalde 'event', in dit geval 'change', op een bepaald element en voert 
-    //          een functie (arrow function) uit wanneer dit event gedetecteerd wordt
-    /*
-    xlsxInput.addEventListener('change', (e) => {
-        const el = document.getElementById('metadata-input-label');
-        const bg = document.getElementById('metadata-input-bg');
-        if (e.target.files[0]) {
-            el.innerHTML = e.target.files[0].name;
-            el.parentElement.classList.add('custom-button--uploaded');
-            bg.style.width = "100%";
-        } else {
-            el.parentElement.classList.remove('custom-button--uploaded');
-            el.innerHTML = "Bestand kiezen";
-            bg.style.width = "0";
-        }
-    });
-    forcesInput.addEventListener('change', (e) => {
-        const el = document.getElementById('forces-input-label');
-        const bg = document.getElementById('forces-input-bg');
-        if (e.target.files[0]) {
-            el.innerHTML = e.target.files[0].name;
-            el.parentElement.classList.add('custom-button--uploaded');
-            bg.style.width = "100%";
-        } else {
-            el.parentElement.classList.remove('custom-button--uploaded');
-            el.innerHTML = "Bestand kiezen";
-            bg.style.width = "0";
-        }
-    });
-    coordsInput.addEventListener('change', (e) => {
-        const el = document.getElementById('coords-input-label');
-        const bg = document.getElementById('coords-input-bg');
-        if (e.target.files[0]) {
-            el.innerHTML = e.target.files[0].name;
-            el.parentElement.classList.add('custom-button--uploaded');
-            bg.style.width = "100%";
-        } else {
-            el.parentElement.classList.remove('custom-button--uploaded');
-            el.innerHTML = "Bestand kiezen";
-            bg.style.width = "0";
-        }
-    });
-    */
 
     const deleteSimulation = async (id) => {
         const apiService = new ApiService();
@@ -217,19 +144,7 @@ export default () => {
         // const file = XLSX.read(new Uint8Array(xlsxInput.files[0]), {type: 'array'});
         // De xlsx wordt geformateerd naar een Metadata-object
         const metaData = new MetaData(file).get();
-        /*
-        const caseData = await apiService.storeDataFile(xlsxInput.files[0]);
-        const forces = await apiService.storeDataFile(forcesInput.files[0]);
-        const coords = await apiService.storeDataFile(coordsInput.files[0]);
-        const wind = await apiService.storeDataFile(windInput.files[0]);
-
-        const caseDataPath = caseData.path.replace('uploads/', '');
-        const forcesPath = forces.path.replace('uploads/', '');
-        const coordsPath = coords.path.replace('uploads/', '');
-        const windPath = wind.path.replace('uploads/', '');
-
-        */
-
+      
 
     };
 
@@ -302,32 +217,9 @@ export default () => {
     // const upload = document.getElementById('upload');
     const openLoad = document.getElementById('open-load');
     const closeLoad = document.getElementById('close-load');
-    const openUpload = document.getElementById('open-upload');
-    const closeUpload = document.getElementById('close-upload');
+    const openDelete = document.getElementById('open-delete');
+    const closeDelete = document.getElementById('close-delete');
 
-    // Wanneer de upload button wordt aangeklikt
-    //      => maak een ApiService aan en upload het bestand
-
-    /*
-    upload.addEventListener('click', () => {
-        let apiService = new ApiService();
-        let data = {
-            data: serverData
-        };
-        if (serverData) {
-            let title = document.getElementById('title-field').value;
-            let description = document.getElementById('description-field').value;
-            let date = document.getElementById('date-field').value;
-            let picture = serverData.caseMetaData.caseShip.type;
-
-            apiService.storeData(data)
-                .then((response) => apiService.storeMetaData(title, description, date, picture, toString(response.id)));
-        } else {
-            alert('Gelieve eerst een simulatie op te laden.')
-        }
-    });
-
-    */
 
     // Eventlisteners voor het openen en sluiten van de popups
     openLoad.addEventListener('click', (e) => {
@@ -341,18 +233,18 @@ export default () => {
     });
 
 
-    openUpload.addEventListener('click', (e) => {
-        const loadPopup = document.getElementById('upload-popup');
+    openDelete.addEventListener('click', (e) => {
+        const loadPopup = document.getElementById('delete-popup');
         loadPopup.style.display = 'flex';
     });
 
-    closeUpload.addEventListener('click', (e) => {
-        const loadPopup = document.getElementById('upload-popup');
+    closeDelete.addEventListener('click', (e) => {
+        const loadPopup = document.getElementById('delete-popup');
         loadPopup.style.display = 'none';
     });
 
-    const deleteOpen = document.getElementById('delete-popup');
-    deleteOpen.addEventListener('click', (e) => {
+    const deleteSim = document.getElementById('delete-simulation');
+    deleteSim.addEventListener('click', (e) => {
         deleteSimulation(id);
     });
 
