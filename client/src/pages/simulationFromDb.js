@@ -128,25 +128,44 @@ export default () => {
         App.router.navigate('/home');
     };
 
-    // Updaten van server data
+    // Updaten van server data en DOM aanpassen erna met nieuwe data
 
     const updateServerData = async () => {
 
         // DOM aanspreken
-    
-        const submit = document.getElementById('submit');
         const title = document.getElementById('title-field');
         const description = document.getElementById('description-field');
         const date = document.getElementById('date-field');
-        const picture = serverData.caseMetaData.caseShip.type;
 
-        // metadata form ophalen
-        // const file = XLSX.read(new Uint8Array(xlsxInput.files[0]), {type: 'array'});
-        // De xlsx wordt geformateerd naar een Metadata-object
-        const metaData = new MetaData(file).get();
-      
+        const apiService = new ApiService();
+        const response = await apiService.editMetaDataModel(id);
+        const responseData = response.metaData;
+        
+        let metaData = {
+            id: responseData.id,
+            
+            _createdAt: responseData._createdAt,
+            _modifiedAt: responseData._modifiedAt,
+            _deletedAt: responseData._deletedAt,
+            picture: responseData.picture,
+            date: date.value,
+            title: title.value,
+            description: description.value,
+            caseDataPath: responseData.caseDataPath,
+            coordsPath: responseData.coordsPath,
+            forcesPath: responseData.forcesPath,
+            windPath: responseData.windPath,
+            slug: responseData.slug,
+        };
 
+        const uploadResponse = await apiService.updateMetaData(metaData);
+
+        setTextWithServerData(metaData);
+        const loadPopup = document.getElementById('load-popup');
+        loadPopup.style.display = 'none';
     };
+
+    // Data van server halen om in form te zetten en model ophalen
 
     const setServerDataForm = async (id) => {
         const title = document.getElementById('title-field');
@@ -176,13 +195,8 @@ export default () => {
             return [year, month, day].join('-');
         }
 
-        console.log(metaData);
-        console.log(metaData.title);
-
         const d = new Date(metaData.date);
         const dateParsed = formatDate(d);
-
-        console.log(dateParsed);
 
         title.value = metaData.title;
         description.value = metaData.description;
@@ -286,8 +300,12 @@ export default () => {
         deleteSimulation(id);
     });
 
+    // Submit btn aanspreken en bij click event server data updaten
 
+    const submit = document.getElementById('submit');
 
-
+    submit.addEventListener('click', (e) => {
+        updateServerData();
+    });
 
 };
