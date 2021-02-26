@@ -38,7 +38,6 @@ export default class ApiService {
             windPath: windPath
         }
 
-        console.log(metaData);
         const options = {
             method: 'POST',
             headers: {
@@ -62,6 +61,35 @@ export default class ApiService {
         return response.json();
     }
 
+
+    async editMetaDataModel (id) {
+        const options ={
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        };
+
+        let url = `${this.BASE_URL}/metadata/${id}/edit`;
+        const response = await fetch(url, options);
+        return response.json();
+    };
+
+    async updateMetaData (metaData) {
+        const options ={
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(metaData),
+        };
+
+        let url = `${this.BASE_URL}/metadata/${metaData.id}`;
+        const response = await fetch(url, options);
+        return response.json();
+    };
 
 
     async deleteMetaData (id, mode = 0) {

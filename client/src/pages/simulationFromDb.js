@@ -148,8 +148,45 @@ export default () => {
 
     };
 
-    const setServerDataForm = () => {
+    const setServerDataForm = async (id) => {
+        const title = document.getElementById('title-field');
+        const description = document.getElementById('description-field');
+        const date = document.getElementById('date-field');
+
+        const apiService = new ApiService();
+        const response = await apiService.editMetaDataModel(id);
+
+        let metaData = {
+            date: response.metaData.date,
+            title: response.metaData.title,
+            description: response.metaData.description
+        };
+
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
         
+            if (month.length < 2) 
+                month = '0' + month;
+            if (day.length < 2) 
+                day = '0' + day;
+        
+            return [year, month, day].join('-');
+        }
+
+        console.log(metaData);
+        console.log(metaData.title);
+
+        const d = new Date(metaData.date);
+        const dateParsed = formatDate(d);
+
+        console.log(dateParsed);
+
+        title.value = metaData.title;
+        description.value = metaData.description;
+        date.value = dateParsed;
     };
 
     // Functie die data van de server in de html zet
@@ -225,6 +262,7 @@ export default () => {
     openLoad.addEventListener('click', (e) => {
         const loadPopup = document.getElementById('load-popup');
         loadPopup.style.display = 'flex';
+        setServerDataForm(id);
     });
 
     closeLoad.addEventListener('click', (e) => {
