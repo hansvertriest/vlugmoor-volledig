@@ -25,7 +25,7 @@
     <div class="input-container__inner">
         <div class="input-container__inner-close" id="close-load">Close</div>
         <div>
-            <label>Case Data (*.xlsx)</label>
+            <label class="spacer-90">Case Data (*.xlsx)</label>
             <label class="custom-upload">
                 <span id="metadata-input-bg"></span>
                 <p id="metadata-input-label">Bestand kiezen</p>
@@ -33,27 +33,27 @@
             </label>
         </div>
         <div>
-            <label>Forces Data (*.csv)</label>
+            <label class="spacer-75" >Forces Data (*.csv)</label>
             <label class="custom-upload">
                 <span id="forces-input-bg"></span>
                 <p id="forces-input-label">Bestand kiezen</p>
-                <input type="file" name='file' id="forces-input" />
+                <input accept=".csv" type="file" name='file' id="forces-input" />
             </label>
         </div>
         <div>
-            <label>Ship coordinates (*.csv)</label>
+            <label class="spacer-20">Ship coordinates (*.csv)</label>
             <label class="custom-upload">
                 <span id="coords-input-bg"></span>
                 <p id="coords-input-label">Bestand kiezen</p>
-                <input type="file" id="coords-input" />
+                <input accept=".csv" type="file" id="coords-input" />
             </label>
         </div>
         <div className="upload-container--secondary">
-            <label>Wind Data (*.csv)</label>
-            <label class="custom-upload ">
+            <label class="spacer-99">Wind Data (*.csv)</label>
+            <label class="custom-upload">
                 <span id="wind-input-bg"></span>
                 <p id="wind-input-label">Bestand kiezen</p>
-                <input type="file" id="wind-input" />
+                <input accept=".csv" type="file" id="wind-input" />
             </label>
         </div>
         <div class="btn-submit">
@@ -194,7 +194,7 @@
             <label title="Verplaats de simulatie naar een gekozen framenummer">Jump to timepoint:</label>
             <input type="number" id="timepoint-input" value="0" step="100" min="0">
         </div>
-         <div>
+        <div>
             <label title="Verplaats de simulatie naar een gekozen tijdstip in seconden">Jump to time (s):</label>
             <input type="number" id="time-input" value="0" step="60" min="0">
         </div>

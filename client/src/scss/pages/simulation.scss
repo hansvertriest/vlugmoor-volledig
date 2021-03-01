@@ -148,15 +148,18 @@ label{
             display: none;
         }
 
+
+
         .custom-upload{
+            
             border: 1px solid #ccc;
             display: inline-block;
             padding: 6px 12px;
             cursor: pointer;
-            position: relative;
+            // position: relative;
             transition: color 0.5s;
             min-width:200px; 
-
+            
             > div {
                 margin: 0;
             }
@@ -176,6 +179,18 @@ label{
                 left:0;
                 transition: all 0.5s ease-out;
             }
+        }
+        .spacer-90{
+            margin-right: 90px;
+        }
+        .spacer-75{
+            margin-right: 75px;
+        }
+        .spacer-99{
+            margin-right: 99px;
+        }
+        .spacer-20{
+            margin-right: 20px;
         }
     }
 
@@ -423,6 +438,7 @@ label{
  * Control styles
  */
 
+/*
 .controls-container{
 
     label{
@@ -436,6 +452,18 @@ label{
     justify-content: space-between;
     margin: 0 10vw 0 10vw;
 }
+*/
+
+
+.controls-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10vw 0 10vw;
+    label{
+        margin: 0 10px 15px 0;
+    }
+}
+
 
 .upload-container{
 

@@ -59,6 +59,7 @@ export default () => {
 
     const loadSimulation = (id) => {
         App.router.navigate(`/simulation/${id}`);
+        localStorage.setItem('id', null);
     };
 
 

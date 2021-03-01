@@ -32,7 +32,19 @@ export default () => {
 
     // parameter id uit URL halen
     let str = window.location.hash;
+    console.log(str);
     let id = str.replace('#!/simulation/', '');
+
+    
+    if (id && id !== '#!/simulation') {
+        localStorage.setItem('id', id);
+    } 
+
+    const idLS = localStorage.getItem('id');
+    if (idLS) {
+        id = idLS;
+    }
+    
 
     // Functie voor het effectief initialiseren van de simulatie
     const appInit = async (simulation, files) => {
