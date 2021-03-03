@@ -122,15 +122,17 @@ class ApiRouter {
     // Download file
     this.router.get('/upload/:path', function(req, res) {
       const { path } = req.params;
-      console.log(path);
-      var src = fs.createReadStream(`uploads/${path}`);
-      src.on('open', function() {
-        src.pipe(res);
-        console.log('download completed');
-      });
-      src.on('error', function(err: any) {
-        console.log(err);
-      });
+      if (path !== 'no wind') {
+        console.log(path);
+        var src = fs.createReadStream(`uploads/${path}`);
+        src.on('open', function() {
+          src.pipe(res);
+          console.log('download completed');
+        });
+        src.on('error', function(err: any) {
+          console.log(err);
+        });
+      }
     });
 
     // Delete file

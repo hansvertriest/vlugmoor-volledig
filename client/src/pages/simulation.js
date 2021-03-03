@@ -272,25 +272,10 @@ export default () => {
     const openUpload = document.getElementById('open-upload');
     const closeUpload = document.getElementById('close-upload');
 
-    // Wanneer de upload button wordt aangeklikt
-    //      => maak een ApiService aan en upload het bestand
-    /*
-    upload.addEventListener('click', () => {
-        let apiService = new ApiService();
-        let data = {data: serverData};
-        if (serverData) {
-            let title = document.getElementById('title-field').value;
-            let description = document.getElementById('description-field').value;
-            let date = document.getElementById('date-field').value;
-            let picture = serverData.caseMetaData.caseShip.type;
-    
-            apiService.storeData(data)
-            .then((response) => apiService.storeMetaData(title, description, date, picture, toString(response.id)));
-        } else {
-            alert('Gelieve eerst een simulatie op te laden.')
-        }
-    });
-    */
+    // Event listner voor upload button je klikt op de upload button
+    // sla eerst de .csv's op en wacht op response van de server (voor de paden)
+    // dan metadata opslaan en de paden naar bestanden op de server. 
+
     upload.addEventListener('click', async () =>  {
         let apiService = new ApiService();
         let data = {data: serverData};
@@ -303,15 +288,29 @@ export default () => {
             const caseData = await apiService.storeDataFile(xlsxInput.files[0]);
             const forces = await apiService.storeDataFile(forcesInput.files[0]);
             const coords = await apiService.storeDataFile(coordsInput.files[0]);
-            const wind = await apiService.storeDataFile(windInput.files[0]);
+            
+            
 
-            const caseDataPath = caseData.path.replace('uploads/', '');
-            const forcesPath = forces.path.replace('uploads/', '');
-            const coordsPath = coords.path.replace('uploads/', '');
-            const windPath = wind.path.replace('uploads/', '');
-
-            const response = await apiService.storeMetaData(title, description, date, picture, caseDataPath, coordsPath, forcesPath, windPath);
-            console.log(response);
+            if (windInput.files[0] !== undefined) {
+                const wind = await apiService.storeDataFile(windInput.files[0]);
+                const windPath = wind.path.replace('uploads/', '');
+                const caseDataPath = caseData.path.replace('uploads/', '');
+                const forcesPath = forces.path.replace('uploads/', '');
+                const coordsPath = coords.path.replace('uploads/', '');
+                const response = await apiService.storeMetaData(title, description, date, picture, caseDataPath, coordsPath, forcesPath, windPath);
+                console.log(response);
+                const loadPopup = document.getElementById('upload-popup');
+                loadPopup.style.display = 'none';
+            } else {
+                const windPath = 'no wind';
+                const caseDataPath = caseData.path.replace('uploads/', '');
+                const forcesPath = forces.path.replace('uploads/', '');
+                const coordsPath = coords.path.replace('uploads/', '');
+                const response = await apiService.storeMetaData(title, description, date, picture, caseDataPath, coordsPath, forcesPath, windPath);
+                console.log(response);
+                const loadPopup = document.getElementById('upload-popup');
+                loadPopup.style.display = 'none';
+            }
         
         } else {
             alert('Gelieve eerst een simulatie op te laden.')

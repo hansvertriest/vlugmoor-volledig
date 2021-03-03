@@ -1,0 +1,32 @@
+
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    background-image: url('../assets/images/background_home.svg');
+    background-repeat: no-repeat;
+    height: 40vh;
+    margin-bottom: 40vh;
+    .login-container{
+       background-color: white;
+       margin-top: 60px;
+
+        div {
+           margin-top: 15px;
+        }
+    }
+    input{
+        width: 300px;
+        font-family: 'Roboto', sans-serif;
+    }
+    button{
+        margin-top: 20px;
+        border: none;
+        background-color: black;
+        color: white;
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        border-radius: 10px;
+        padding: 10px 20px;
+    }
+}

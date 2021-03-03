@@ -116,7 +116,6 @@ export default class ApiService {
             method: 'POST',
             headers: {
                 'Accept': '*/*',
-                //'Content-Type': 'multipart/form-data'
             },
             body: formData
             

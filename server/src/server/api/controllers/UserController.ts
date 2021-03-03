@@ -110,10 +110,9 @@ class UserController {
       email: user.email,
       token: `${token}`,
       strategy: 'local',
-      role: 'user',
-      avatar: user.profile.avatar,
-      firstName: user.profile.firstName,
-      lastName: user.profile.lastName
+      role: user.role,
+      firstName: user.firstname,
+      lastName: user.lastname,
     });
   };
 
@@ -121,7 +120,7 @@ class UserController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<void> => {
+    ): Promise <void> => {
     this.authService.passport.authenticate(
       'local',
       { session: this.config.auth.jwt.session },
@@ -138,7 +137,6 @@ class UserController {
           token: `${token}`,
           strategy: 'local',
           role: user.role,
-          avatar: user.profile.avatar
         });
       }
     )(req, res, next);
@@ -169,11 +167,10 @@ class UserController {
     try {
       const userUpdate = {
         email: req.body.email,
-        firstName: req.body.profile.firstName,
-        lastName: req.body.profile.lastName,
+        firstname: req.body.profile.firstName,
+        lastname: req.body.profile.lastName,
         role: req.body.role,
         password: req.body.localProvider.password,
-        avatar: req.body.profile.avatar
       };
       const user = await User.findOneAndUpdate({ _id: id }, userUpdate, {
         new: true
@@ -192,11 +189,10 @@ class UserController {
     try {
       const userCreate = new User({
         email: req.body.email,
-        firstName: req.body.profile.firstName,
-        lastName: req.body.profile.lastName,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         role: req.body.role,
         password: req.body.localProvider.password,
-        avatar: req.body.profile.avatar
       });
       const user = await userCreate.save();
       return res.status(201).json(user);

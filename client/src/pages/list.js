@@ -39,7 +39,6 @@ export default () => {
             let date = document.createElement('p');
             let divider1 = document.createElement('p');
             let divider2 = document.createElement('p');
-            let divider3 = document.createElement('p');
             let link = document.createElement('a');
             let title = document.createElement('h3');
             let description = document.createElement('p');
@@ -53,8 +52,7 @@ export default () => {
             container.appendChild(title);
             container.appendChild(divider2);
             container.appendChild(description);
-            container.appendChild(divider3);
-            link.appendChild(image);
+            container.appendChild(image);
             container.appendChild(link);
             
 
@@ -63,12 +61,13 @@ export default () => {
             const dateParsed = d.getDate()+ '/' + (d.getMonth()+1) + '/' + d.getFullYear();
             
             date.innerHTML = dateParsed;
+            date.className = 'list-date',
             title.innerHTML = data.title;
             //description.innerHTML = data.description;
             divider1.innerHTML = '|';
             divider2.innerHTML = '|';
-            divider3.innerHTML = '|';
-            image.src = '../assets/icons/edit-regular.svg';
+
+            image.src = getShipImage(data.picture);
             link.href = '#';
 
 

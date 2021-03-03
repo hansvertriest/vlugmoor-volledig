@@ -242,12 +242,14 @@ export default () => {
 
         // functies aanroepen om data van server te halen
         const serverMetaData = await apiService.findMetaDataById(id);
+        console.log(serverMetaData);
         const xlsxUnparsed = await apiService.findXlsx(serverMetaData.caseDataPath);
         const forcesUnparsed = await apiService.findCsv(serverMetaData.forcesPath);
         const coordsUnparsed = await apiService.findCsv(serverMetaData.coordsPath);
-        const windUnparsed = await apiService.findCsv(serverMetaData.windPath);
-
- 
+        let windUnparsed ;
+        if (serverMetaData.windPath !== 'no wind') {
+            windUnparsed = await apiService.findCsv(serverMetaData.windPath);
+        }  
 
         const file = XLSX.read(new Uint8Array(xlsxUnparsed), {type: 'array'});
 
@@ -268,7 +270,10 @@ export default () => {
 
         files.forces = getParsedCSVData(forcesUnparsed);
         files.coords = getParsedCSVData(coordsUnparsed);
-        files.wind = getParsedCSVData(windUnparsed);
+        if (windUnparsed) {
+            files.wind = getParsedCSVData(windUnparsed);
+        }
+        
         
         appInit(simulation, files);
 
