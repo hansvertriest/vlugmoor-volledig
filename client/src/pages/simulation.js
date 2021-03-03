@@ -4,6 +4,8 @@ import { Simulation } from '../simulation/simulationClasses';
 import Controls from '../simulation/simulationClasses/Controls';
 import ApiService from '../lib/api/ApiService';
 import AdvancedControls from '../simulation/simulationClasses/AdvancedControls';
+import AuthService from '../lib/api/AuthService';
+
 
 const XLSX = require('xlsx');
 
@@ -15,6 +17,19 @@ export default () => {
      */
     const title = 'Simulation page';
     App.render(simulationTemplate({title}));
+
+    // Authentication
+
+    const authService = new AuthService();
+    authService.verifyUserFromLocalStorage();
+    
+    if (JSON.parse(localStorage.getItem('authUser')) === null) {
+        App.router.navigate('/login');
+    } else {
+        console.log('logged in')
+    };
+
+
     let serverData;
     console.log('CHANGELOG: added option for no passingship')
 

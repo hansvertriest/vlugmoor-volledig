@@ -67,7 +67,7 @@ class MongoDBDatabase {
     password: string,
     role: string,
     firstname: string,
-    lastname: string,
+    lastname: string
   ) => {
     const userDetail = {
       email,
@@ -76,7 +76,7 @@ class MongoDBDatabase {
       },
       role,
       firstname,
-      lastname,
+      lastname
     };
 
     const user: IUser = new User(userDetail);
@@ -99,7 +99,7 @@ class MongoDBDatabase {
       '2468',
       'administrator',
       'Arne',
-      'Verleyen',
+      'Verleyen'
     );
     /*
 
@@ -129,7 +129,7 @@ class MongoDBDatabase {
   };
 
   // Alle seeders aanspreken indien nodig.
-  
+
   public seed = async () => {
     this.users = await User.estimatedDocumentCount()
       .exec()
@@ -140,7 +140,6 @@ class MongoDBDatabase {
         return User.find().exec();
       });
   };
-  
 }
 
 export default MongoDBDatabase;

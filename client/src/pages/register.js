@@ -9,7 +9,18 @@ export default () => {
     const title = 'Register page';
     App.render(loginTemplate({title}));
 
+
+    // Authentication
+
     const authService = new AuthService();
+    authService.verifyUserFromLocalStorage();
+    
+    if (JSON.parse(localStorage.getItem('authUser')) === null) {
+        App.router.navigate('/login');
+    } else {
+        console.log('logged in')
+    };
+
 
     
 }

@@ -7,20 +7,24 @@ export default class AuthService {
     }
 
     verifyUserFromLocalStorage () {
-        if (JSON.parse(localStorage.getItem('mern:authUser'))) {
+        if (JSON.parse(localStorage.getItem('authUser'))) {
           try {
             const token = JSON.parse(localStorage.getItem('authUser')).token;
             if (!token) {
+              localStorage.setItem('authUser', null);
               throw new Error('Token is not present on localstorage!');
             }
             const decoded = jwt.verify(token, 'gdm-nmd');
             if (!decoded) {
+              localStorage.setItem('authUser', null);
               throw new Error('Couldn\'t decode the token!');
             }
     
             if (decoded.exp > Date.now()) {
+              localStorage.setItem('authUser', null);
               throw new Error('Token is expired!')
             }
+
             return JSON.parse(localStorage.getItem('authUser'));
           } catch (error) {
             return null;

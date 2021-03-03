@@ -112,7 +112,7 @@ class UserController {
       strategy: 'local',
       role: user.role,
       firstName: user.firstname,
-      lastName: user.lastname,
+      lastName: user.lastname
     });
   };
 
@@ -120,7 +120,7 @@ class UserController {
     req: Request,
     res: Response,
     next: NextFunction
-    ): Promise <void> => {
+  ): Promise<void> => {
     this.authService.passport.authenticate(
       'local',
       { session: this.config.auth.jwt.session },
@@ -136,7 +136,7 @@ class UserController {
           email: user.email,
           token: `${token}`,
           strategy: 'local',
-          role: user.role,
+          role: user.role
         });
       }
     )(req, res, next);
@@ -170,7 +170,7 @@ class UserController {
         firstname: req.body.profile.firstName,
         lastname: req.body.profile.lastName,
         role: req.body.role,
-        password: req.body.localProvider.password,
+        password: req.body.localProvider.password
       };
       const user = await User.findOneAndUpdate({ _id: id }, userUpdate, {
         new: true
@@ -192,7 +192,7 @@ class UserController {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         role: req.body.role,
-        password: req.body.localProvider.password,
+        password: req.body.localProvider.password
       });
       const user = await userCreate.save();
       return res.status(201).json(user);

@@ -29,14 +29,14 @@ const userSchema: Schema = new Schema(
       unique: true
     },
     firstname: {
-        type: String,
-        required: true,
-        unique: false,
+      type: String,
+      required: true,
+      unique: false
     },
     lastname: {
-        type: String,
-        required: true,
-        unique: false,
+      type: String,
+      required: true,
+      unique: false
     },
     _createdAt: { type: Number, required: true, default: Date.now() },
     _modifiedAt: { type: Number, required: false, default: null },
@@ -52,7 +52,7 @@ const userSchema: Schema = new Schema(
       enum: ['user', 'administrator'],
       default: 'user',
       required: true
-    },
+    }
   },
   {
     toJSON: { virtuals: true },
@@ -96,8 +96,7 @@ userSchema.methods.comparePassword = function(
     user.localProvider.password,
     (err, isMatch) => {
       if (err) return cb(err, null);
-      else
-      { 
+      else {
         return cb(isMatch);
       }
     }

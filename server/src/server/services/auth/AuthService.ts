@@ -48,7 +48,6 @@ class AuthService {
             }
 
             return user.comparePassword(password, (isMatch: boolean) => {
-
               if (!isMatch) {
                 // Is match returnt null is niet de bedoelingk he
                 return done(null, false);

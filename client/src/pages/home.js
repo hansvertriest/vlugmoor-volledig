@@ -1,5 +1,6 @@
 import App from '../lib/App';
 import ApiService from '../lib/api/ApiService';
+import AuthService from '../lib/api/AuthService';
 import Router from '../lib/core/Router';
 import routes from '../routes';
 
@@ -8,6 +9,27 @@ const homeTemplate = require('../templates/home.hbs');
 export default () => {
     const title = 'Home page';
     App.render(homeTemplate({title}));
+
+    // Authentication
+
+    const authService = new AuthService();
+    authService.verifyUserFromLocalStorage();
+    
+    if (JSON.parse(localStorage.getItem('authUser')) === null) {
+        App.router.navigate('/login');
+    } else {
+        console.log('logged in')
+    };
+
+    // Logout
+
+    const logoutBtn = document.getElementById('logout-btn-nav');
+    logoutBtn.addEventListener('click', (e) => {
+        authService.logout();
+        localStorage.setItem('authUser', null);
+        App.router.navigate('/login');
+    });
+
 
     let documentContainer = document.getElementById('container-home');
 

@@ -9,6 +9,7 @@ import {
 import Controls from '../simulation/simulationClasses/Controls';
 import ApiService from '../lib/api/ApiService';
 import Router from '../lib/core/Router';
+import AuthService from '../lib/api/AuthService';
 // import AdvancedControls from '../simulation/simulationClasses/AdvancedControls';
 
 const XLSX = require('xlsx');
@@ -23,6 +24,18 @@ export default () => {
     App.render(simulationTemplate({
         title
     }));
+
+    // Authentication
+
+    const authService = new AuthService();
+    authService.verifyUserFromLocalStorage();
+    
+    if (JSON.parse(localStorage.getItem('authUser')) === null) {
+        App.router.navigate('/login');
+    } else {
+        console.log('logged in')
+    };
+
     let serverData;
     console.log('CHANGELOG: added option for no passingship')
 
@@ -131,7 +144,9 @@ export default () => {
         
         await apiService.deleteFile(serverMetaData.forcesPath);
         await apiService.deleteFile(serverMetaData.coordsPath);
-        await apiService.deleteFile(serverMetaData.windPath);
+        if (serverMetaData.windPath !== 'no wind') {
+            await apiService.deleteFile(serverMetaData.windPath);
+        };
         await apiService.deleteFile(serverMetaData.caseDataPath);
         
         await apiService.deleteMetaData(id);

@@ -1,5 +1,6 @@
 import App from '../lib/App';
 import ApiService from '../lib/api/ApiService';
+import AuthService from '../lib/api/AuthService';
 
 const listTemplate = require('../templates/list.hbs');
 /*
@@ -12,6 +13,26 @@ const listTemplate = require('../templates/list.hbs');
 export default () => {
     const title = 'Simulation list page';
     App.render(listTemplate({title}));
+
+    // Authentication
+
+    const authService = new AuthService();
+    authService.verifyUserFromLocalStorage();
+    
+    if (JSON.parse(localStorage.getItem('authUser')) === null) {
+        App.router.navigate('/login');
+    } else {
+        console.log('logged in')
+    };
+    
+    // Logout
+
+    const logoutBtn = document.getElementById('logout-btn-nav');
+    logoutBtn.addEventListener('click', (e) => {
+        authService.logout();
+        App.router.navigate('/login');
+    });
+
 
     let documentContainer = document.getElementById('list-content');
 
