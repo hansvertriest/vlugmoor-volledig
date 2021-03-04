@@ -93,5 +93,8 @@ export default class AuthService {
         const response = await fetch(url, options);
         console.log(response);
         const user = await response.json();
+        if (user) {
+            App.router.navigate('/home');
+        }
     };
 };

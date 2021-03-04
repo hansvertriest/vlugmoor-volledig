@@ -21,10 +21,6 @@ export default () => {
         console.log('logged in')
     };
 
-    if (JSON.parse(localStorage.getItem('authUser')).role === 'admin') {
-
-    }
-
     const email = document.getElementById('email-register');
     const firstname = document.getElementById('firstname');
     const lastname = document.getElementById('lastname');

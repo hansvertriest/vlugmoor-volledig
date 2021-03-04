@@ -93,7 +93,7 @@ class UserController {
     next: NextFunction
   ): Promise<Response | void> => {
     const { email, password } = req.body;
-    console.log('hallo' , req);
+    console.log('hallo', req);
     let foundUser = await User.findOne({ email: email });
     if (foundUser) {
       return res.status(403).json({ error: 'Email is already in use' });
