@@ -6,7 +6,7 @@ import login from './pages/login';
 import register from './pages/register';
   
 export default [
-    {path: '/simulation/new', view: SimulationPage},
+    {path: '/loadsimulation', view: SimulationPage},
     {path: '/simulation/:id', view: SimulationFromDbPage, f: (params, query) => {
         console.log(params.id);
         console.log(query);

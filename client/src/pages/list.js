@@ -24,7 +24,7 @@ export default () => {
     } else {
         console.log('logged in')
     };
-    
+
     // Logout
 
     const logoutBtn = document.getElementById('logout-btn-nav');
@@ -109,4 +109,10 @@ export default () => {
     data.then(
         metaData => showMetaData(metaData)
     );
+
+
+    const newSim = document.getElementById('upload-simulation');
+    newSim.addEventListener('click', () => {
+        localStorage.setItem('id', null);
+    });
 };
