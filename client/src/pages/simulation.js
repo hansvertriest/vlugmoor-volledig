@@ -29,9 +29,8 @@ export default () => {
         console.log('logged in')
     };
 
-
     let serverData;
-    console.log('CHANGELOG: added option for no passingship')
+    let simulation;
 
     /**
      * 2. FUNCTIONS
@@ -200,7 +199,8 @@ export default () => {
 
         // Hier maken we een Simulation-object aan
         const canvasId = 'simulation-canvas';
-        const simulation = new Simulation(canvasId);
+        if(simulation) simulation.pause();
+        simulation = new Simulation(canvasId);
 
         const files = {};
 

@@ -95,7 +95,7 @@ class ApiRouter {
 
     const storage = multer.diskStorage({
       destination: 'uploads/',
-      filename: function(req, file, cb) {
+      filename: function(req: Request, file: any, cb: any) {
         cb(
           null,
           file.originalname + '-' + Date.now() + path.extname(file.originalname)
@@ -113,9 +113,9 @@ class ApiRouter {
     const upload = multer({ storage: storage }).single('file');
 
     // Upload file
-    this.router.post('/upload', upload, (req, res) => {
-      console.log(req.file);
-      console.log(req.file.path);
+    this.router.post('/upload', upload, (req: any, res: Response) => {
+      // console.log(req.file);
+      // console.log(req.file.path);
       return res.json({ message: 'file sent', path: req.file.path });
     });
 

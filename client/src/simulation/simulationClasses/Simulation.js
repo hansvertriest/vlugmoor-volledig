@@ -147,7 +147,7 @@ export default class Simulation {
         // download png
         const element = document.createElement('a');
         element.setAttribute('href', img);
-        element.setAttribute('download', 'file.png');
+        element.setAttribute('download', 'vlugmoor_schermafbeelding.png');
 
         element.style.display = 'none';
         document.body.appendChild(element);

@@ -103,7 +103,6 @@ export default class Controls {
         document.getElementById('timeline-container').onclick = (e) => {
             const xCoord = e.offsetX;
             const fullWidth = document.getElementById('timeline-container').offsetWidth;
-            console.log(xCoord, fullWidth)
             this.setAnimationProgressInPercentage(xCoord/fullWidth);
         }
         
