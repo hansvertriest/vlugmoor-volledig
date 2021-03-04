@@ -14,6 +14,7 @@ interface IMetaData extends Document {
   forcesPath: string;
   windPath: string;
   date: Date;
+  published: boolean;
 
   slug: string;
 
@@ -42,6 +43,10 @@ const metaDataSchema: Schema = new Schema(
     picture: {
       type: String,
       required: false
+    },
+    published: {
+        type: Boolean,
+        required: false,
     },
     caseDataPath: {
       type: String,

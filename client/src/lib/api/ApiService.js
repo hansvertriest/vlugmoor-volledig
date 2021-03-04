@@ -1,3 +1,5 @@
+import * as consts from '../.././const';
+
 export default class ApiService {
     constructor() {
         this.BASE_URL = "http://localhost:8080/api";
@@ -35,7 +37,8 @@ export default class ApiService {
             caseDataPath: caseDataPath,
             coordsPath: coordsPath,
             forcesPath: forcesPath,
-            windPath: windPath
+            windPath: windPath,
+            published: false,
         }
 
         const options = {

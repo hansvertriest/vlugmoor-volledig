@@ -4,6 +4,7 @@ import SimulationListPage from './pages/list';
 import SimulationFromDbPage from './pages/simulationFromDb';
 import login from './pages/login';
 import register from './pages/register';
+import forbidden from './pages/403';
   
 export default [
     {path: '/loadsimulation', view: SimulationPage},
@@ -15,5 +16,6 @@ export default [
     {path: '/simulation-list', view: SimulationListPage},
     {path: '/login', view: login },
     {path: '/register', view: register },
+    {path: '/forbidden', view: forbidden},
     {path: '/*', view: HomePage},
 ];

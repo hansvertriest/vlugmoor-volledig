@@ -26,7 +26,6 @@ export default () => {
     if (JSON.parse(localStorage.getItem('authUser')) === null) {
         App.router.navigate('/login');
     } else {
-        console.log('logged in')
     };
 
     let serverData;
@@ -62,7 +61,6 @@ export default () => {
             .catch(() => {
                 alert("De opgegeven data kon niet correct worden verwerkt. Probeer het opnieuw")
             });
-        console.log(data.get())
         serverData = data.get();
 
         // Create advancedControls
@@ -102,19 +100,6 @@ export default () => {
      * 3. BEGIN SCRIPT
      */
 
-    /*
-    let apiService =  new ApiService();
-    const data = apiService.findFile()
-    .then(
-        (result) => {
-            console.log(result);
-            console.log('file');
-
-            const file = XLSX.read(new Uint8Array(result), {type: 'array'});
-            console.log(file.Sheets[file.SheetNames[0]]);
-        }
-    );
-    */
 
 
     // Toewijzen van dimensies en kleur aan het canvas-element
@@ -242,8 +227,6 @@ export default () => {
         readerCoords.onload = (e) => {
             const data = e.target.result;
 
-            //console.log(coordsCsv);
-            //console.log(data);
             // Formatteer bestand
             const coords = getParsedCSVData(data);
 
@@ -313,7 +296,6 @@ export default () => {
                 const forcesPath = forces.path.replace('uploads/', '');
                 const coordsPath = coords.path.replace('uploads/', '');
                 const response = await apiService.storeMetaData(title, description, date, picture, caseDataPath, coordsPath, forcesPath, windPath);
-                console.log(response);
                 const loadPopup = document.getElementById('upload-popup');
                 loadPopup.style.display = 'none';
             } else {
@@ -322,7 +304,6 @@ export default () => {
                 const forcesPath = forces.path.replace('uploads/', '');
                 const coordsPath = coords.path.replace('uploads/', '');
                 const response = await apiService.storeMetaData(title, description, date, picture, caseDataPath, coordsPath, forcesPath, windPath);
-                console.log(response);
                 const loadPopup = document.getElementById('upload-popup');
                 loadPopup.style.display = 'none';
             }

@@ -31,13 +31,21 @@ export default () => {
     authService.verifyUserFromLocalStorage();
     
     if (JSON.parse(localStorage.getItem('authUser')) === null) {
-        App.router.navigate('/login');
+        const openLoad = document.getElementById('open-load');
+        const openDelete = document.getElementById('open-delete');
+        const btnTerug = document.getElementById('btn-terug');
+        const gepubliceerd = document.getElementById('gepubliceerd');
+        const logo = document.getElementById('logo');
+        logo.removeAttribute('href');
+        openLoad.style.display = 'none';
+        openDelete.style.display = 'none';
+        btnTerug.style.display = 'none';
+        gepubliceerd.style.display = 'none';
+
     } else {
-        console.log('logged in')
     };
 
     let serverData;
-    console.log('CHANGELOG: added option for no passingship')
 
     /**
      * 2. FUNCTIONS
@@ -45,7 +53,6 @@ export default () => {
 
     // parameter id uit URL halen
     let str = window.location.hash;
-    console.log(str);
     let id = str.replace('#!/simulation/', '');
 
     
@@ -85,7 +92,6 @@ export default () => {
             .catch(() => {
                 alert("De opgegeven data kon niet correct worden verwerkt. Probeer het opnieuw")
             });
-        // console.log(data.get())
         serverData = data.get();
 
         // Create advancedControls
@@ -163,10 +169,21 @@ export default () => {
         const title = document.getElementById('title-field');
         const description = document.getElementById('description-field');
         const date = document.getElementById('date-field');
+        const publish = document.getElementById('publish');
 
         const apiService = new ApiService();
         const response = await apiService.editMetaDataModel(id);
         const responseData = response.metaData;
+       
+
+        let publishBool;
+        if (publish.value === 'true') {
+            publishBool = true;
+        } else if (publish.value === 'false') {
+            publishBool = false;
+        };
+
+        console.log(publishBool);
         
         let metaData = {
             id: responseData.id,
@@ -183,6 +200,7 @@ export default () => {
             forcesPath: responseData.forcesPath,
             windPath: responseData.windPath,
             slug: responseData.slug,
+            published: publishBool,
         };
 
         const uploadResponse = await apiService.updateMetaData(metaData);
@@ -190,6 +208,7 @@ export default () => {
         setTextWithServerData(metaData);
         const loadPopup = document.getElementById('load-popup');
         loadPopup.style.display = 'none';
+        
     };
 
     // Data van server halen om in form te zetten en model ophalen
@@ -238,9 +257,17 @@ export default () => {
         const titleElement = document.getElementById('simulation-title');
         const dateElement = document.getElementById('simulation-date');
         const descriptionElement = document.getElementById('descrition-paragraph');
+        const gepubliceerd = document.getElementById('gepubliceerd');
 
         const d = new Date(serverMetaData.date);
         const dateParsed = d.getDate()+ '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+
+        if (serverMetaData.published === true) {
+            gepubliceerd.innerHTML = 'Simulatie staat online';
+            
+        } else if (serverMetaData.published === false) {
+            gepubliceerd.innerHTML = 'Simulatie staat offline';
+        };
         
         titleElement.innerHTML = serverMetaData.title;
         dateElement.innerHTML = dateParsed;  
@@ -257,7 +284,11 @@ export default () => {
 
         // functies aanroepen om data van server te halen
         const serverMetaData = await apiService.findMetaDataById(id);
-        console.log(serverMetaData);
+
+        if (serverMetaData.published === false && JSON.parse(localStorage.getItem('authUser')) === null) {
+            App.router.navigate('/forbidden');
+        }
+
         const xlsxUnparsed = await apiService.findXlsx(serverMetaData.caseDataPath);
         const forcesUnparsed = await apiService.findCsv(serverMetaData.forcesPath);
         const coordsUnparsed = await apiService.findCsv(serverMetaData.coordsPath);
