@@ -79,15 +79,15 @@ export default class AuthService {
             role: role
         };
 
-        const myHeaders = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+        console.log(body);
 
         const options = {
             method: 'POST',
-            body: body,
-            Headers: myHeaders,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body),
         };
 
         const response = await fetch(url, options);

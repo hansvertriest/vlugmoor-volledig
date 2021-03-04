@@ -93,14 +93,20 @@ class UserController {
     next: NextFunction
   ): Promise<Response | void> => {
     const { email, password } = req.body;
-
+    console.log('hallo' , req);
     let foundUser = await User.findOne({ email: email });
     if (foundUser) {
       return res.status(403).json({ error: 'Email is already in use' });
     }
 
     const newUser: IUser = new User({
-      email: email
+      email: email,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      role: req.body.role,
+      localProvider: {
+        password: password
+      }
     });
 
     const user: IUser = await newUser.save();
@@ -111,8 +117,8 @@ class UserController {
       token: `${token}`,
       strategy: 'local',
       role: user.role,
-      firstName: user.firstname,
-      lastName: user.lastname
+      firstname: user.firstname,
+      lastname: user.lastname
     });
   };
 
