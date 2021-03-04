@@ -91,6 +91,11 @@ export default () => {
         metaData => showMetaData(metaData)
     );
 
+    const newSim = document.getElementById('upload-simulation');
+    newSim.addEventListener('click', () => {
+        localStorage.setItem('id', null);
+    });
+
     
 
 

@@ -67,4 +67,31 @@ export default class AuthService {
         localStorage.setItem('authUser', null);
         return true;
     }
+
+    async signUp (email, password , firstname, lastname, role) {
+        const url = `${this.BASE_URL}/auth/signup`;
+
+        const body = {
+            email: email,
+            password: password,
+            firstname: firstname,
+            lastname: lastname,
+            role: role
+        };
+
+        const myHeaders = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+
+        const options = {
+            method: 'POST',
+            body: body,
+            Headers: myHeaders,
+        };
+
+        const response = await fetch(url, options);
+        console.log(response);
+        const user = await response.json();
+    };
 };
