@@ -15,6 +15,9 @@ export default () => {
     const password = document.getElementById('password');
     const button = document.getElementById('login');
 
+    const logo = document.getElementById('logo');
+    logo.removeAttribute('href');
+
     button.addEventListener('click', () => {
         authService.signInLocal(email.value, password.value)
         

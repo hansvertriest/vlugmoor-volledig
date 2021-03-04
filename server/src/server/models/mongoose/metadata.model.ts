@@ -45,8 +45,8 @@ const metaDataSchema: Schema = new Schema(
       required: false
     },
     published: {
-        type: Boolean,
-        required: false,
+      type: Boolean,
+      required: false
     },
     caseDataPath: {
       type: String,

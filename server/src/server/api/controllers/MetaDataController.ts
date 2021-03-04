@@ -113,7 +113,7 @@ class MetaDataController {
         coordsPath: req.body.coordsPath,
         forcesPath: req.body.forcesPath,
         windPath: req.body.windPath,
-        published: req.body.published,
+        published: req.body.published
       };
       const metaData = await MetaData.findOneAndUpdate(
         { _id: id },
@@ -144,7 +144,7 @@ class MetaDataController {
         coordsPath: req.body.coordsPath,
         forcesPath: req.body.forcesPath,
         windPath: req.body.windPath,
-        published: req.body.published,
+        published: req.body.published
       });
       const metaData = await metaDataCreate.save();
       return res.status(201).json(metaData);
