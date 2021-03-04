@@ -148,12 +148,11 @@ class ApiRouter {
     this.router.delete('/upload/:path', (req, res) => {
       const path = `uploads/${req.params.path}`;
 
-        var stream = fs.createReadStream(path);
-        stream.pipe(res).once('close', function() {
-            stream.close();
-            deleteFile(path);
-        });
-      
+      var stream = fs.createReadStream(path);
+      stream.pipe(res).once('close', function() {
+        stream.close();
+        deleteFile(path);
+      });
     });
   }
 }

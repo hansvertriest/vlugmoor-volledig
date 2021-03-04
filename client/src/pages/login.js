@@ -16,7 +16,7 @@ export default () => {
     const button = document.getElementById('login');
 
     button.addEventListener('click', () => {
-        authService.signInLocal(email.value, password.value);
-        App.router.navigate('/home');
+        authService.signInLocal(email.value, password.value)
+        
     });
 }

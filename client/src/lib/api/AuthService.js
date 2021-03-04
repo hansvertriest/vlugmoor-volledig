@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+import App from '../App';
 
 
 export default class AuthService {
@@ -58,7 +59,7 @@ export default class AuthService {
         const user = await response.json();
     
         localStorage.setItem('authUser', JSON.stringify(user));
-    
+        App.router.navigate('/home')
         return user;
     }
 
