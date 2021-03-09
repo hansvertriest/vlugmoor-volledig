@@ -94,7 +94,7 @@ export default class Wind {
             ctx.fillStyle = 'black';
             ctx.fillRect(this.posXOnCanvas + offsetLeft, this.posYOnCanvas + 20, scaleWidth+1, scaleHeight); 
             ctx.fillStyle = 'white';
-            ctx.fillRect(this.posXOnCanvas + offsetLeft + 200*(this.speedInKnots/35), this.posYOnCanvas + 20, 10, scaleHeight);
+            ctx.fillRect(this.posXOnCanvas + offsetLeft + scaleWidth*(this.speedInKnots/35), this.posYOnCanvas + 20, 5, scaleHeight);
             ctx.fill();
 
 
