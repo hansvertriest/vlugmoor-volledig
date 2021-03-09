@@ -40,10 +40,10 @@ After configuring the cluster, we are redirected to a overview of all clusters i
 - The second step presents us with a connection string. This string has to be copy-pasted in our project's ./server/.env file. This file should not be automatically present in any Github Repositories as it contains secret passwords and variables. You should be getting the initial contents of this file from the developers. (Note: this file may not be visible in regular file-explorer's. Using a code editor like Visual Studio code or tweaking the view setting of your specific file editor will solve this. ) The string should be present in this file as follows:
 
 ```jsx
-MONGODB_CONNECTION=mongodb+srv://dbUser:<password>@cluster0test.y8f9j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+MONGODB_CONNECTION=mongodb+srv://dbUser:password@cluster0test.y8f9j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 ```
 
-Where dbUser and <password> is replaced with the user credentials of the administrator user.
+Where dbUser and password is replaced with the user credentials of the administrator user.
 
 Now our database should be connected to the server. We should by able to test this by running the server locally. If no error's are logged, our database has been successfully connected.
 
