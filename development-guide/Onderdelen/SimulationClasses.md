@@ -55,7 +55,7 @@ Tot slot is de method om een screenshot van de volledige simulatie te maken hier
 
 ### **SETTING EN GETTING ANIMATION TIME**
 
-Dit zijn de methods verantwoordelijk voor het updaten van de tijd van de simulatie. In de methods waar de tijd wordt gewijzigd zal u steeds als laatste een blokje code zien die callback-functies uitvoerd. Dit zijn specifieke functies die er voor zorgen dat bijvoorbeeld de tijdlijn wordt aangepast wanneer de tijd verandert. Zo'n functies kunnen zelf toegevoegd worden via de Controls-klasse. Later hier meer over.
+Dit zijn de methods verantwoordelijk voor het updaten van de tijd van de simulatie. In de methods waar de tijd wordt gewijzigd zal u steeds als laatste een blokje code zien die callback-functies uitvoert. Dit zijn specifieke functies die er voor zorgen dat bijvoorbeeld de tijdlijn wordt aangepast wanneer de tijd verandert. Zo'n functies kunnen zelf toegevoegd worden via de Controls-klasse. Later hier meer over.
 
 ### **COMPONENTEN MAKEN EN TOEVOEGEN AAN DE SIMULATIE**
 

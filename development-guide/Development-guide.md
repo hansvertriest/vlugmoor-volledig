@@ -2,7 +2,7 @@
 
 # Introductie
 
-Net zoals de code is deze development guide opgesplitst in twee delen. Enerzijds is er de client (de website) en anderzijds de server (opslaan en bewerken van simulaties) Voorlopig focussen we ons vooral op het client-gedeelte.
+Net zoals de code is deze development guide opgesplitst in twee delen. Enerzijds is er de client (de website) en anderzijds de server (opslaan en bewerken van simulaties) Voorlopig ligt de focus vooral op het client-gedeelte.
 
 De uitleg over de client-side is opgesplitst:
 
