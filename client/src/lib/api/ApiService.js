@@ -3,6 +3,7 @@ import * as consts from '../.././const';
 export default class ApiService {
     constructor() {
         this.BASE_URL = "http://localhost:8080/api";
+        this.CONST_URL = `${consts.BASE_URL}/api`
     }
 
     queryParams (options) {
@@ -17,7 +18,7 @@ export default class ApiService {
     // find all meta data 
 
     async findAllMetaData (query = null) {
-        let url = `${this.BASE_URL}/metadata`;
+        let url = `${this.CONST_URL}/metadata`;
         if (query !== null) {
             url += (url.indexOf('?') === -1 ? '?' : '&') + this.queryParams(query);
         }
@@ -51,7 +52,7 @@ export default class ApiService {
         };
 
 
-        let url = `${this.BASE_URL}/metadata`;
+        let url = `${this.CONST_URL}/metadata`;
         const response = await fetch(url, options);
         return response.json();
     }
@@ -59,7 +60,7 @@ export default class ApiService {
     // find by id
 
     async findMetaDataById (id) {
-        let url = `${this.BASE_URL}/metadata/${id}`;
+        let url = `${this.CONST_URL}/metadata/${id}`;
         const response = await fetch(url);
         return response.json();
     }
@@ -74,7 +75,7 @@ export default class ApiService {
             },
         };
 
-        let url = `${this.BASE_URL}/metadata/${id}/edit`;
+        let url = `${this.CONST_URL}/metadata/${id}/edit`;
         const response = await fetch(url, options);
         return response.json();
     };
@@ -89,7 +90,7 @@ export default class ApiService {
             body: JSON.stringify(metaData),
         };
 
-        let url = `${this.BASE_URL}/metadata/${metaData.id}`;
+        let url = `${this.CONST_URL}/metadata/${metaData.id}`;
         const response = await fetch(url, options);
         return response.json();
     };
@@ -102,7 +103,7 @@ export default class ApiService {
                 'Accept': '*/*'
             },
         }
-        let url = `${this.BASE_URL}/metadata/${id}?mode=${mode}`;
+        let url = `${this.CONST_URL}/metadata/${id}?mode=${mode}`;
         const response = await fetch(url, options).then((result) => result);
         console.log(response);
         return response;
@@ -124,7 +125,7 @@ export default class ApiService {
             
         };
 
-        let url = `${this.BASE_URL}/upload`;
+        let url = `${this.CONST_URL}/upload`;
         const response = await fetch(url, options).then((result) => result.json());
         return response;
     }
@@ -132,19 +133,19 @@ export default class ApiService {
     // find by id
 
     async findDataById (id) {
-        let url = `${this.BASE_URL}/data/${id}`;
+        let url = `${this.CONST_URL}/data/${id}`;
         const response = await fetch(url);
         return response.json();
     }
 
     async findXlsx (filePath) {
-        let url = `${this.BASE_URL}/upload/${filePath}`;
+        let url = `${this.CONST_URL}/upload/${filePath}`;
         const response = await fetch(url);
         return response.arrayBuffer();
     }
 
     async findCsv (filePath) {
-        let url = `${this.BASE_URL}/upload/${filePath}`;
+        let url = `${this.CONST_URL}/upload/${filePath}`;
         const response = await fetch(url);
         return response.text();
     }
@@ -152,7 +153,7 @@ export default class ApiService {
     // Delete file from server
 
     async deleteFile (filePath) {
-        let url = `${this.BASE_URL}/upload/${filePath}`;
+        let url = `${this.CONST_URL}/upload/${filePath}`;
         const options = {
             method: 'DELETE',
             headers: {

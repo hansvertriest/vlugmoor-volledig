@@ -18,6 +18,10 @@ The easiest way to host this /docs folder is to use Github-Pages. For this metho
 
 Seperately, from Github, a lot of hosting platforms allow the user to upload a few files to host their website. This might be the case when hosting through the UGent IT-system. To achieve this, just upload the contents of the ./docs folder. The platform should automatically detect the index.html file which is the entry-file to hosting the webpage.
 
+In ./client/src/const.js adjust BASE_URL to rest API url from server.
+
+export const BASE_URL = 'http://localhost:8080';
+
 # Hosting the database
 
 Our database is a MongoDB database. This is a noSQL database. This means, in contrast to SQL databases, the data is not stored in tables with records and columns. Rather it uses a document-based model, which basically resembles the JSON-notation. 
@@ -56,3 +60,16 @@ npm install && npm run watch:serve
 It's also possible to host a mongoDB server yourself. More info can be found [here](https://marketplace.digitalocean.com/apps/mongodb).
 
 # Hosting the server
+
+Create a .env file for variables 
+
+NMD_BASELINE='Like Graphics Love Code' 
+NODE_DOCS=true
+NODE_ENV=development or production 
+NODE_SERVER_HOST=localhost  
+NODE_SERVER_PORT=8080 
+NODE_SERVER_PROTOCOL=8080
+MONGODB_CONNECTION=mongodb+srv://dbUser:<password>@cluster0test.y8f9j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+AUTH_BCRYPT_SALT=10 
+AUTH_JWT_SECRET=gdm-nmd
+AUTH_JWT_SESSION=false

@@ -1,6 +1,6 @@
 import App from '../lib/App';
 
-const loginTemplate = require('../templates/403.hbs');
+const loginTemplate = require('../templates/accessDenied.hbs');
 
 export default () => {
     const title = '403 You shall not pass!';

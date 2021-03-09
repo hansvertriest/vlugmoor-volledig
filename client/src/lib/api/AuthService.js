@@ -5,7 +5,7 @@ import * as consts from '../.././const';
 
 export default class AuthService {
     constructor () {
-        this.BASE_URL = "http://localhost:8080/api";
+        this.BASE_URL = `${consts.BASE_URL}/api`;
     }
 
     verifyUserFromLocalStorage () {
