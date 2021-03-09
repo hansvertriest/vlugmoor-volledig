@@ -1,4 +1,5 @@
 import App from '../src/lib/App';
+// require('dotenv').config();
 import css from './scss/main.scss';
 import _ from 'lodash';
 import * as consts from './const';

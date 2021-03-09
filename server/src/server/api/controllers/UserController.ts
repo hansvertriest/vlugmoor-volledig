@@ -93,14 +93,20 @@ class UserController {
     next: NextFunction
   ): Promise<Response | void> => {
     const { email, password } = req.body;
-
+    console.log('hallo', req);
     let foundUser = await User.findOne({ email: email });
     if (foundUser) {
       return res.status(403).json({ error: 'Email is already in use' });
     }
 
     const newUser: IUser = new User({
-      email: email
+      email: email,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      role: req.body.role,
+      localProvider: {
+        password: password
+      }
     });
 
     const user: IUser = await newUser.save();
@@ -110,10 +116,9 @@ class UserController {
       email: user.email,
       token: `${token}`,
       strategy: 'local',
-      role: 'user',
-      avatar: user.profile.avatar,
-      firstName: user.profile.firstName,
-      lastName: user.profile.lastName
+      role: user.role,
+      firstname: user.firstname,
+      lastname: user.lastname
     });
   };
 
@@ -137,8 +142,7 @@ class UserController {
           email: user.email,
           token: `${token}`,
           strategy: 'local',
-          role: user.role,
-          avatar: user.profile.avatar
+          role: user.role
         });
       }
     )(req, res, next);
@@ -169,11 +173,10 @@ class UserController {
     try {
       const userUpdate = {
         email: req.body.email,
-        firstName: req.body.profile.firstName,
-        lastName: req.body.profile.lastName,
+        firstname: req.body.profile.firstName,
+        lastname: req.body.profile.lastName,
         role: req.body.role,
-        password: req.body.localProvider.password,
-        avatar: req.body.profile.avatar
+        password: req.body.localProvider.password
       };
       const user = await User.findOneAndUpdate({ _id: id }, userUpdate, {
         new: true
@@ -192,11 +195,10 @@ class UserController {
     try {
       const userCreate = new User({
         email: req.body.email,
-        firstName: req.body.profile.firstName,
-        lastName: req.body.profile.lastName,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         role: req.body.role,
-        password: req.body.localProvider.password,
-        avatar: req.body.profile.avatar
+        password: req.body.localProvider.password
       });
       const user = await userCreate.save();
       return res.status(201).json(user);

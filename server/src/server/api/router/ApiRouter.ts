@@ -3,7 +3,9 @@ import {
   Application,
   Request,
   Response,
-  Router
+  Router,
+  NextFunction,
+  response
 } from 'express';
 import { Data } from 'src/server/models/mongoose';
 import { IConfig, AuthService, Role } from '../../services';
@@ -11,8 +13,14 @@ import {
   HelloController,
   UserController,
   MetaDataController,
-  DataController
+  DataController,
+  FileController
 } from '../controllers';
+
+import { default as multer } from 'multer';
+import { default as path } from 'path';
+import { nextTick } from 'process';
+import { default as fs } from 'fs';
 
 class ApiRouter {
   public router: Router;
@@ -21,6 +29,7 @@ class ApiRouter {
   private userController: UserController;
   private metaDataController: MetaDataController;
   private dataController: DataController;
+  private fileController: FileController;
 
   // config / Authentication service
 
@@ -42,6 +51,7 @@ class ApiRouter {
     this.userController = new UserController(this.config, this.authService);
     this.metaDataController = new MetaDataController();
     this.dataController = new DataController();
+    this.fileController = new FileController();
   }
 
   private registerRoutes(): void {
@@ -78,6 +88,72 @@ class ApiRouter {
 
     this.router.post('/auth/signin/', this.userController.signInLocal);
     this.router.post('/auth/signup/', this.userController.signupLocal);
+
+    /*
+     * Upload file route
+     */
+
+    const storage = multer.diskStorage({
+      destination: 'uploads/',
+      filename: function(req: Request, file: any, cb: any) {
+        cb(
+          null,
+          file.originalname + '-' + Date.now() + path.extname(file.originalname)
+        );
+
+        req.body.path =
+          file.originalname +
+          '-' +
+          Date.now() +
+          path.extname(file.originalname);
+
+        console.log(req.body.path + 'hier');
+      }
+    });
+    const upload = multer({ storage: storage }).single('file');
+
+    // Upload file
+    this.router.post('/upload', upload, (req: any, res: Response) => {
+      // console.log(req.file);
+      // console.log(req.file.path);
+      return res.json({ message: 'file sent', path: req.file.path });
+    });
+
+    // Download file
+    this.router.get('/upload/:path', function(req, res) {
+      const { path } = req.params;
+      if (path !== 'no wind') {
+        console.log(path);
+        var src = fs.createReadStream(`uploads/${path}`);
+        src.on('open', function() {
+          src.pipe(res);
+          console.log('download completed');
+        });
+        src.on('error', function(err: any) {
+          console.log(err);
+        });
+      }
+    });
+
+    // Delete file
+
+    function deleteFile(path: string) {
+      fs.unlink(path, function(err) {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
+
+    this.router.delete('/upload/:path', (req, res) => {
+      const path = `uploads/${req.params.path}`;
+
+      var stream = fs.createReadStream(path);
+      stream.pipe(res).once('close', function() {
+        stream.close();
+        deleteFile(path);
+      });
+    });
   }
 }
 

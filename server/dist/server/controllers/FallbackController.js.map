@@ -1,0 +1,1 @@
+{"version":3,"file":"FallbackController.js","sourceRoot":"","sources":["../../../src/server/controllers/FallbackController.ts"],"names":[],"mappings":";;AAEA,4CAA6C;AAE7C,MAAM,kBAAkB;IACf,KAAK,CACV,GAAY,EACZ,GAAa,EACb,IAAkB;QAElB,IAAI,CAAC,IAAI,yBAAa,EAAE,CAAC,CAAC;IAC5B,CAAC;CACF;AAED,kBAAe,kBAAkB,CAAC"}

@@ -4,12 +4,13 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
+const { isEmpty } = require('lodash');
 
 module.exports = (argv) => {
     const dev  = 'development';
     
     return ({
-
+    devtool: '#eval-source-map',
     devServer: {
         contentBase: path.join(__dirname, './src'),
         compress: true,
@@ -19,6 +20,7 @@ module.exports = (argv) => {
         global: true,
         __filename: false,
         __dirname: false,
+        //fs: "empty",
     },
     output: {
       filename: '[name].bundle.js',

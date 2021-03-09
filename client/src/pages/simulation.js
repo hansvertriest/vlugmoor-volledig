@@ -3,24 +3,37 @@ import { Data, MetaData } from '../simulation/dataClasses';
 import { Simulation } from '../simulation/simulationClasses';
 import Controls from '../simulation/simulationClasses/Controls';
 import ApiService from '../lib/api/ApiService';
+import AdvancedControls from '../simulation/simulationClasses/AdvancedControls';
+import AuthService from '../lib/api/AuthService';
+
 
 const XLSX = require('xlsx');
 
 const simulationTemplate = require('../templates/simulation.hbs');
 
 export default () => {
-
     /**
      * 1. RENDER PAGE
      */
     const title = 'Simulation page';
     App.render(simulationTemplate({title}));
+
+    // Authentication
+
+    const authService = new AuthService();
+    authService.verifyUserFromLocalStorage();
+    
+    if (JSON.parse(localStorage.getItem('authUser')) === null) {
+        App.router.navigate('/login');
+    } else {
+    };
+
     let serverData;
+    let simulation;
 
     /**
      * 2. FUNCTIONS
      */
-
 
     // Functie voor het effectief initialiseren van de simulatie
     const appInit = async (simulation, files) => {
@@ -44,15 +57,19 @@ export default () => {
         
         // create data object
         const data = new Data(files.metaData);
-        data.addTimePoints(files.coords, files.forces, shipTranslations)
+        data.addTimePoints(files.coords, files.forces, shipTranslations, files.wind)
             .catch(() => {
                 alert("De opgegeven data kon niet correct worden verwerkt. Probeer het opnieuw")
             });
-        console.log(data.get())
         serverData = data.get();
+
+        // Create advancedControls
+        // const advancedControls = new AdvancedControls();
+        // advancedControls.addDataToHawsersTimeline(data, controls)
+        // advancedControls.addDataToFendersTimeline(data, controls)
         
         // SIMULATION
-        simulation.addData(data);
+        await simulation.addData(data);
         await simulation.init();
         simulation.drawShips();
         simulation.play();
@@ -83,6 +100,8 @@ export default () => {
      * 3. BEGIN SCRIPT
      */
 
+
+
     // Toewijzen van dimensies en kleur aan het canvas-element
     const canvas = document.getElementById('simulation-canvas');
     const factor =  (window.innerWidth / canvas.width)*0.5 || (document.body.clientWidth / canvas.width)*0.5
@@ -97,6 +116,7 @@ export default () => {
     const xlsxInput = document.getElementById('metadata-input');
     const forcesInput = document.getElementById('forces-input');
     const coordsInput = document.getElementById('coords-input');
+    const windInput = document.getElementById('wind-input');
     const submit = document.getElementById('submit');
 
     // Luisteren naar wanneer een bestand wordt geupload en vervolgens de stijl van het element veranderen
@@ -142,6 +162,19 @@ export default () => {
             bg.style.width = "0";
         }
     }); 
+    windInput.addEventListener('change', (e) => {
+        const el = document.getElementById('wind-input-label');
+        const bg = document.getElementById('wind-input-bg');
+        if (e.target.files[0]) {
+            el.innerHTML = e.target.files[0].name;
+            el.parentElement.classList.add('custom-button--uploaded');
+            bg.style.width = "100%";
+        } else {
+            el.parentElement.classList.remove('custom-button--uploaded');
+            el.innerHTML = "Bestand kiezen";
+            bg.style.width = "0";
+        }
+    }); 
 
     // Luister wanneer de submit button wordt aangeklikt en lees vervolgens de bestanden in.
     submit.addEventListener('click', (e) => {
@@ -151,11 +184,12 @@ export default () => {
 
         // Hier maken we een Simulation-object aan
         const canvasId = 'simulation-canvas';
-        const simulation = new Simulation(canvasId);
+        if(simulation) simulation.pause();
+        simulation = new Simulation(canvasId);
 
         const files = {};
 
-        // We maken voor elk bestand een nieuw FilReader-object aan en 
+        // We maken voor elk bestand een nieuw FileReader-object aan en 
         // definieren vervolgens wat er moet gebeuren als zo'n FileReader-object
         // een bestand heeft ingeladen.
         const readerXSLX = new FileReader();
@@ -180,7 +214,6 @@ export default () => {
         const readerForces = new FileReader();
         readerForces.onload = (e) => {
             const data = e.target.result;
-        
             // Formatteer bestand
             const forces = getParsedCSVData(data);
 
@@ -202,7 +235,19 @@ export default () => {
 
             // Controlleer of alle bestanden zijn ingeladen, zo ja => start de simulatie
             filesHaveLoaded(simulation, files)
+        }
+        const readerWind = new FileReader();
+        readerWind.onload = (e) => {
+            const data = e.target.result;
 
+            // Formatteer bestand
+            const wind = getParsedCSVData(data);
+
+            // We voegen de wind data toe aan het files-object
+            files.wind = wind;
+
+            // Controlleer of alle bestanden zijn ingeladen, zo ja => start de simulatie
+            filesHaveLoaded(simulation, files)
         }
 
         try {
@@ -210,7 +255,9 @@ export default () => {
             readerXSLX.readAsBinaryString(xlsxInput.files[0])
             readerForces.readAsBinaryString(forcesInput.files[0])
             readerCoords.readAsBinaryString(coordsInput.files[0])
-        } catch {
+            if (windInput.files[0]) readerWind.readAsBinaryString(windInput.files[0]);
+        } catch (e) {
+            console.log(e);
             alert('Er ging iets fout bij het inladen van de bestanden. Probeer het opnieuw.');
         }
     });
@@ -223,9 +270,11 @@ export default () => {
     const openUpload = document.getElementById('open-upload');
     const closeUpload = document.getElementById('close-upload');
 
-    // Wanneer de upload button wordt aangeklikt
-    //      => maak een ApiService aan en upload het bestand
-    upload.addEventListener('click', () => {
+    // Event listner voor upload button je klikt op de upload button
+    // sla eerst de .csv's op en wacht op response van de server (voor de paden)
+    // dan metadata opslaan en de paden naar bestanden op de server. 
+
+    upload.addEventListener('click', async () =>  {
         let apiService = new ApiService();
         let data = {data: serverData};
         if (serverData) {
@@ -233,9 +282,32 @@ export default () => {
             let description = document.getElementById('description-field').value;
             let date = document.getElementById('date-field').value;
             let picture = serverData.caseMetaData.caseShip.type;
-    
-            apiService.storeData(data)
-            .then((response) => apiService.storeMetaData(title, description, date, picture, toString(response.id)));
+
+            const caseData = await apiService.storeDataFile(xlsxInput.files[0]);
+            const forces = await apiService.storeDataFile(forcesInput.files[0]);
+            const coords = await apiService.storeDataFile(coordsInput.files[0]);
+            
+            
+
+            if (windInput.files[0] !== undefined) {
+                const wind = await apiService.storeDataFile(windInput.files[0]);
+                const windPath = wind.path.replace('uploads/', '');
+                const caseDataPath = caseData.path.replace('uploads/', '');
+                const forcesPath = forces.path.replace('uploads/', '');
+                const coordsPath = coords.path.replace('uploads/', '');
+                const response = await apiService.storeMetaData(title, description, date, picture, caseDataPath, coordsPath, forcesPath, windPath);
+                const loadPopup = document.getElementById('upload-popup');
+                loadPopup.style.display = 'none';
+            } else {
+                const windPath = 'no wind';
+                const caseDataPath = caseData.path.replace('uploads/', '');
+                const forcesPath = forces.path.replace('uploads/', '');
+                const coordsPath = coords.path.replace('uploads/', '');
+                const response = await apiService.storeMetaData(title, description, date, picture, caseDataPath, coordsPath, forcesPath, windPath);
+                const loadPopup = document.getElementById('upload-popup');
+                loadPopup.style.display = 'none';
+            }
+        
         } else {
             alert('Gelieve eerst een simulatie op te laden.')
         }
@@ -262,5 +334,9 @@ export default () => {
         const loadPopup = document.getElementById('upload-popup');
         loadPopup.style.display = 'none';
     });
+
+
+    
+
 
 };

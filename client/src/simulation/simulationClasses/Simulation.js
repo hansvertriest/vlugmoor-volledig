@@ -6,6 +6,7 @@ import Fender from "./Fender";
 import SimulationContext from "./SimulationContext";
 import Kaai from "./Kaai";
 import LoadingScreen from './LoadingScreen';
+import Wind from './Wind';
 
 export default class Simulation {
     constructor( canvasId ) {
@@ -34,6 +35,9 @@ export default class Simulation {
         // hawser data 
         this.hawserArray = [];
         this.fenderArray = [];
+
+        // wind-wijzer
+        this.wind;
 
         // loading
         this.loadingScreen = new LoadingScreen(this.simCtx);
@@ -67,29 +71,34 @@ export default class Simulation {
      * Data toevoegen aan de simulatie
      * @param {*} data object van het type Data (/DataClasses/Data.js)
      */
-    addData(data) {
+    async addData(data) {
         this.caseData = data;
         this.timePointCount = data.timePoints.length;
         this.timePointInterval = data.caseMetaData.timePointInterval
 
         // Voeg caseShip toe aan simulation als het bestaat
         if (this.caseData.caseMetaData && this.caseData.caseMetaData.caseShip) {
-            this.addShip(this.caseData.caseMetaData.caseShip, true);
+            await this.addShip(this.caseData.caseMetaData.caseShip, true);
         }
 
         // Voeg passingShip toe aan simulation als het bestaat
-        if (this.caseData.caseMetaData && this.caseData.caseMetaData.passingShip) {
-            this.addShip(this.caseData.caseMetaData.passingShip);
+        if (this.caseData.caseMetaData && this.caseData.caseMetaData.passingShip.present) {
+            await this.addShip(this.caseData.caseMetaData.passingShip);
         }
 
         // Voeg bolderData toe aan simulation als het bestaat
         if (this.caseData.caseMetaData && this.caseData.caseMetaData.bolderData) {
-            this.addHawsers(this.caseData.caseMetaData.bolderData, this.caseData.caseMetaData.hawserLimits, this.caseData.events.hawserBreaks);
+            await this.addHawsers(this.caseData.caseMetaData.bolderData, this.caseData.caseMetaData.hawserLimits, this.caseData.events.hawserBreaks);
         }
 
         // Voeg fenderData toe aan simulation als het bestaat
         if (this.caseData.caseMetaData && this.caseData.caseMetaData.fenderData) {
             this.addFenders(this.caseData.caseMetaData.fenderData, this.caseData.caseMetaData.fenderLimits, this.caseData.events.fenderBreaks);
+        }
+
+        // Voeg wind-wijzer toe aan simulation als er wind info aanwezig is
+        if (this.caseData.caseMetaData && this.caseData.caseMetaData.wind.present) {
+           await this.addWind(this.caseData.caseMetaData.wind.directionInDegrees, this.caseData.caseMetaData.wind.speedInMPerS);
         }
     }
 
@@ -138,7 +147,7 @@ export default class Simulation {
         // download png
         const element = document.createElement('a');
         element.setAttribute('href', img);
-        element.setAttribute('download', 'file.png');
+        element.setAttribute('download', 'vlugmoor_schermafbeelding.png');
 
         element.style.display = 'none';
         document.body.appendChild(element);
@@ -339,6 +348,16 @@ export default class Simulation {
         });
     }
 
+    /**
+     * Maak een wind object aan
+     * @param {*} direction richting waarin de wind blaast
+     * @param {*} speedInMPerS snelheid van de wind
+     */
+    async addWind( direction, speedInMPerS) {
+        this.wind = new Wind(this.simCtx, direction, speedInMPerS);
+        await this.wind.loadImage();
+    }
+
     /*
         TEKENEN VAN DE COMPONENTEN OP DE CANVAS
     */
@@ -355,7 +374,7 @@ export default class Simulation {
 
     /**
      * Teken alle fenders op het canvas
-     * @param {*} ctx een SimulationContext-object
+     * @param {*} ctx een canvas-context (=/= SimulationContext)
      */
     drawFenders(ctx) {
         this.fenderArray.forEach((fender) => {
@@ -365,7 +384,7 @@ export default class Simulation {
 
     /**
      * Teken alle trossen op het canvas
-     * @param {*} ctx een SimulationContext-object
+     * @param {*} ctx een canvas-context (=/= SimulationContext)
      */
     drawHawsers(ctx) {
         this.hawserArray.forEach((hawser) => {
@@ -375,7 +394,7 @@ export default class Simulation {
 
     /**
      * Teken de kaai op het canvas
-     * @param {*} ctx een SimulationContext-object
+     * @param {*} ctx een canvas-context (=/= SimulationContext)
      */
     drawKaai(ctx) {
         this.kaai.draw(ctx);
@@ -383,7 +402,7 @@ export default class Simulation {
 
     /**
      * Teken alle schepen op het canvas
-     * @param {*} ctx een SimulationContext-object
+     * @param {*} ctx een canvas-context (=/= SimulationContext)
      */
     drawShips(ctx) {
         this.caseShip.draw(ctx);
@@ -392,6 +411,14 @@ export default class Simulation {
                 passingShip.draw(ctx);
             });
         }
+    }
+
+    /**
+     * Teken de kaai op het canvas
+     * @param {*} ctx een canvas-context (=/= SimulationContext)
+     */
+    drawWind(ctx) {
+        this.wind.draw(ctx);
     }
 
     /*
@@ -494,6 +521,12 @@ export default class Simulation {
             fender.setLoadRatio(timePoint.fenderData[index].force/timePoint.fenderData[index].forceMax);
         });
 
+        // update windroos
+        if (this.wind) {
+            this.wind.setDirection(timePoint.windData.directionInDegrees);
+            this.wind.setSpeedInKnots(timePoint.windData.speedInKnots);
+            this.wind.showStrengthScale = timePoint.windData.present;
+        }
 
     }
 
@@ -519,16 +552,19 @@ export default class Simulation {
 
             // clear screen
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-            // drawElements
-            this.setBackgroundColor();
-            // this.caseShip.drawShadow();
-            this.drawKaai();
-            this.drawShips();
-            this.drawHawsers();
-            this.drawFenders();
-            if (this.simCtx.drawCaseShipOutline) this.caseShip.drawOutline();
         }
+
+        // drawElements
+        this.setBackgroundColor();
+        // this.caseShip.drawShadow();
+        this.drawKaai();
+        this.drawShips();
+        this.drawHawsers();
+        this.drawFenders();
+        if (this.wind) {
+            this.drawWind();
+        }
+        if (this.simCtx.drawCaseShipOutline) this.caseShip.drawOutline();
 
         // hoe dee loop in stand    
         window.requestAnimationFrame(this.doAnimation.bind(this));

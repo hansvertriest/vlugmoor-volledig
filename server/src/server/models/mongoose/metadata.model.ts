@@ -1,7 +1,7 @@
 import { default as mongoose, Schema, Document, PaginateModel } from 'mongoose';
 import { default as mongoosePaginate } from 'mongoose-paginate';
 import { default as slug } from 'slug';
-import { IData } from './data.model';
+// import { IData } from './data.model';
 import { IUser } from './user.model';
 
 interface IMetaData extends Document {
@@ -9,7 +9,12 @@ interface IMetaData extends Document {
   description: string;
 
   picture: string;
+  caseDataPath: string;
+  coordsPath: string;
+  forcesPath: string;
+  windPath: string;
   date: Date;
+  published: boolean;
 
   slug: string;
 
@@ -17,7 +22,6 @@ interface IMetaData extends Document {
   _modifiedAt: number;
   _deletedAt: number;
 
-  _dataId: string;
   _userId: IUser['_id'];
   slugify(): void;
 }
@@ -37,6 +41,26 @@ const metaDataSchema: Schema = new Schema(
       max: 2056
     },
     picture: {
+      type: String,
+      required: false
+    },
+    published: {
+      type: Boolean,
+      required: false
+    },
+    caseDataPath: {
+      type: String,
+      required: false
+    },
+    coordsPath: {
+      type: String,
+      required: false
+    },
+    forcesPath: {
+      type: String,
+      required: false
+    },
+    windPath: {
       type: String,
       required: false
     },
@@ -69,10 +93,6 @@ const metaDataSchema: Schema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: false
-    },
-    _dataId: {
-      type: String,
-      required: true
     }
   },
   {
@@ -81,7 +101,7 @@ const metaDataSchema: Schema = new Schema(
   }
 );
 
-metaDataSchema.methods.slugify = function() {
+metaDataSchema.methods.slugify = function(this: any) {
   this.slug = slug(this.title);
 };
 

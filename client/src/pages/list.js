@@ -1,5 +1,6 @@
 import App from '../lib/App';
 import ApiService from '../lib/api/ApiService';
+import AuthService from '../lib/api/AuthService';
 
 const listTemplate = require('../templates/list.hbs');
 /*
@@ -12,6 +13,25 @@ const listTemplate = require('../templates/list.hbs');
 export default () => {
     const title = 'Simulation list page';
     App.render(listTemplate({title}));
+
+    // Authentication
+
+    const authService = new AuthService();
+    authService.verifyUserFromLocalStorage();
+    
+    if (JSON.parse(localStorage.getItem('authUser')) === null) {
+        App.router.navigate('/login');
+    } else {
+    };
+
+    // Logout
+
+    const logoutBtn = document.getElementById('logout-btn-nav');
+    logoutBtn.addEventListener('click', (e) => {
+        authService.logout();
+        App.router.navigate('/login');
+    });
+
 
     let documentContainer = document.getElementById('list-content');
 
@@ -39,7 +59,6 @@ export default () => {
             let date = document.createElement('p');
             let divider1 = document.createElement('p');
             let divider2 = document.createElement('p');
-            let divider3 = document.createElement('p');
             let link = document.createElement('a');
             let title = document.createElement('h3');
             let description = document.createElement('p');
@@ -53,32 +72,46 @@ export default () => {
             container.appendChild(title);
             container.appendChild(divider2);
             container.appendChild(description);
-            container.appendChild(divider3);
-            link.appendChild(image);
+            container.appendChild(image);
             container.appendChild(link);
             
 
 
-            let dateObject = new Date(data.date).toLocaleDateString("be-BE",{ year: 'numeric', month: '2-digit', day: '2-digit' })
+            const d = new Date(data.date);
+            const dateParsed = d.getDate()+ '/' + (d.getMonth()+1) + '/' + d.getFullYear();
             
-            date.innerHTML = dateObject;
+            date.innerHTML = dateParsed;
+            date.className = 'list-date',
             title.innerHTML = data.title;
-            description.innerHTML = data.description;
+            //description.innerHTML = data.description;
             divider1.innerHTML = '|';
             divider2.innerHTML = '|';
-            divider3.innerHTML = '|';
-            image.src = '../assets/icons/edit-regular.svg';
+
+            image.src = getShipImage(data.picture);
             link.href = '#';
+
 
             
             documentContainer.appendChild(container);
+            container.addEventListener('click', (e) => {
+                loadSimulation(data.id);
+            });
         })
     }
 
+    const loadSimulation = (id) => {
+        App.router.navigate(`/simulation/${id}`);
+    };
 
     const apiService = new ApiService;
     const data = apiService.findAllMetaData();
     data.then(
         metaData => showMetaData(metaData)
     );
+
+
+    const newSim = document.getElementById('upload-simulation');
+    newSim.addEventListener('click', () => {
+        localStorage.setItem('id', null);
+    });
 };

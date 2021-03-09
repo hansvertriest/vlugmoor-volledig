@@ -1,32 +1,22 @@
 import { default as mongoose, Schema, Document } from 'mongoose';
 import { default as bcrypt } from 'bcrypt';
+import { SSL_OP_LEGACY_SERVER_CONNECT } from 'constants';
 
 interface ILocalProvider {
   password: string;
 }
 
-interface IFacebookProvider {
-  id: string;
-  token: string;
-}
-
-interface IProfile {
-  firstName: string;
-  lastName: string;
-  avatar: string;
-}
-
 interface IUser extends Document {
   email: string;
+  firstname: string;
+  lastname: string;
   _createdAt: number;
   _modifiedAt: number;
   _deletedAt: number;
 
   localProvider?: ILocalProvider;
-  facebookProvider?: IFacebookProvider;
 
   role: string;
-  profile?: IProfile;
 
   comparePassword(candidatePassword: String, cb: Function): void;
 }
@@ -38,6 +28,16 @@ const userSchema: Schema = new Schema(
       required: true,
       unique: true
     },
+    firstname: {
+      type: String,
+      required: true,
+      unique: false
+    },
+    lastname: {
+      type: String,
+      required: true,
+      unique: false
+    },
     _createdAt: { type: Number, required: true, default: Date.now() },
     _modifiedAt: { type: Number, required: false, default: null },
     _deletedAt: { type: Number, required: false, default: null },
@@ -47,26 +47,11 @@ const userSchema: Schema = new Schema(
         required: false
       }
     },
-    facebookProvider: {
-      id: {
-        type: String,
-        required: false
-      },
-      token: {
-        type: String,
-        required: false
-      }
-    },
     role: {
       type: String,
       enum: ['user', 'administrator'],
       default: 'user',
       required: true
-    },
-    profile: {
-      firstName: String,
-      lastName: String,
-      avatar: String
     }
   },
   {
@@ -104,11 +89,18 @@ userSchema.methods.comparePassword = function(
   candidatePassword: String,
   cb: Function
 ) {
-  const user = this;
-  bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
-    if (err) return cb(err, null);
-    return cb(null, isMatch);
-  });
+  const user: IUser = this as IUser;
+
+  bcrypt.compare(
+    candidatePassword,
+    user.localProvider.password,
+    (err, isMatch) => {
+      if (err) return cb(err, null);
+      else {
+        return cb(isMatch);
+      }
+    }
+  );
 };
 
 const User = mongoose.model<IUser>('User', userSchema);

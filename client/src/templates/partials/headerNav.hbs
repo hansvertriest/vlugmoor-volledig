@@ -1,13 +1,18 @@
 
 <nav>
-    <a id="logo"  href=""><img src="../../assets/images/vlugmoor.png" alt="Vlugmoor"></a>
+    <a id="logo"  href="#!/home"><img src="../../assets/images/vlugmoor.png" alt="Vlugmoor"></a>
 </nav>
 <div class="header-nav">
-    <div class="upload">
-        {{routerLink "simulation" "Upload nieuwe simulatie"}}
+    <div id='upload-simulation' class="upload">
+        {{routerLink "loadsimulation" "Upload nieuwe simulatie"}}
     </div>
     <div>
         <a href="#!/home"><img src="../../assets/images/square_logo.png"/></a>
         <a href="#!/simulation-list"><img src="../../assets/images/list_icon.png" /></a>
     </div>
 </div>
+<div class="button-container" >
+    <button id='logout-btn-nav' class="logout-button" >Logout</button>
+    <div class="register" >{{routerLink "register" "Register"}}</div>
+</div>
+

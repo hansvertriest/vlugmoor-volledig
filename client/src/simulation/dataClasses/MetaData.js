@@ -121,7 +121,7 @@ export default class MetaData {
             length: this.getCellData('b',3),
             width: this.getCellData('b',5),
             distanceFromKaai: this.getCellData('b',14),
-            startContourTimePoint: this.getCellData('e',4),
+            startContourTimePoint: (this.getCellData('e',4) != '') ? this.getCellData('e',4) : 0 ,
         }
     }
 
@@ -129,8 +129,10 @@ export default class MetaData {
      * Get passingShip data from sheet
      */
     createPassingShip() {
+        const isPresent = (this.getCellData('b',17) === 'YES' );
+        if ( !isPresent ) return { present: isPresent }
         return {
-            present: (this.getCellData('b',17) === 'YES' ) ? true : false,
+            present: isPresent,
             type: this.getCellData('b',18),
             length: this.getCellData('b',19),
             width: this.getCellData('b',20),

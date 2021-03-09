@@ -66,9 +66,8 @@ class MongoDBDatabase {
     email: string,
     password: string,
     role: string,
-    firstName: string,
-    lastName: string,
-    avatar: string
+    firstname: string,
+    lastname: string
   ) => {
     const userDetail = {
       email,
@@ -76,11 +75,8 @@ class MongoDBDatabase {
         password
       },
       role,
-      profile: {
-        firstName,
-        lastName,
-        avatar
-      }
+      firstname,
+      lastname
     };
 
     const user: IUser = new User(userDetail);
@@ -96,16 +92,16 @@ class MongoDBDatabase {
   };
 
   private createUsers = async () => {
-    const promises = [];
+    //const promises = [];
 
     this.userCreate(
       'arneverl@student.arteveldehs.be',
       '2468',
       'administrator',
       'Arne',
-      'Verleyen',
-      'https://scontent-bru2-1.xx.fbcdn.net/v/t1.0-9/28379571_1337089683058557_2119606842872933977_n.jpg?_nc_cat=107&_nc_sid=85a577&_nc_ohc=tW5Xsq3L3S0AX_V1PZn&_nc_ht=scontent-bru2-1.xx&oh=1defea6efe998620d8a584428fb404ba&oe=5EDD6A4E'
+      'Verleyen'
     );
+    /*
 
     for (let i = 0; i < 30; i++) {
       const gender = Math.round(Math.random());
@@ -116,12 +112,12 @@ class MongoDBDatabase {
           'user',
           faker.name.firstName(gender),
           faker.name.lastName(gender),
-          faker.internet.avatar()
         )
       );
     }
+    */
 
-    return await Promise.all(promises);
+    // return await Promise.all(promises);
   };
 
   private getRandomUser = () => {

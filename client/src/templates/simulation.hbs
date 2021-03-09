@@ -1,4 +1,7 @@
 {{> header }}
+
+{{!-- Button top --}}
+
 <div class="top-container" >
     <div class="top-left">
         <a><p>{{routerLink "home" "terug"}}</p></a>
@@ -16,11 +19,13 @@
     </div>
 </div>
 
+{{!-- Load popup --}}
+
 <div class="input-container" id="load-popup">
     <div class="input-container__inner">
         <div class="input-container__inner-close" id="close-load">Close</div>
         <div>
-            <label>Case Data (*.xlsx)</label>
+            <label class="spacer-90">Case Data (*.xlsx)</label>
             <label class="custom-upload">
                 <span id="metadata-input-bg"></span>
                 <p id="metadata-input-label">Bestand kiezen</p>
@@ -28,19 +33,27 @@
             </label>
         </div>
         <div>
-            <label>Forces Data (*.csv)</label>
+            <label class="spacer-75" >Forces Data (*.csv)</label>
             <label class="custom-upload">
                 <span id="forces-input-bg"></span>
                 <p id="forces-input-label">Bestand kiezen</p>
-                <input type="file" id="forces-input" />
+                <input accept=".csv" type="file" name='file' id="forces-input" />
             </label>
         </div>
         <div>
-            <label>Ship coordinates (*.csv)</label>
+            <label class="spacer-20">Ship coordinates (*.csv)</label>
             <label class="custom-upload">
                 <span id="coords-input-bg"></span>
                 <p id="coords-input-label">Bestand kiezen</p>
-                <input type="file" id="coords-input" />
+                <input accept=".csv" type="file" id="coords-input" />
+            </label>
+        </div>
+        <div className="upload-container--secondary">
+            <label class="spacer-99">Wind Data (*.csv)</label>
+            <label class="custom-upload">
+                <span id="wind-input-bg"></span>
+                <p id="wind-input-label">Bestand kiezen</p>
+                <input accept=".csv" type="file" id="wind-input" />
             </label>
         </div>
         <div class="btn-submit">
@@ -48,6 +61,8 @@
         </div>
     </div>
 </div>
+
+{{!-- Upload popup --}}
 
 <div class="input-container" id="upload-popup">
     <div class='input-container__inner'>
@@ -74,11 +89,19 @@
     </div>
 </div>
 
+{{!-- Canvas --}}
+
 <canvas id="simulation-canvas" width="1200" height="800"></canvas> 
+
+{{!-- Timeline --}}
+
 <div class="video-control-container">
     <div class="video-control">
         <div id="previous-container"><img id="previous" src="../assets/icons/forward-solid.svg" style="transform: scaleX(-1);" /></div>
-        <div id="play-pause-container"><img id="play-pause" src="../assets/icons/play-solid.svg" isPlaying="" srcPlay="../assets/icons/play-solid.svg" srcPause="../assets/icons/pause-solid.svg"/></div>
+        <div id="play-pause-container">
+            <img id="play-btn" src="../assets/icons/play-solid.svg" isPlaying="" srcPlay="../assets/icons/play-solid.svg" srcPause="../assets/icons/pause-solid.svg"/>
+            <img id="pause-btn" src="../assets/icons/pause-solid.svg" isPlaying="" srcPlay="../assets/icons/pause-solid.svg" srcPause="../assets/icons/pause-solid.svg" style="display: none;"/>
+        </div>
         <div id="next-container"><img id="next" src="../assets/icons/forward-solid.svg" /></div>
     </div>
     <div class="timeline-hans" id="timeline-container">
@@ -93,13 +116,85 @@
         <label>Timepoint: <span id="current-timepoint">0</span></label>
     </div>
 </div>
+
+{{!-- Advanced timeline --}}
+{{!-- <div class="sub-timelines" id="sub-timelines">
+    <div class="sub-timeline-container">
+        <div class="sub-timeline-container-total">
+            <div class="sub-timeline">
+                <div class="sub-timeline-title-container" id="sub-timeline-title-container-hawsers">
+                    <div class="sub-timeline-title">
+                        <p>Hawsers</p>
+                    </div>
+                    <div class="sub-timeline-titles-hawsers" id="sub-timeline-titles-hawsers">
+
+                    </div>
+                </div>
+                <div class="sub-timeline-timeline-container">
+
+                    <div class="timeline-progress" id="timeline-progress-hawsers"></div>
+                    <div class="sub-timeline-container-content" id="timeline-container-hawsers">
+                        <div id="timeline" class="timeline hawsers">
+                            <div id="hawser-breakpoints"></div>
+                        </div>
+                    </div>
+                    <div class="sub-timeline-container-content-hawsers" id="sub-timeline-container-content-hawsers">
+                        <!-- Imported from JavaScript simulation.js --->
+                    </div>
+                </div>
+                <div class="sub-timeline-icon-container">
+
+                    <div class="sub-timeline-icon">
+                        <img id="open-hawsers" class="chevron-icon"
+                            src="../assets/icons/chevron-circle-down-solid.svg" />
+                    </div>
+
+                </div>
+            </div>
+            <div class="sub-timeline">
+                <div class="sub-timeline-title-container" id="sub-timeline-title-container-fenders">
+                    <div class="sub-timeline-title">
+                        <p>Fenders</p>
+                    </div>
+                    <div class="sub-timeline-titles-fenders" id="sub-timeline-titles-fenders">
+
+                    </div>
+                </div>
+                <div class="sub-timeline-timeline-container">
+
+                    <div class="timeline-progress" id="timeline-progress-fenders"></div>
+
+                    <div class="sub-timeline-container-content" id="timeline-container-fenders">
+                        <div id="timeline" class="timeline fenders">
+                            <div id="fender-breakpoints"></div>
+                        </div>
+                    </div>
+                    <div class="sub-timeline-container-content-fenders" id="sub-timeline-container-content-fenders">
+                        <!-- Imported from JavaScript simulation.js --->
+                    </div>
+                </div>
+                <div class="sub-timeline-icon-container">
+
+                    <div class="sub-timeline-icon">
+                        <img id="open-fenders" class="chevron-icon"
+                            src="../assets/icons/chevron-circle-down-solid.svg" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+{{!-- Controls --}}
+
 <div class="input-control-container">
     <div class="controls-container">
         <div>
             <label title="Verplaats de simulatie naar een gekozen framenummer">Jump to timepoint:</label>
             <input type="number" id="timepoint-input" value="0" step="100" min="0">
         </div>
-         <div>
+        <div>
             <label title="Verplaats de simulatie naar een gekozen tijdstip in seconden">Jump to time (s):</label>
             <input type="number" id="time-input" value="0" step="60" min="0">
         </div>

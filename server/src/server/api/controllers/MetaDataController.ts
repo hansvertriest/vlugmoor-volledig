@@ -41,7 +41,7 @@ class MetaDataController {
 
   destroy = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-
+    console.log(id);
     try {
       let metaData = null;
 
@@ -108,7 +108,12 @@ class MetaDataController {
         description: req.body.description,
         picture: req.body.picture,
         date: req.body.date,
-        _dataId: req.body._dataId
+        _dataId: req.body._dataId,
+        caseDataPath: req.body.caseDataPath,
+        coordsPath: req.body.coordsPath,
+        forcesPath: req.body.forcesPath,
+        windPath: req.body.windPath,
+        published: req.body.published
       };
       const metaData = await MetaData.findOneAndUpdate(
         { _id: id },
@@ -134,7 +139,12 @@ class MetaDataController {
         description: req.body.description,
         picture: req.body.picture,
         date: req.body.date,
-        _dataId: req.body._dataId
+        _dataId: req.body._dataId,
+        caseDataPath: req.body.caseDataPath,
+        coordsPath: req.body.coordsPath,
+        forcesPath: req.body.forcesPath,
+        windPath: req.body.windPath,
+        published: req.body.published
       });
       const metaData = await metaDataCreate.save();
       return res.status(201).json(metaData);
