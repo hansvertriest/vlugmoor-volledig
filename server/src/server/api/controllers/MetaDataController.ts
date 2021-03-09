@@ -112,7 +112,8 @@ class MetaDataController {
         caseDataPath: req.body.caseDataPath,
         coordsPath: req.body.coordsPath,
         forcesPath: req.body.forcesPath,
-        windPath: req.body.windPath
+        windPath: req.body.windPath,
+        published: req.body.published
       };
       const metaData = await MetaData.findOneAndUpdate(
         { _id: id },
@@ -142,7 +143,8 @@ class MetaDataController {
         caseDataPath: req.body.caseDataPath,
         coordsPath: req.body.coordsPath,
         forcesPath: req.body.forcesPath,
-        windPath: req.body.windPath
+        windPath: req.body.windPath,
+        published: req.body.published
       });
       const metaData = await metaDataCreate.save();
       return res.status(201).json(metaData);

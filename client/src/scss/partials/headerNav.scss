@@ -1,23 +1,26 @@
-
 nav {
     display: flex;
-    #logo{
+
+    #logo {
         margin-top: 20px;
         margin-left: 44vw;
-        img{
+
+        img {
             width: 150px;
-            height: auto; 
+            height: auto;
             align-self: center;
         }
     }
 }
-.header-nav{
-    
-    margin: 20px;
+
+.header-nav {
+
+    margin: 20px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .upload a{
+
+    .upload a {
         text-decoration: none;
         background-color: black;
         color: white;
@@ -26,10 +29,11 @@ nav {
         border-radius: 10px;
         padding: 10px 20px;
     }
-    div{
-        a{
-            img{
-                margin: 10px;
+
+    div {
+        a {
+            img {
+                margin-left: 20px;
                 width: 50px;
                 height: auto
             }
@@ -37,12 +41,34 @@ nav {
     }
 }
 
-.logout-button {
-    margin-left: 20px;
-    border: 1px solid black;
-    color: black;
-    font-family: 'Roboto', sans-serif;
-    font-size: 20px;
-    border-radius: 10px;
-    padding: 10px 20px;
+
+
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+
+    .logout-button {
+        margin-left: 30px;
+        border: 1px solid black;
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        border-radius: 10px;
+        padding: 10px 20px;
+    }
+
+    .register a {
+
+        text-decoration: none;
+        margin-right: 30px;
+        border: 1px solid black;
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        border-radius: 10px;
+        padding: 10px 20px;
+
+    }
+
 }

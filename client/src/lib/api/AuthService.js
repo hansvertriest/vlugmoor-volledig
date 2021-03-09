@@ -1,5 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import App from '../App';
+import * as consts from '../.././const';
 
 
 export default class AuthService {

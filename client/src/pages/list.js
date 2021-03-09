@@ -22,7 +22,6 @@ export default () => {
     if (JSON.parse(localStorage.getItem('authUser')) === null) {
         App.router.navigate('/login');
     } else {
-        console.log('logged in')
     };
 
     // Logout

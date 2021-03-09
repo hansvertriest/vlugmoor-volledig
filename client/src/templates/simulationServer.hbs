@@ -4,7 +4,7 @@
 
 <div class="top-container" >
     <div class="top-left">
-        <a><p>{{routerLink "home" "terug"}}</p></a>
+        <a ><p id='btn-terug' >{{routerLink "home" "terug"}}</p></a>
         <h3 id="simulation-title"></h3>
         <p id="simulation-date"></p>
     </div>
@@ -27,7 +27,7 @@
         
         
             <div class="upload-fields">
-            <label for="title">Title:</label>
+                <label for="title">Title:</label>
             <div>
                 <input id='title-field' type="text">
             </div>
@@ -41,7 +41,19 @@
             <div>
                 <input id="date-field" type="date">
             </div>
-
+            <div>
+                <label>Publish</label>
+            </div>
+            <div>
+                <select id="publish" name="publish">
+                    <option value='true'>
+                        publish
+                    </option>
+                    <option value='false'>
+                        offline
+                    </option>
+                </select>
+            </div>
         </div>
 
         <button type="button" id="submit">Submit</button>
@@ -122,6 +134,8 @@
     <h3>Beschrijving</h3>
     <p id="descrition-paragraph"></p>
 </div>
+<p id='gepubliceerd'></p>
+<p id='link'></p>
 
 
 {{> footer }}
